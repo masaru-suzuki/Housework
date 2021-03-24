@@ -1,5 +1,6 @@
 import firebase from "firebase";
 import "firebase/auth";
+import "firebase/firestore";
 //.envファイルからfirebasrConfigを読み取る
 const {
 	REACT_APP_FIREBASE_API_KEY,
@@ -22,19 +23,20 @@ const firebaseConfig = {
 	appId: REACT_APP_FIREBASE_APP_ID,
 	measurementId: REACT_APP_FIREBASE_MEASUREMENT_ID,
 };
-
-export const app = firebase.initializeApp(firebaseConfig);
+firebase.initializeApp(firebaseConfig);
 firebase.analytics();
 
 //データベースにアクセス
-const db = firebase.database();
+export const db = firebase.firestore();
+export const firebaseAuth = firebase.auth();
 
 //保存名の指定
-export const userRef = db.ref("user");
+// export const userRef = db.ref("users");
 
 //firebaseのデータベースを変更するfuncを設定する
-export const pushUser = (userName) => {
-	userRef.push({
-		name: userName,
-	});
-};
+// export const pushUser = (userName) => {
+// 	userRef.push({
+// 		name: userName,
+// 	});
+// };
+export default firebase;

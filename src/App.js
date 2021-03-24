@@ -1,24 +1,30 @@
-import React from "react";
-import { BrowserRouter as Router, Route } from "react-router-dom";
-import PrivateRoute from "./auth/PrivateRoute";
-import { AuthProvider } from "./auth/AuthProvider";
-import Home from "./components/Home";
-import Login from "./components/Login";
-import SignUp from "./components/SignUp";
-
-// import { pushUser } from "./firebase.js";
+import React, { useState } from "react";
+import "./App.css";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import Auth from "./auth/Auth";
+//screens
+import Home from "./screens/Home";
+import Profile from "./screens/Profile";
+import SignInOrUp from "./screens/SignInOrUp";
+import SignUp from "./screens/SignUp";
 
 function App() {
+	const [userName, setUserName] = useState("");
 	return (
-		<AuthProvider>
-			<Router>
-				<div>
-					<PrivateRoute exact path="/" component={Home} />
-					<Route exact path="/login" component={Login} />
-					<Route exact path="/signup" component={SignUp} />
-				</div>
-			</Router>
-		</AuthProvider>
+		<Router>
+			<Switch>
+				<Route exact path="/signin" component={SignInOrUp} />
+				<Route exact path="/signup" component={SignUp} />
+				{/* 以下認証のみ */}
+				<Auth>
+					<Switch>
+						<Route exact path="/" component={Home} />
+						<Route exact path="/profile" component={Profile} />
+						<Route render={() => <p>not found.</p>} />
+					</Switch>
+				</Auth>
+			</Switch>
+		</Router>
 	);
 }
 
