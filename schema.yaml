@@ -1,6 +1,7 @@
-users:
-  family:
-    documentID: userID
+family:
+  documentID: userID
+  member:
+    documentID: memberID
     name: String
     birth: Number
     level: Number ##レベルから必要な経験値を計算できるようにしたい 等比数列で
@@ -22,7 +23,7 @@ users:
     #   isSeacret: bool
 
   housework:
-    documentID: ID
+    documentID: houseworkID
     name: String
     earnedPoint: Number
     # earnedSkillPoint: Number

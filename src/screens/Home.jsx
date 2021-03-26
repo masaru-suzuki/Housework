@@ -1,26 +1,38 @@
 import React, { useState } from "react";
-import firebase, { db } from "../firebase";
-import { Link } from "react-router-dom";
-import { Button } from "reactstrap";
+import firebase, { db, firebaseAuth } from "../firebase";
+import DrawerNav from "../components/DrawerNav";
+import { makeStyles } from "@material-ui/core/styles";
+import { Container, Grid } from "@material-ui/core";
+import MemberCard from "../components/MemberCard";
+
+const useStyles = makeStyles((theme) => ({
+	root: {
+		flexGrow: 1,
+		backgroundColor: "#efefef",
+	},
+}));
 
 const Home = () => {
 	const [familyName, setFamilyName] = useState("");
-
-	const handleLogout = () => {
-		firebase.auth().signOut();
-	};
-
-	firebase.auth().onAuthStateChanged(function (user) {
+	const classes = useStyles();
+	let uid = "";
+	//firebaseからfamily 情報を取得
+	firebaseAuth.onAuthStateChanged(function (user) {
 		if (user) {
 			// User is signed in.
-			const uid = user.uid;
-			const familyRef = db.collection("family").doc(uid);
+			uid = user.uid;
+			console.log(uid);
+			const familyRef = db
+				.collection("family")
+				.doc(uid)
+				.collection("member")
+				.doc("mo3eozbhASvDtah5PTbf");
 			familyRef
 				.get()
 				.then((doc) => {
 					if (doc.exists) {
-						// console.log("Document data:", doc.data().name);
-						setFamilyName(doc.data().name);
+						console.log("Document data:", doc.data());
+						// setFamilyName(doc.data());
 					} else {
 						// doc.data() will be undefined in this case
 						console.log("No such document!");
@@ -35,15 +47,44 @@ const Home = () => {
 		}
 	});
 	console.log(familyName);
+	console.log(uid);
+	// console.log();
+	const data = {
+		name: "memberName",
+		birth: "memberBirth",
+		level: "memberLevel",
+		experiencePoint: "memberExperiencePoint",
+		requiredExpreriencePoint: "memberRequiredExpreriencePointa",
+		point: "memberPoint",
+	};
+	const addMemberInfo = () =>
+		firebase
+			.firestore()
+			.collection("family")
+			.doc(uid)
+			.collection("member")
+			.add(data);
 	return (
-		<div className="container">
+		<Container className={classes.root} maxWidth="sm">
+			<DrawerNav />
+			<button onClick={addMemberInfo}></button>
 			<p>Home</p>
-			<p>ようこそ{familyName}さん</p>
-			<Link to="/profile">Profileへ</Link>
-			<br />
-			<br />
-			<Button onClick={handleLogout}>ログアウト</Button>
-		</div>
+
+			<Grid container spacing={3}>
+				<Grid item xs={12} sm={6}>
+					<MemberCard uid={uid} />
+				</Grid>
+				<Grid item xs={12} sm={6}>
+					<MemberCard />
+				</Grid>
+				<Grid item xs={12} sm={6}>
+					<MemberCard />
+				</Grid>
+				<Grid item xs={12} sm={6}>
+					<MemberCard />
+				</Grid>
+			</Grid>
+		</Container>
 	);
 };
 
