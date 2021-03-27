@@ -8,7 +8,6 @@ import {
 	CardContent,
 	Typography,
 } from "@material-ui/core";
-import firebase, { pushMember } from "../firebase";
 
 const useStyles = makeStyles({
 	root: {
@@ -27,14 +26,14 @@ const useStyles = makeStyles({
 	},
 });
 
-const data = {
-	name: "memberName",
-	birth: "memberBirth",
-	level: "memberLevel",
-	experiencePoint: "memberExperiencePoint",
-	requiredExpreriencePoint: "memberRequiredExpreriencePointa",
-	point: "memberPoint",
-};
+// const data = {
+// 	name: "memberName",
+// 	birth: "memberBirth",
+// 	level: "memberLevel",
+// 	experiencePoint: "memberExperiencePoint",
+// 	requiredExpreriencePoint: "memberRequiredExpreriencePointa",
+// 	point: "memberPoint",
+// };
 
 const MemberCard = ({ uid }) => {
 	const classes = useStyles();

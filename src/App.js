@@ -1,11 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 import "./App.css";
-import {
-	BrowserRouter as Router,
-	Switch,
-	Route,
-	useHistory,
-} from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Auth from "./auth/Auth";
 //screens
 import Home from "./screens/Home";
@@ -17,8 +12,6 @@ import SignUp from "./screens/SignUp";
 import Member from "./screens/Member";
 
 function App() {
-	const [userName, setUserName] = useState("");
-
 	return (
 		<Router>
 			<Switch>

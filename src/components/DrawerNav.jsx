@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { handleLogout } from "../firebase";
 import SettingBtn from "./SettingBtn";
 import { makeStyles } from "@material-ui/core/styles";
-import { Link } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import {
 	Drawer,
 	List,
@@ -29,12 +29,19 @@ const useStyles = makeStyles({
 
 //onClick のルーティング
 
-const DrawerNav = () => {
+const DrawerNav = (info) => {
 	const classes = useStyles();
+	const history = useHistory();
 	const [state, setState] = useState({
 		right: false,
 	});
-
+	const handleEditFamily = () => {
+		history.push({
+			pathname: "/EditFamily",
+			// state: {  },
+		});
+	};
+	const handleEditHousework = () => history.push("/EditHousework");
 	const toggleDrawer = (open) => (event) => {
 		if (
 			event.type === "keydown" &&
@@ -52,19 +59,16 @@ const DrawerNav = () => {
 			text: "ログアウト",
 			icon: <ExitToAppIcon />,
 			onClick: handleLogout,
-			linked: "",
 		},
 		{
 			text: "家族編集",
 			icon: <GroupIcon />,
-			onClick: "",
-			linked: "EditFamily",
+			onClick: handleEditFamily,
 		},
 		{
 			text: "家事編集",
 			icon: <PlaylistAddIcon />,
-			onClick: "",
-			linked: "EditHousework",
+			onClick: handleEditHousework,
 		},
 	];
 
@@ -77,13 +81,7 @@ const DrawerNav = () => {
 			<List>
 				<SettingBtn style={classes.drawerBtn} onClick={toggleDrawer(true)} />
 				{menuList.map((item) => (
-					<ListItem
-						button={true}
-						key={item.text}
-						onClick={item.onClick}
-						component={Link}
-						to={item.linked}
-					>
+					<ListItem button={true} key={item.text} onClick={item.onClick}>
 						<ListItemIcon>{item.icon}</ListItemIcon>
 						<ListItemText primary={item.text} />
 					</ListItem>
