@@ -29,7 +29,8 @@ const useStyles = makeStyles({
 
 //onClick のルーティング
 
-const DrawerNav = (info) => {
+const DrawerNav = ({ memberInfo }) => {
+	console.log(memberInfo);
 	const classes = useStyles();
 	const history = useHistory();
 	const [state, setState] = useState({
@@ -38,7 +39,7 @@ const DrawerNav = (info) => {
 	const handleEditFamily = () => {
 		history.push({
 			pathname: "/EditFamily",
-			// state: {  },
+			state: { memberInfo },
 		});
 	};
 	const handleEditHousework = () => history.push("/EditHousework");

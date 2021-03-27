@@ -30,7 +30,7 @@ const Home = () => {
 				familyRef
 					.get()
 					.then((querySnapshot) => {
-						// 一旦memberInfoArrに代入しているけどスマートな方法はないのか？
+						// 一旦memberInfoArrに代入しているけどスマートな方法はないのか？memberInfoArrに格納しなくてもいい方法を検討
 						querySnapshot.forEach((doc) => {
 							// console.log(doc.data());
 							memberInfoArr.push(doc.data());
@@ -50,12 +50,12 @@ const Home = () => {
 
 	//firebase のmember にデータを追加するテスト
 	const data = {
-		name: "memberName",
-		birth: "memberBirth",
-		level: "memberLevel",
-		experiencePoint: "memberExperiencePoint",
-		requiredExpreriencePoint: "memberRequiredExpreriencePointa",
-		point: "memberPoint",
+		name: "nozomi",
+		birth: "20200618",
+		level: "12",
+		experiencePoint: "49",
+		requiredExpreriencePoint: "10",
+		point: "4600000000",
 	};
 	const addMemberInfo = () =>
 		firebase
@@ -69,7 +69,7 @@ const Home = () => {
 		<Container className={classes.root} maxWidth="sm">
 			<DrawerNav
 				//member 情報のstateを渡す
-				info={memberInfo}
+				memberInfo={memberInfo}
 			/>
 			<button onClick={addMemberInfo}></button>
 			<p>Home</p>
