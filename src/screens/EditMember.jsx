@@ -11,6 +11,7 @@ import {
 	IconButton,
 	Container,
 	Button,
+	TextField,
 	Divider,
 } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
@@ -19,62 +20,58 @@ import EditIcon from "@material-ui/icons/Edit";
 import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 
 const useStyles = makeStyles((theme) => ({
-	card: {
-		display: "flex",
-		maxWidth: 600,
-		width: "100%",
-		height: "10%",
-		margin: 10,
+	text_field: {
+		marginBottom: 16,
 	},
-	content_area: {
-		display: "flex",
-		alignItems: "center",
-		width: "100%",
-		padding: 0,
-		"&:last-child": {
-			paddingBottom: 0,
-		},
-	},
-	container: {
-		flexGrow: 1,
-		maxWidth: 600,
-		backgroundColor: "#efefef",
-		display: "flex",
-		flexDirection: "column",
-		justifyContent: "space-around",
-		padding: "0 5%",
-	},
-	img: {
-		marginRight: 16,
-	},
-	img_sp: {
-		marginRight: 8,
-		width: 20,
-		height: 20,
-	},
-	txtbox: {
-		width: "100%",
-		display: "flex",
-	},
-	card_txt: {
-		lineHeight: 3,
-		verticalAlign: "middle",
-		paddingLeft: 16,
-	},
-	divider: {
-		margin: "0 4px",
-	},
-	btn_back: {
-		marginTop: 8,
-		width: 30,
-		fontSize: 3,
-	},
-	btn_icon: {
-		margin: 0,
-	},
-	btn: {
-		margin: 24,
-	},
+	// content_area: {
+	// 	display: "flex",
+	// 	alignItems: "center",
+	// 	width: "100%",
+	// 	padding: 0,
+	// 	"&:last-child": {
+	// 		paddingBottom: 0,
+	// 	},
+	// },
+	// container: {
+	// 	flexGrow: 1,
+	// 	maxWidth: 600,
+	// 	backgroundColor: "#efefef",
+	// 	display: "flex",
+	// 	flexDirection: "column",
+	// 	justifyContent: "space-around",
+	// 	padding: "0 5%",
+	// },
+	// img: {
+	// 	marginRight: 16,
+	// },
+	// img_sp: {
+	// 	marginRight: 8,
+	// 	width: 20,
+	// 	height: 20,
+	// },
+	// txtbox: {
+	// 	width: "100%",
+	// 	display: "flex",
+	// },
+	// card_txt: {
+	// 	lineHeight: 3,
+	// 	verticalAlign: "middle",
+	// 	paddingLeft: 16,
+	// },
+	// divider: {
+	// 	margin: "0 4px",
+	// },
+	// btn_back: {
+	// 	marginTop: 8,
+	// 	width: 30,
+	// 	fontSize: 3,
+	// },
+	// btn_icon: {
+	// 	margin: 0,
+	// },
+	// btn: {
+	// 	margin: 24,
+	// },
 }));
 
 const EditMember = (props) => {
@@ -95,7 +92,47 @@ const EditMember = (props) => {
 			>
 				back
 			</Button>
-			<p>EditMember</p>
+			<List
+				component="nav"
+				aria-labelledby="nested-list-subheader"
+				subheader={
+					<ListSubheader
+						disableSticky
+						component="div"
+						id="nested-list-subheader"
+					>
+						家族編集
+					</ListSubheader>
+				}
+				className={classes.root}
+			>
+				<TextField
+					className={classes.text_field}
+					fullWidth
+					size="small"
+					variant="filled"
+					required
+					label="名前"
+					value={memberInfo.name}
+				/>
+				<TextField
+					className={classes.text_field}
+					fullWidth
+					size="small"
+					variant="filled"
+					required
+					label="生年月日"
+					value={memberInfo.birth}
+				/>
+				<Button
+					fullWidth
+					variant="contained"
+					color="primary"
+					className={classes.btn}
+				>
+					変更する
+				</Button>
+			</List>
 		</Container>
 	);
 };
