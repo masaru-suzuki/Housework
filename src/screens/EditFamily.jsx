@@ -1,29 +1,23 @@
-import React, { useState } from "react";
-import MediaQuery, { useMediaQuery } from "react-responsive";
+import React from "react";
+import { useHistory } from "react-router-dom";
+import { useMediaQuery } from "react-responsive";
 import { makeStyles } from "@material-ui/core/styles";
-import firebase, { db, firebaseAuth } from "../firebase";
 import {
 	Card,
-	Grid,
 	ListSubheader,
-	CardActionArea,
 	Avatar,
 	CardContent,
 	Typography,
 	List,
-	ListItem,
-	ListItemIcon,
-	ListItemText,
 	IconButton,
 	Container,
 	Button,
 	Divider,
 } from "@material-ui/core";
-import PersonIcon from "@material-ui/icons/Person";
 import DeleteIcon from "@material-ui/icons/Delete";
 import AddIcon from "@material-ui/icons/Add";
-import reactDom from "react-dom";
 import EditIcon from "@material-ui/icons/Edit";
+import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 
 const useStyles = makeStyles((theme) => ({
 	card: {
@@ -49,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
 		display: "flex",
 		flexDirection: "column",
 		justifyContent: "space-around",
-		padding: "5%",
+		padding: "0 5%",
 	},
 	img: {
 		marginRight: 16,
@@ -62,8 +56,6 @@ const useStyles = makeStyles((theme) => ({
 	txtbox: {
 		width: "100%",
 		display: "flex",
-		// padding: 0,
-		// marginLeft: 12,
 	},
 	card_txt: {
 		lineHeight: 3,
@@ -73,6 +65,14 @@ const useStyles = makeStyles((theme) => ({
 	divider: {
 		margin: "0 4px",
 	},
+	btn_back: {
+		marginTop: 8,
+		width: 30,
+		fontSize: 3,
+	},
+	btn_icon: {
+		margin: 0,
+	},
 	btn: {
 		margin: 24,
 	},
@@ -80,95 +80,125 @@ const useStyles = makeStyles((theme) => ({
 
 const EditFamily = (props) => {
 	const classes = useStyles();
-	const memberInfo = props.location.state.memberInfo;
-	console.log(memberInfo);
+	const history = useHistory();
+	const membersInfo = props.location.state.membersInfo;
+	// console.log(membersInfo);
+
 	//media query
 	const isTablet = useMediaQuery({ query: "(min-device-width: 768px)" });
 	const isSmartPhone = useMediaQuery({ query: "(max-device-width: 767px)" });
+	const handleBackHome = () => {
+		history.push({ pathname: "/" });
+	};
+	const handleEditMember = (memberInfo) => {
+		history.push({
+			pathname: "/EditMember",
+			state: { memberInfo },
+		});
+	};
 
 	return (
 		<Container className={classes.container} maxWidth="sm">
-			{memberInfo.map((data, index) => {
-				return (
-					<Card className={classes.card} key={index}>
-						<CardContent className={classes.txtbox}>
-							{isSmartPhone && (
-								<CardContent className={classes.content_area}>
-									<Avatar className={classes.img_sp} variant="circle" />
-									<Typography
-										align="left"
-										display="inline"
-										// gutterBottom
-										variant="subtitle2"
-									>
-										{data.name}
-									</Typography>
-								</CardContent>
-							)}
+			<Button
+				variant="text"
+				color="inherit"
+				size="small"
+				className={classes.btn_back}
+				onClick={() => handleBackHome()}
+				startIcon={<ArrowBackIosIcon className={classes.btn_icon} />}
+			>
+				back
+			</Button>
+			<List
+				component="nav"
+				aria-labelledby="nested-list-subheader"
+				subheader={
+					<ListSubheader
+						disableSticky
+						component="div"
+						id="nested-list-subheader"
+					>
+						家族編集
+					</ListSubheader>
+				}
+				className={classes.root}
+			>
+				{membersInfo.map((data, index) => {
+					const memberInfo = membersInfo[index];
+					// console.log(memberInfo);
+					return (
+						<Card className={classes.card} key={index}>
+							<CardContent className={classes.txtbox}>
+								{isSmartPhone && (
+									<CardContent className={classes.content_area}>
+										<Avatar className={classes.img_sp} variant="circular" />
+										<Typography
+											align="left"
+											display="inline"
+											// gutterBottom
+											variant="subtitle2"
+										>
+											{data.name}
+										</Typography>
+									</CardContent>
+								)}
 
-							{isTablet && (
-								<CardContent className={classes.content_area}>
-									<Avatar className={classes.img} variant="circle" />
-									<Typography
-										align="left"
-										display="inline"
-										// gutterBottom
-										variant="h5"
-										component="p"
-									>
-										{data.name}
-									</Typography>
-									<Typography
-										className={classes.card_txt}
-										display="inline"
-										variant="body1"
-										color="textSecondary"
-										component="p"
-									>
-										30 lv
-									</Typography>
-									<Typography
-										className={classes.card_txt}
-										display="inline"
-										variant="body1"
-										color="textSecondary"
-										component="p"
-									>
-										2800 point
-									</Typography>
-								</CardContent>
-							)}
-						</CardContent>
-						<Divider
-							className={classes.divider}
-							orientation="vertical"
-							flexItem
-						/>
-						<IconButton aria-label="delete">
-							<EditIcon />
-						</IconButton>
-						<Divider
-							className={classes.divider}
-							orientation="vertical"
-							flexItem
-						/>
-						<IconButton aria-label="delete">
-							<DeleteIcon />
-						</IconButton>
-						{/* <button onClick={}></button> */}
-					</Card>
-					// <ListItem button>
-					// 	<ListItemIcon>
-					// 		<PersonIcon />
-					// 	</ListItemIcon>
-					// 	<ListItemText
-					// 		primary={data.name}
-					// 		secondary={`${data.level} Lv`}
-					// 	/>
-					// </ListItem>
-				);
-			})}
-			{/* </List> */}
+								{isTablet && (
+									<CardContent className={classes.content_area}>
+										<Avatar className={classes.img} variant="circular" />
+										<Typography
+											align="left"
+											display="inline"
+											// gutterBottom
+											variant="h5"
+											component="p"
+										>
+											{data.name}
+										</Typography>
+										<Typography
+											className={classes.card_txt}
+											display="inline"
+											variant="body1"
+											color="textSecondary"
+											component="p"
+										>
+											30 lv
+										</Typography>
+										<Typography
+											className={classes.card_txt}
+											display="inline"
+											variant="body1"
+											color="textSecondary"
+											component="p"
+										>
+											2800 point
+										</Typography>
+									</CardContent>
+								)}
+							</CardContent>
+							<Divider
+								className={classes.divider}
+								orientation="vertical"
+								flexItem
+							/>
+							<IconButton
+								aria-label="delete"
+								onClick={() => handleEditMember(memberInfo)}
+							>
+								<EditIcon />
+							</IconButton>
+							<Divider
+								className={classes.divider}
+								orientation="vertical"
+								flexItem
+							/>
+							<IconButton aria-label="delete">
+								<DeleteIcon />
+							</IconButton>
+						</Card>
+					);
+				})}
+			</List>
 			<Button
 				variant="contained"
 				color="primary"
@@ -178,26 +208,7 @@ const EditFamily = (props) => {
 				家族を追加する
 			</Button>
 		</Container>
-		// <div>
-		// 	{memberInfo.map((data, index) => {
-		// 		return (
-		// 			<div>
-		// 				<p>EditFamily</p>
-		// 				<p>{data.name}</p>
-		// 				<br />
-		// 			</div>
-		// 		);
-		// 	})}
-		// </div>
 	);
-
-	// return (
-	// 	<div>
-	// 		<p>EditFamily</p>
-	// 		<p>{memberInfo.name}</p>
-	// 		<br />
-	// 	</div>
-	// );
 };
 
 export default EditFamily;

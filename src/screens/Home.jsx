@@ -14,10 +14,10 @@ const useStyles = makeStyles((theme) => ({
 
 const Home = () => {
 	const [familyId, setFamilyId] = useState("");
-	const [memberInfo, setMemberInfo] = useState({});
+	const [membersInfo, setMembersInfo] = useState({});
 	const classes = useStyles();
 	let isDataGet = false;
-	const memberInfoArr = [];
+	const membersInfoArr = [];
 	//firebaseからfamily 情報を取得 一度だけ
 	useEffect(() => {
 		firebaseAuth.onAuthStateChanged(function (user) {
@@ -30,10 +30,10 @@ const Home = () => {
 				familyRef
 					.get()
 					.then((querySnapshot) => {
-						// 一旦memberInfoArrに代入しているけどスマートな方法はないのか？memberInfoArrに格納しなくてもいい方法を検討
+						// 一旦membersInfoArrに代入しているけどスマートな方法はないのか？membersInfoArrに格納しなくてもいい方法を検討
 						querySnapshot.forEach((doc) => {
 							// console.log(doc.data());
-							memberInfoArr.push(doc.data());
+							membersInfoArr.push(doc.data());
 						});
 					})
 					.catch((error) => {
@@ -44,9 +44,9 @@ const Home = () => {
 				console.log("user is undefined...");
 			}
 		});
-		setMemberInfo(memberInfoArr);
+		setMembersInfo(membersInfoArr);
 	}, []);
-	// console.log(memberInfo);
+	// console.log(membersInfo);
 
 	//firebase のmember にデータを追加するテスト
 	const data = {
@@ -69,7 +69,7 @@ const Home = () => {
 		<Container className={classes.root} maxWidth="sm">
 			<DrawerNav
 				//member 情報のstateを渡す
-				memberInfo={memberInfo}
+				membersInfo={membersInfo}
 			/>
 			<button onClick={addMemberInfo}></button>
 			<p>Home</p>
