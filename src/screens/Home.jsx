@@ -14,10 +14,10 @@ const useStyles = makeStyles((theme) => ({
 
 const Home = () => {
 	const [familyId, setFamilyId] = useState("");
-	const [membersInfo, setMembersInfo] = useState({});
+	const [membersInfo, setMembersInfo] = useState();
 	const classes = useStyles();
-	let isDataGet = false;
 	const membersInfoArr = [];
+
 	//firebaseからfamily 情報を取得 一度だけ
 	useEffect(() => {
 		firebaseAuth.onAuthStateChanged(function (user) {
@@ -32,9 +32,14 @@ const Home = () => {
 					.then((querySnapshot) => {
 						// 一旦membersInfoArrに代入しているけどスマートな方法はないのか？membersInfoArrに格納しなくてもいい方法を検討
 						querySnapshot.forEach((doc) => {
-							// console.log(doc.data());
-							membersInfoArr.push(doc.data());
+							const id = { memberId: doc.id };
+							const info = doc.data();
+							const memberInfo = { ...id, ...info };
+							membersInfoArr.push(memberInfo);
+							// console.log({ membersInfoArr });
 						});
+						setMembersInfo(membersInfoArr);
+						console.log({ membersInfo });
 					})
 					.catch((error) => {
 						console.log("Error getting documents: ", error);
@@ -44,48 +49,27 @@ const Home = () => {
 				console.log("user is undefined...");
 			}
 		});
-		setMembersInfo(membersInfoArr);
+		// console.log({ membersInfoArr });
+		// setMembersInfo(membersInfoArr);
 	}, []);
-	// console.log(membersInfo);
-
-	//firebase のmember にデータを追加するテスト
-	const data = {
-		name: "nozomi",
-		birth: "20200618",
-		level: "12",
-		experiencePoint: "49",
-		requiredExpreriencePoint: "10",
-		point: "4600000000",
-	};
-	const addMemberInfo = () =>
-		firebase
-			.firestore()
-			.collection("family")
-			.doc(familyId)
-			.collection("member")
-			.add(data);
+	// console.log({ membersInfo });
 
 	return (
 		<Container className={classes.root} maxWidth="sm">
-			<DrawerNav
-				//member 情報のstateを渡す
-				membersInfo={membersInfo}
-			/>
-			<button onClick={addMemberInfo}></button>
+			<DrawerNav membersInfo={membersInfo} />
 			<p>Home</p>
 
 			<Grid container spacing={3}>
+				{/* {membersInfo.map((memberInfo) => {
+					console.log(memberInfo);
+					return (
+						<Grid item xs={12} sm={6} key={memberInfo.memberId}>
+							<MemberCard memberInfo={memberInfo} />
+						</Grid>
+					);
+				})} */}
 				<Grid item xs={12} sm={6}>
 					<MemberCard uid={familyId} />
-				</Grid>
-				<Grid item xs={12} sm={6}>
-					<MemberCard />
-				</Grid>
-				<Grid item xs={12} sm={6}>
-					<MemberCard />
-				</Grid>
-				<Grid item xs={12} sm={6}>
-					<MemberCard />
 				</Grid>
 			</Grid>
 		</Container>
@@ -93,3 +77,40 @@ const Home = () => {
 };
 
 export default Home;
+
+// membersInfo.map((data) => {
+// 	console.log(data);
+// });
+//firebase のmember にデータを追加するテスト
+// const data = {
+// 	name: "nozomi",
+// 	birth: "20200618",
+// 	level: "12",
+// 	experiencePoint: "49",
+// 	requiredExpreriencePoint: "10",
+// 	point: "4600000000",
+// };
+// const addMemberInfo = () =>
+// 	firebase
+// 		.firestore()
+// 		.collection("family")
+// 		.doc(familyId)
+// 		.collection("member")
+// 		.add(data);
+
+//firebase のmember にデータを更新するテスト
+// const updateMemberInfo = () => {
+// 	firebase
+// 		.firestore()
+// 		.collection("family")
+// 		.doc(familyId)
+// 		.collection("member")
+// 		.doc("JVc1oKtURY7cSOixOnpP")
+// 		.update({})
+// 		.then(() => {
+// 			console.log("updated!");
+// 		})
+// 		.catch((error) => {
+// 			console.error("Error updating document: ", error);
+// 		});
+// };

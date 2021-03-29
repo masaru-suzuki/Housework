@@ -55,7 +55,6 @@ const MemberCard = ({ uid }) => {
 					</Typography>
 				</CardContent>
 			</CardActionArea>
-			{/* <button onClick={}></button> */}
 		</Card>
 	);
 };

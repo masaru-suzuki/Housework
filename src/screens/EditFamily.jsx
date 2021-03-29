@@ -68,7 +68,7 @@ const useStyles = makeStyles((theme) => ({
 	btn_back: {
 		marginTop: 8,
 		width: 30,
-		fontSize: 3,
+		fontSize: 16,
 	},
 	btn_icon: {
 		margin: 0,
@@ -81,19 +81,40 @@ const useStyles = makeStyles((theme) => ({
 const EditFamily = (props) => {
 	const classes = useStyles();
 	const history = useHistory();
-	const membersInfo = props.location.state.membersInfo;
-	// console.log(membersInfo);
+	let membersInfo = props.location.state.membersInfo;
+	console.log({ membersInfo });
+	const updateFireStore = () => {
+		console.log("add");
+	};
+	// updateFireStore();
+	const updateFireStoreObj = { updateFireStore: updateFireStore };
+	// updateFireStoreObj.updateFireStore();
+	// console.log(updateFireStoreObj.updateFireStore());
 
 	//media query
 	const isTablet = useMediaQuery({ query: "(min-device-width: 768px)" });
 	const isSmartPhone = useMediaQuery({ query: "(max-device-width: 767px)" });
+
 	const handleBackHome = () => {
 		history.push({ pathname: "/" });
 	};
-	const handleEditMember = (memberInfo) => {
+
+	// let addfuncInfo = [];
+	// membersInfo.forEach((memberInfo) => {
+	// 	console.log({ memberInfo });
+	// 	const newObj = { ...updateFireStoreObj, ...memberInfo };
+	// 	console.log({ newObj });
+	// 	addfuncInfo.push(newObj);
+	// });
+	// console.log({ addfuncInfo });
+	membersInfo = membersInfo.map((info, index) => {
+		return { ...updateFireStoreObj, ...info };
+	});
+	console.log({ membersInfo });
+	const handleEditMember = () => {
 		history.push({
 			pathname: "/EditMember",
-			state: { memberInfo },
+			state: { membersInfo },
 		});
 	};
 
@@ -181,10 +202,7 @@ const EditFamily = (props) => {
 								orientation="vertical"
 								flexItem
 							/>
-							<IconButton
-								aria-label="delete"
-								onClick={() => handleEditMember(memberInfo)}
-							>
+							<IconButton aria-label="delete" onClick={handleEditMember}>
 								<EditIcon />
 							</IconButton>
 							<Divider

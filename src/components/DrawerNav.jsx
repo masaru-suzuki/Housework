@@ -30,12 +30,14 @@ const useStyles = makeStyles({
 //onClick のルーティング
 
 const DrawerNav = ({ membersInfo }) => {
-	console.log(membersInfo);
+	console.log({ membersInfo });
 	const classes = useStyles();
 	const history = useHistory();
 	const [state, setState] = useState({
 		right: false,
 	});
+
+	//onClickのrouter
 	const handleEditFamily = () => {
 		history.push({
 			pathname: "/editFamily",

@@ -1,23 +1,10 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
-import {
-	Card,
-	ListSubheader,
-	Avatar,
-	CardContent,
-	Typography,
-	List,
-	IconButton,
-	Container,
-	Button,
-	TextField,
-	Divider,
-} from "@material-ui/core";
-import DeleteIcon from "@material-ui/icons/Delete";
-import AddIcon from "@material-ui/icons/Add";
-import EditIcon from "@material-ui/icons/Edit";
-import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
+import { ListSubheader, List, Container } from "@material-ui/core";
+import InputField from "../uikit/InputField";
+import BackBtn from "../uikit/BackBtn";
+import SubmitBtn from "../uikit/SubmitBtn";
 
 const useStyles = makeStyles((theme) => ({
 	text_field: {
@@ -61,11 +48,11 @@ const useStyles = makeStyles((theme) => ({
 	// divider: {
 	// 	margin: "0 4px",
 	// },
-	// btn_back: {
-	// 	marginTop: 8,
-	// 	width: 30,
-	// 	fontSize: 3,
-	// },
+	btn_back: {
+		marginTop: 8,
+		width: 30,
+		fontSize: 16,
+	},
 	// btn_icon: {
 	// 	margin: 0,
 	// },
@@ -77,62 +64,40 @@ const useStyles = makeStyles((theme) => ({
 const EditMember = (props) => {
 	const classes = useStyles();
 	const history = useHistory();
-	const memberInfo = props.location.state.memberInfo;
+	// const memberInfo = props.location.state.memberInfo;
+	// const updateFireStore = props.location.state.updateFireStore;
+	const name = props.location.state.name;
+	// const birth = props.location.state.birth;
+	const [member, setMember] = useState([]);
+	// console.log(updateFireStore);
+	// console.log(props.location.state);
+	// console.log(props.location.state.name);
+	// console.log(props.location.state.memberInfo);
+	// console.log(updateFireStore);
+	useEffect(() => {
+		console.log("render");
+		// setMember(memberInfo.name);
+	}, []);
 	// console.log(memberInfo);
-
+	// console.log(member.name);
+	//onChangeの設定
+	//
 	return (
 		<Container>
-			<Button
-				variant="text"
-				color="inherit"
-				size="small"
-				className={classes.btn_back}
-				onClick={() => history.goBack()}
-				startIcon={<ArrowBackIosIcon className={classes.btn_icon} />}
-			>
-				back
-			</Button>
+			<BackBtn />
 			<List
 				component="nav"
 				aria-labelledby="nested-list-subheader"
 				subheader={
-					<ListSubheader
-						disableSticky
-						component="div"
-						id="nested-list-subheader"
-					>
+					<ListSubheader disableSticky component="div">
 						家族編集
 					</ListSubheader>
 				}
 				className={classes.root}
-			>
-				<TextField
-					className={classes.text_field}
-					fullWidth
-					size="small"
-					variant="filled"
-					required
-					label="名前"
-					value={memberInfo.name}
-				/>
-				<TextField
-					className={classes.text_field}
-					fullWidth
-					size="small"
-					variant="filled"
-					required
-					label="生年月日"
-					value={memberInfo.birth}
-				/>
-				<Button
-					fullWidth
-					variant="contained"
-					color="primary"
-					className={classes.btn}
-				>
-					変更する
-				</Button>
-			</List>
+			></List>
+			{/* <InputField required={true} label="名前" value={name} />
+			<InputField required={true} label="生年月日" value={birth} />
+			<SubmitBtn value="変更する" updateFireStore={updateFireStore} /> */}
 		</Container>
 	);
 };
