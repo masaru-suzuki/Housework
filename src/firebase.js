@@ -30,6 +30,28 @@ firebase.analytics();
 export const db = firebase.firestore();
 export const firebaseAuth = firebase.auth();
 
+//ログアウト
+export const handleLogout = () => {
+	console.log("logout");
+	firebaseAuth.signOut();
+};
+
+//家族情報の追加
+// export const familyRef = db.ref("family");
+export const pushMember = (familyID, data) => {
+	db.collection("family").doc(familyID).collection("member").set(data);
+	// const memberRef = familyRef.doc(familyID).ref("member");
+	// memberRef.push({
+	// 	documentID: memberInfoArr.memberID,
+	// 	name: memberInfoArr.memberName,
+	// 	birth: memberInfoArr.memberBirth,
+	// 	level: memberInfoArr.memberLevel,
+	// 	experiencePoint: memberInfoArr.memberExperiencePoint,
+	// 	requiredExpreriencePoint: memberInfoArr.memberRequiredExpreriencePointa,
+	// 	point: memberInfoArr.memberPoint,
+	// });
+};
+
 //保存名の指定
 // export const userRef = db.ref("users");
 

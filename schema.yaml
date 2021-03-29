@@ -1,0 +1,36 @@
+family:
+  documentID: userID
+  member:
+    documentID: memberID
+    name: String
+    birth: Number
+    level: Number ##レベルから必要な経験値を計算できるようにしたい 等比数列で
+    experiencePoint: Number
+    requiredExpreriencePoint: Number
+    point: Number
+    # skilLevel:
+    #   documentID: ID
+    #   name: String
+    #   level: Number  #skillレベルの計算方法を考える
+
+    # password: Number
+    # isAdmin: bool
+    # isEdit: bool
+    # item:
+    #   documentID: ID
+    #   name: String
+    #   requiredPoint: String
+    #   isSeacret: bool
+
+  housework:
+    documentID: houseworkID
+    name: String
+    earnedPoint: Number
+    # earnedSkillPoint: Number
+    description: String
+    isEdit: bool
+
+  # skill:
+  #   documentID: ID
+  #   name: String
+  #   requiredPoint: Number
