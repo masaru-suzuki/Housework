@@ -4,6 +4,7 @@ import DrawerNav from "../components/DrawerNav";
 import { makeStyles } from "@material-ui/core/styles";
 import { Container, Grid } from "@material-ui/core";
 import MemberCard from "../components/MemberCard";
+import { Update } from "@material-ui/icons";
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -32,7 +33,7 @@ const Home = () => {
 					.then((querySnapshot) => {
 						// 一旦membersInfoArrに代入しているけどスマートな方法はないのか？membersInfoArrに格納しなくてもいい方法を検討
 						querySnapshot.forEach((doc) => {
-							const id = { memberId: doc.id };
+							const id = { familyId: uid, memberId: doc.id };
 							const info = doc.data();
 							const memberInfo = { ...id, ...info };
 							membersInfoArr.push(memberInfo);
@@ -99,7 +100,7 @@ export default Home;
 // 		.add(data);
 
 //firebase のmember にデータを更新するテスト
-// const updateMemberInfo = () => {
+// const Update = () => {
 // 	firebase
 // 		.firestore()
 // 		.collection("family")

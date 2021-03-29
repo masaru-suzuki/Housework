@@ -82,12 +82,12 @@ const EditFamily = (props) => {
 	const classes = useStyles();
 	const history = useHistory();
 	let membersInfo = props.location.state.membersInfo;
-	console.log({ membersInfo });
-	const updateFireStore = () => {
-		console.log("add");
-	};
+	// console.log({ membersInfo });
+	// const updateFireStore = () => {
+	// 	console.log("add");
+	// };
 	// updateFireStore();
-	const updateFireStoreObj = { updateFireStore: updateFireStore };
+	// const updateFireStoreObj = { updateFireStore: updateFireStore };
 	// updateFireStoreObj.updateFireStore();
 	// console.log(updateFireStoreObj.updateFireStore());
 
@@ -107,16 +107,10 @@ const EditFamily = (props) => {
 	// 	addfuncInfo.push(newObj);
 	// });
 	// console.log({ addfuncInfo });
-	membersInfo = membersInfo.map((info, index) => {
-		return { ...updateFireStoreObj, ...info };
-	});
+	// membersInfo = membersInfo.map((info, index) => {
+	// 	return { ...updateFireStoreObj, ...info };
+	// });
 	console.log({ membersInfo });
-	const handleEditMember = () => {
-		history.push({
-			pathname: "/EditMember",
-			state: { membersInfo },
-		});
-	};
 
 	return (
 		<Container className={classes.container} maxWidth="sm">
@@ -144,7 +138,13 @@ const EditFamily = (props) => {
 				}
 				className={classes.root}
 			>
-				{membersInfo.map((data, index) => {
+				{membersInfo.map((member, index) => {
+					const handleEditMember = () => {
+						history.push({
+							pathname: "/EditMember",
+							state: { member },
+						});
+					};
 					const memberInfo = membersInfo[index];
 					// console.log(memberInfo);
 					return (
@@ -159,7 +159,7 @@ const EditFamily = (props) => {
 											// gutterBottom
 											variant="subtitle2"
 										>
-											{data.name}
+											{member.name}
 										</Typography>
 									</CardContent>
 								)}
@@ -174,7 +174,7 @@ const EditFamily = (props) => {
 											variant="h5"
 											component="p"
 										>
-											{data.name}
+											{member.name}
 										</Typography>
 										<Typography
 											className={classes.card_txt}

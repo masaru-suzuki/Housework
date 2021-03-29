@@ -35,17 +35,17 @@ const useStyles = makeStyles({
 // 	point: "memberPoint",
 // };
 
-const MemberCard = ({ uid }) => {
+const MemberCard = ({ memberInfo }) => {
 	const classes = useStyles();
 	const history = useHistory();
-
+	console.log(memberInfo);
 	return (
 		<Card className={classes.root} onClick={() => history.push("/Member")}>
 			<CardActionArea>
 				<Avatar className={classes.img} variant="square" />
 				<CardContent className={classes.txtbox}>
 					<Typography gutterBottom variant="h5" component="h2">
-						伶奈
+						{/* {memberInfo.name} */}
 					</Typography>
 					<Typography variant="body2" color="textSecondary" component="p">
 						30 lv

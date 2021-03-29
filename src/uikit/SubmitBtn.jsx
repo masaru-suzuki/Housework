@@ -1,5 +1,6 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
+import { useHistory } from "react-router-dom";
 import { Button } from "@material-ui/core";
 const useStyles = makeStyles((theme) => ({
 	btn: {
@@ -7,15 +8,20 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-const SubmitBtn = ({ value, updateFireStore }) => {
+const SubmitBtn = ({ value, updateFirestore }) => {
+	const history = useHistory();
 	const classes = useStyles();
+	const btnAction = () => {
+		updateFirestore();
+		history.goBack();
+	};
 	return (
 		<Button
 			fullWidth
 			variant="contained"
 			color="primary"
 			className={classes.btn}
-			onClick={updateFireStore}
+			onClick={btnAction}
 		>
 			{value}
 		</Button>
