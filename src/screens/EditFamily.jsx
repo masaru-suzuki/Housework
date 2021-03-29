@@ -78,16 +78,49 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-const EditFamily = (props) => {
+const memberListMock = [
+	{
+		name: 'John Doe',
+		birth: 'what is this field',
+		level: 100,
+		experiencePoint: 500,
+		requiredExperiencePoint: 1000,
+		point: 42
+	},
+	{
+		name: 'Jane Doe',
+		birth: 'what is this field',
+		level: 120,
+		experiencePoint: 12900,
+		requiredExperiencePoint: 13098,
+		point: 555
+	}
+]
+
+const sleep = (ms)=> ()=> new Promise(r=> setTimeout(r, ms))
+const sleep1Sec = sleep(1000)
+
+const EditFamily = () => {
 	const classes = useStyles();
 	const history = useHistory();
-	let membersInfo = props.location.state.membersInfo;
-	console.log({ membersInfo });
-	const updateFireStore = () => {
-		console.log("add");
-	};
+	
+	//FIXME: location.state.membersInfoがそもそも存在してない。 
+	//TODO: App.jsにstate作って渡した方がいい。
+	//FIXME: ReactはImmutableだからletではなく常にconstを使う
+	// let membersInfo = props.location.state.membersInfo;
+	
+	//とりあえずダミーデータを使用
+	const memberList = memberListMock
+
+	//TODO: このfunctionはApp.jsからもってくる
+	const updateFirestoreMock = async (member)=> {
+		console.log('updating store...', {member})
+		await sleep1Sec()
+		console.log('store updated')
+	}
+
 	// updateFireStore();
-	const updateFireStoreObj = { updateFireStore: updateFireStore };
+	// const updateFireStoreObj = { updateFireStore: updateFireStore };
 	// updateFireStoreObj.updateFireStore();
 	// console.log(updateFireStoreObj.updateFireStore());
 
@@ -95,27 +128,29 @@ const EditFamily = (props) => {
 	const isTablet = useMediaQuery({ query: "(min-device-width: 768px)" });
 	const isSmartPhone = useMediaQuery({ query: "(max-device-width: 767px)" });
 
+
+	//FIXME: ここのコードはコンポーネントがrerenderingするたびに実行されるからやめたほうがいい。addFuncInfoはどこで使われるの?
+	// let addfuncInfo = [];
+	// membersInfo.forEach((memberInfo) => {
+	// 	const newObj = { ...updateFireStoreObj, ...memberInfo };
+	// 	addfuncInfo.push(newObj);
+	// });
+	//
+
+	//FIXME: membersInfoがそもそもundefinedだからmap使えない。
+	//FIXME: reassignをやめる
+	// membersInfo = membersInfo.map((info, index) => {
+	// 	return { ...updateFireStoreObj, ...info };
+	// });
+
+
 	const handleBackHome = () => {
 		history.push({ pathname: "/" });
 	};
 
-	// let addfuncInfo = [];
-	// membersInfo.forEach((memberInfo) => {
-	// 	console.log({ memberInfo });
-	// 	const newObj = { ...updateFireStoreObj, ...memberInfo };
-	// 	console.log({ newObj });
-	// 	addfuncInfo.push(newObj);
-	// });
-	// console.log({ addfuncInfo });
-	membersInfo = membersInfo.map((info, index) => {
-		return { ...updateFireStoreObj, ...info };
-	});
-	console.log({ membersInfo });
-	const handleEditMember = () => {
-		history.push({
-			pathname: "/EditMember",
-			state: { membersInfo },
-		});
+	const handleEditMember =async (member) => {
+		await updateFirestoreMock(member)
+		handleBackHome()
 	};
 
 	return (
@@ -144,11 +179,9 @@ const EditFamily = (props) => {
 				}
 				className={classes.root}
 			>
-				{membersInfo.map((data, index) => {
-					const memberInfo = membersInfo[index];
-					// console.log(memberInfo);
+				{memberList.map((member, i) => {
 					return (
-						<Card className={classes.card} key={index}>
+						<Card className={classes.card} key={i}>
 							<CardContent className={classes.txtbox}>
 								{isSmartPhone && (
 									<CardContent className={classes.content_area}>
@@ -159,7 +192,7 @@ const EditFamily = (props) => {
 											// gutterBottom
 											variant="subtitle2"
 										>
-											{data.name}
+											{member.name}
 										</Typography>
 									</CardContent>
 								)}
@@ -174,7 +207,7 @@ const EditFamily = (props) => {
 											variant="h5"
 											component="p"
 										>
-											{data.name}
+											{member.name}
 										</Typography>
 										<Typography
 											className={classes.card_txt}
@@ -183,7 +216,7 @@ const EditFamily = (props) => {
 											color="textSecondary"
 											component="p"
 										>
-											30 lv
+											{member.level}
 										</Typography>
 										<Typography
 											className={classes.card_txt}
@@ -192,7 +225,7 @@ const EditFamily = (props) => {
 											color="textSecondary"
 											component="p"
 										>
-											2800 point
+											{member.point}
 										</Typography>
 									</CardContent>
 								)}
@@ -202,7 +235,7 @@ const EditFamily = (props) => {
 								orientation="vertical"
 								flexItem
 							/>
-							<IconButton aria-label="delete" onClick={handleEditMember}>
+							<IconButton aria-label="edit" onClick={()=> handleEditMember(member)}>
 								<EditIcon />
 							</IconButton>
 							<Divider
