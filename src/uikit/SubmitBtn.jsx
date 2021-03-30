@@ -1,7 +1,7 @@
 import React from 'react'
 import {makeStyles} from '@material-ui/core/styles'
 import {Button} from '@material-ui/core'
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   btn: {
     marginBottom: 24,
   },
