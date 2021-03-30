@@ -12,10 +12,12 @@ import SignUp from './screens/SignUp'
 import Member from './screens/Member'
 import EditMember from './screens/EditMember'
 
+//comberListMocにisEditを入れて、このidEditを変更したら、firebaseに登録して、isEditをfalseにすればいいのかな？
+
 const memberListMock = [
   {
-    name: 'reina',
-    birth: 'what is this field',
+    name: 'masaru',
+    birth: '1992',
     level: 100,
     experiencePoint: 500,
     requiredExperiencePoint: 1000,
@@ -23,7 +25,7 @@ const memberListMock = [
   },
   {
     name: 'Jane Doe',
-    birth: 'what is this field',
+    birth: '1992',
     level: 120,
     experiencePoint: 12900,
     requiredExperiencePoint: 13098,
@@ -33,7 +35,26 @@ const memberListMock = [
 
 function App() {
   const [membersInfo, setMembersInfo] = useState([])
+  const [testName, setTestName] = useState('')
 
+  const sleep = (ms) => () => new Promise((r) => setTimeout(r, ms))
+  const sleep1Sec = sleep(1000)
+
+  //TODO: このfunctionはApp.jsからもってくる
+  const updateFirestoreMock = async (member) => {
+    console.log('updating store...', {member})
+    await sleep1Sec()
+    console.log('store updated')
+  }
+
+  //TODO: このfunctionはApp.jsからもってくる
+  const handeChange = (event) => {
+    // setIsEdit(true)
+    // console.log({event}, {isEdit})
+    console.log('handle changed')
+    setTestName(event.target.value)
+    console.log({testName})
+  }
   useEffect(() => {
     setMembersInfo(memberListMock)
   }, [])
@@ -49,10 +70,20 @@ function App() {
           <Switch>
             <Route exact path="/" component={Home} membersInfo={membersInfo} />
             <Route exact path="/profile" component={Profile} />
-            <Route exact path="/editFamily" render={() => <EditFamily membersInfo={membersInfo} />} />
+            <Route
+              exact
+              path="/editFamily"
+              render={() => (
+                <EditFamily
+                  membersInfo={membersInfo}
+                  handeChange={handeChange}
+                  updateFirestoreMock={updateFirestoreMock}
+                />
+              )}
+            />
             <Route exact path="/EditHousework" component={EditHousework} />
             <Route exact path="/Member" component={Member} />
-            <Route exact path="/EditMember" component={EditMember} />
+            <Route exact path="/EditMember" render={() => <EditMember membersInfo={membersInfo} />} />
             <Route render={() => <p>not found.</p>} />
           </Switch>
         </Auth>

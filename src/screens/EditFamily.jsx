@@ -1,5 +1,5 @@
-import React from 'react'
-import {useHistory} from 'react-router-dom'
+import React, {useState} from 'react'
+import {useHistory, Link} from 'react-router-dom'
 import {useMediaQuery} from 'react-responsive'
 import {makeStyles} from '@material-ui/core/styles'
 import {
@@ -18,6 +18,7 @@ import DeleteIcon from '@material-ui/icons/Delete'
 import AddIcon from '@material-ui/icons/Add'
 import EditIcon from '@material-ui/icons/Edit'
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos'
+import EditMember from './EditMember'
 
 const useStyles = makeStyles(() => ({
   card: {
@@ -97,11 +98,12 @@ const useStyles = makeStyles(() => ({
 //   },
 // ]
 
-const sleep = (ms) => () => new Promise((r) => setTimeout(r, ms))
-const sleep1Sec = sleep(1000)
-
-const EditFamily = ({membersInfo}) => {
-  console.log(membersInfo)
+const EditFamily = ({membersInfo, handeChange, updateFirestoreMock}) => {
+  const [isEdit, setIsEdit] = useState(false)
+  const [editMemberIndex, setEditMemberIndex] = useState('')
+  console.log({editMemberIndex})
+  // console.log(setEditMemberIndex)
+  // console.log(membersInfo)
   const classes = useStyles()
   const history = useHistory()
 
@@ -112,13 +114,6 @@ const EditFamily = ({membersInfo}) => {
 
   //とりあえずダミーデータを使用
   // const memberList = memberListMock
-
-  //TODO: このfunctionはApp.jsからもってくる
-  const updateFirestoreMock = async (member) => {
-    console.log('updating store...', {member})
-    await sleep1Sec()
-    console.log('store updated')
-  }
 
   // updateFireStore();
   // const updateFireStoreObj = { updateFireStore: updateFireStore };
@@ -147,101 +142,133 @@ const EditFamily = ({membersInfo}) => {
     history.push({pathname: '/'})
   }
 
-  const handleEditMember = async (member) => {
+  //EditMember.jsxへ
+  const handleEditMember = (i) => {
+    setEditMemberIndex(i)
+    setIsEdit(true)
+  }
+  console.log(handleEditMember)
+
+  //EditMember.jsxでsubmit buttonを押した際に使いたい
+  const handleSubmitMember = async (member) => {
     await updateFirestoreMock(member)
     handleBackHome()
   }
 
-  return (
-    <Container className={classes.container} maxWidth="sm">
-      <Button
-        variant="text"
-        color="inherit"
-        size="small"
-        className={classes.btn_back}
-        onClick={() => handleBackHome()}
-        startIcon={<ArrowBackIosIcon className={classes.btn_icon} />}
-      >
-        back
-      </Button>
-      <List
-        component="nav"
-        aria-labelledby="nested-list-subheader"
-        subheader={
-          <ListSubheader disableSticky component="div" id="nested-list-subheader">
-            家族編集
-          </ListSubheader>
-        }
-        className={classes.root}
-      >
-        {membersInfo.map((member, i) => {
-          return (
-            <Card className={classes.card} key={i}>
-              <CardContent className={classes.txtbox}>
-                {isSmartPhone && (
-                  <CardContent className={classes.content_area}>
-                    <Avatar className={classes.img_sp} variant="circular" />
-                    <Typography
-                      align="left"
-                      display="inline"
-                      // gutterBottom
-                      variant="subtitle2"
-                    >
-                      {member.name}
-                    </Typography>
-                  </CardContent>
-                )}
+  if (isEdit) {
+    return (
+      <EditMember
+        membersInfo={membersInfo}
+        editMemberIndex={editMemberIndex}
+        handeChange={handeChange}
+        updateFirestoreMock={updateFirestoreMock}
+      />
+    )
+  } else {
+    return (
+      <Container className={classes.container} maxWidth="sm">
+        <Button
+          variant="text"
+          color="inherit"
+          size="small"
+          className={classes.btn_back}
+          onClick={() => handleBackHome()}
+          startIcon={<ArrowBackIosIcon className={classes.btn_icon} />}
+        >
+          back
+        </Button>
+        <List
+          component="nav"
+          aria-labelledby="nested-list-subheader"
+          subheader={
+            <ListSubheader disableSticky component="div" id="nested-list-subheader">
+              家族編集
+            </ListSubheader>
+          }
+          className={classes.root}
+        >
+          {membersInfo.map((memberInfo, i) => {
+            return (
+              <Card className={classes.card} key={i}>
+                <CardContent className={classes.txtbox}>
+                  {isSmartPhone && (
+                    <CardContent className={classes.content_area}>
+                      <Avatar className={classes.img_sp} variant="circular" />
+                      <Typography
+                        align="left"
+                        display="inline"
+                        // gutterBottom
+                        variant="subtitle2"
+                      >
+                        {memberInfo.name}
+                      </Typography>
+                    </CardContent>
+                  )}
 
-                {isTablet && (
-                  <CardContent className={classes.content_area}>
-                    <Avatar className={classes.img} variant="circular" />
-                    <Typography
-                      align="left"
-                      display="inline"
-                      // gutterBottom
-                      variant="h5"
-                      component="p"
-                    >
-                      {member.name}
-                    </Typography>
-                    <Typography
-                      className={classes.card_txt}
-                      display="inline"
-                      variant="body1"
-                      color="textSecondary"
-                      component="p"
-                    >
-                      {member.level}
-                    </Typography>
-                    <Typography
-                      className={classes.card_txt}
-                      display="inline"
-                      variant="body1"
-                      color="textSecondary"
-                      component="p"
-                    >
-                      {member.point}
-                    </Typography>
-                  </CardContent>
-                )}
-              </CardContent>
-              <Divider className={classes.divider} orientation="vertical" flexItem />
-              <IconButton aria-label="edit" onClick={() => handleEditMember(member)}>
-                <EditIcon />
-              </IconButton>
-              <Divider className={classes.divider} orientation="vertical" flexItem />
-              <IconButton aria-label="delete">
-                <DeleteIcon />
-              </IconButton>
-            </Card>
-          )
-        })}
-      </List>
-      <Button variant="contained" color="primary" className={classes.btn} startIcon={<AddIcon />}>
-        家族を追加する
-      </Button>
-    </Container>
-  )
+                  {isTablet && (
+                    <CardContent className={classes.content_area}>
+                      <Avatar className={classes.img} variant="circular" />
+                      <Typography
+                        align="left"
+                        display="inline"
+                        // gutterBottom
+                        variant="h5"
+                        component="p"
+                      >
+                        {memberInfo.name}
+                      </Typography>
+                      <Typography
+                        className={classes.card_txt}
+                        display="inline"
+                        variant="body1"
+                        color="textSecondary"
+                        component="p"
+                      >
+                        {memberInfo.level} Lv
+                      </Typography>
+                      <Typography
+                        className={classes.card_txt}
+                        display="inline"
+                        variant="body1"
+                        color="textSecondary"
+                        component="p"
+                      >
+                        {memberInfo.point}Point
+                      </Typography>
+                    </CardContent>
+                  )}
+                </CardContent>
+                <Divider className={classes.divider} orientation="vertical" flexItem />
+                <IconButton
+                  aria-label="edit"
+                  memberInfo={memberInfo}
+                  handleSubmitMember={(member) => handleSubmitMember(member)}
+                  onClick={() => handleEditMember(i)}
+                >
+                  <EditIcon />
+                </IconButton>
+
+                <Divider className={classes.divider} orientation="vertical" flexItem />
+                <Link to={{pathname: '/EditMember', state: memberInfo}}>
+                  <IconButton aria-label="edit">
+                    <EditIcon />
+                  </IconButton>
+                </Link>
+
+                <Divider className={classes.divider} orientation="vertical" flexItem />
+                <IconButton aria-label="delete">
+                  <DeleteIcon />
+                </IconButton>
+              </Card>
+            )
+          })}
+        </List>
+        <Button variant="contained" color="primary" className={classes.btn} startIcon={<AddIcon />}>
+          家族を追加する
+        </Button>
+      </Container>
+    )
+  }
 }
 
 export default EditFamily
