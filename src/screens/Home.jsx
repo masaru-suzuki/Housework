@@ -39,7 +39,7 @@ const Home = () => {
               // console.log({ membersInfoArr });
             })
             setMembersInfo(membersInfoArr)
-            console.log({membersInfo})
+            // console.log({membersInfo})
           })
           .catch((error) => {
             console.log('Error getting documents: ', error)

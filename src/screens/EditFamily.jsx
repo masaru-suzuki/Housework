@@ -78,29 +78,30 @@ const useStyles = makeStyles(() => ({
   },
 }))
 
-const memberListMock = [
-  {
-    name: 'John Doe',
-    birth: 'what is this field',
-    level: 100,
-    experiencePoint: 500,
-    requiredExperiencePoint: 1000,
-    point: 42,
-  },
-  {
-    name: 'Jane Doe',
-    birth: 'what is this field',
-    level: 120,
-    experiencePoint: 12900,
-    requiredExperiencePoint: 13098,
-    point: 555,
-  },
-]
+// const memberListMock = [
+//   {
+//     name: 'John Doe',
+//     birth: 'what is this field',
+//     level: 100,
+//     experiencePoint: 500,
+//     requiredExperiencePoint: 1000,
+//     point: 42,
+//   },
+//   {
+//     name: 'Jane Doe',
+//     birth: 'what is this field',
+//     level: 120,
+//     experiencePoint: 12900,
+//     requiredExperiencePoint: 13098,
+//     point: 555,
+//   },
+// ]
 
 const sleep = (ms) => () => new Promise((r) => setTimeout(r, ms))
 const sleep1Sec = sleep(1000)
 
-const EditFamily = () => {
+const EditFamily = ({membersInfo}) => {
+  console.log(membersInfo)
   const classes = useStyles()
   const history = useHistory()
 
@@ -110,7 +111,7 @@ const EditFamily = () => {
   // let membersInfo = props.location.state.membersInfo;
 
   //とりあえずダミーデータを使用
-  const memberList = memberListMock
+  // const memberList = memberListMock
 
   //TODO: このfunctionはApp.jsからもってくる
   const updateFirestoreMock = async (member) => {
@@ -173,7 +174,7 @@ const EditFamily = () => {
         }
         className={classes.root}
       >
-        {memberList.map((member, i) => {
+        {membersInfo.map((member, i) => {
           return (
             <Card className={classes.card} key={i}>
               <CardContent className={classes.txtbox}>
