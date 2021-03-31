@@ -29,7 +29,8 @@ const useStyles = makeStyles({
 // 	point: "memberPoint",
 // };
 
-const MemberCard = () => {
+const MemberCard = ({memberInfo}) => {
+  // console.log(memberInfo)
   const classes = useStyles()
   const history = useHistory()
 
@@ -39,13 +40,13 @@ const MemberCard = () => {
         <Avatar className={classes.img} variant="square" />
         <CardContent className={classes.txtbox}>
           <Typography gutterBottom variant="h5" component="h2">
-            伶奈
+            {memberInfo.name}
           </Typography>
           <Typography variant="body2" color="textSecondary" component="p">
-            30 lv
+            {memberInfo.level} Lv
           </Typography>
           <Typography variant="body2" color="textSecondary" component="p">
-            2800 point
+            {memberInfo.point} Point
           </Typography>
         </CardContent>
       </CardActionArea>

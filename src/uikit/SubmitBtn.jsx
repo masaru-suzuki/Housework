@@ -7,7 +7,7 @@ const useStyles = makeStyles(() => ({
   },
 }))
 
-const SubmitBtn = ({value, member, updateFirestoreMock}) => {
+const SubmitBtn = ({value, name, member, updateFirestoreMock, editMemberIndex}) => {
   console.log(member)
   const classes = useStyles()
   return (
@@ -16,7 +16,7 @@ const SubmitBtn = ({value, member, updateFirestoreMock}) => {
       variant="contained"
       color="primary"
       className={classes.btn}
-      onClick={() => updateFirestoreMock('aaa')}
+      onClick={() => updateFirestoreMock(member, editMemberIndex, name)}
     >
       {value}
     </Button>

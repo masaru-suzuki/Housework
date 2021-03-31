@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react'
+import React, {useEffect, useState} from 'react'
 import {makeStyles} from '@material-ui/core/styles'
 import {ListSubheader, List, Container} from '@material-ui/core'
 import BackBtn from '../uikit/BackBtn'
@@ -18,44 +18,24 @@ const useStyles = makeStyles(() => ({
 
 const EditMember = ({editMemberIndex, membersInfo, handeChange, updateFirestoreMock}) => {
   const classes = useStyles()
-  console.log(updateFirestoreMock)
-  // console.log(editMemberIndex)
-  // console.log(membersInfo[editMemberIndex].name)
+  // console.log(updateFirestoreMock)
   const member = membersInfo[editMemberIndex]
-  // console.log(memberInfo)
-  // console.log(handleSubmitMember)
-  // console.log(location.state.index)
-  // const history = useHistory();
-  // const memberInfo = props.location.state.memberInfo;
-  // const updateFireStore = props.location.state.updateFireStore;
-  // const name = props.location.state.name;
-  // const birth = props.location.state.birth;
-  // const [member, setMember] = useState([]);
-  // console.log(updateFireStore);
-  // console.log(props.location.state);
-  // console.log(props.location.state.name);
-  // console.log(props.location.state.memberInfo);
-  // console.log(updateFireStore);
+  const [name, setName] = useState('')
+  // const [birth, setBirth] = useState('')
+  //InputFeildに渡すnameとbirth をstateで管理して、<SubmitBtn>に渡す
+  //その際にfamiliIdとmemberIdを渡す
+  //その情報をApp.jsxに持っていって、firebaseを更新する
+  const hanleNameChange = (event) => {
+    setName(event.target.value)
+    console.log(name)
+  }
   useEffect(() => {
-    console.log('render')
-    // setMember(memberInfo.name);
+    setName(member.name)
   }, [])
-  // console.log(memberInfo);
-  // console.log(member.name);
-  //onChangeの設定
-  // //
-  // const name = location.state.name
-  // const birth = location.state.birth
-  // console.log(name)
-  // const val = {name: 'suxuki'}
   return (
     <Container>
       <BackBtn />
       <input type="text" onChange={handeChange} />
-      <button type="submit" onClick={() => updateFirestoreMock('test')}>
-        submit
-      </button>
-      {/* <button onClick={() => handleSubmitMember(val)}>更新する</button> */}
       <List
         component="nav"
         aria-labelledby="nested-list-subheader"
@@ -66,9 +46,15 @@ const EditMember = ({editMemberIndex, membersInfo, handeChange, updateFirestoreM
         }
         className={classes.root}
       >
-        <InputField required={true} label="名前" value={member.name} />
+        <InputField required={true} label="名前" value={name} hanleNameChange={hanleNameChange} />
         <InputField required={true} label="生年月日" value={member.birth} />
-        <SubmitBtn value="変更する" member={member} updateFirestoreMock={updateFirestoreMock} />
+        <SubmitBtn
+          value="変更する"
+          member={member}
+          updateFirestoreMock={updateFirestoreMock}
+          name={name}
+          editMemberIndex={editMemberIndex}
+        />
       </List>
     </Container>
   )

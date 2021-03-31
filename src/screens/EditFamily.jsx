@@ -128,7 +128,8 @@ const EditFamily = ({membersInfo, handeChange, updateFirestoreMock}) => {
   // let addfuncInfo = [];
   // membersInfo.forEach((memberInfo) => {
   // 	const newObj = { ...updateFireStoreObj, ...memberInfo };
-  // 	addfuncInfo.push(newObj);
+  // 	addfuncInfo.push(newObj);o
+
   // });
   //
 
@@ -147,7 +148,7 @@ const EditFamily = ({membersInfo, handeChange, updateFirestoreMock}) => {
     setEditMemberIndex(i)
     setIsEdit(true)
   }
-  console.log(handleEditMember)
+  // console.log(handleEditMember)
 
   //EditMember.jsxでsubmit buttonを押した際に使いたい
   const handleSubmitMember = async (member) => {
