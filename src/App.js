@@ -17,6 +17,15 @@ import EditMember from './screens/EditMember'
 const db = firebase.firestore()
 const familyRef = db.collection('family').doc('u9EnmX300LQsunRawSUwwrhEVhS2').collection('member')
 
+const makeListFromCollection = (querySnapshot) => {
+  const list = []
+  querySnapshot.forEach((res) => {
+    const data = res.data()
+    list.push({id: res.id, ...data})
+  })
+  return list
+}
+
 // firebaseからdetaを取得
 // const memberRef = familyRef.doc(familyID).ref('member')
 function App() {
@@ -40,17 +49,8 @@ function App() {
   //firebaseの情報をasyc awaitで取得
   const getFirestoreMock = async () => {
     console.log('getting data ...')
-    const querySnapshot = await familyRef.get()
-
-    const members = []
-    querySnapshot.forEach((res) => {
-      const data = res.data()
-      //TODO: 一時的な処理。データを修正する必要がある。
-      if (typeof data.name !== 'string') return
-      members.push({id: res.id, ...data})
-    })
-
-    setMembersInfo(members)
+    const members = makeListFromCollection(await familyRef.get())
+    setMembersInfo(members.filter((v) => typeof v.name === 'string'))
   }
 
   //TODO: このfunctionはApp.jsからもってくる
