@@ -17,8 +17,6 @@ import EditMember from './screens/EditMember'
 const db = firebase.firestore()
 const familyRef = db.collection('family').doc('u9EnmX300LQsunRawSUwwrhEVhS2').collection('member')
 
-// console.log(members)
-const memberListMock = []
 // firebaseからdetaを取得
 // const memberRef = familyRef.doc(familyID).ref('member')
 function App() {
@@ -42,36 +40,17 @@ function App() {
   //firebaseの情報をasyc awaitで取得
   const getFirestoreMock = async () => {
     console.log('getting data ...')
-    familyRef
-      .get()
-      .then((querySnapshot) => {
-        console.log('fetch data')
-        querySnapshot.forEach((doc) => {
-          const arr = {memberId: doc.id}
-          const data = doc.data()
-          const newarr = {...arr, ...data}
-          // console.log(newarr)
-          memberListMock.push(newarr)
-          // setMembersInfo(...membersInfo, ...newarr) こうすればいいのか？
-          console.log('push data')
-        })
-      })
-      .then(() => {
-        console.log({memberListMock})
-        setMembersInfo(memberListMock)
-        console.log('set member')
-        console.log({membersInfo})
-      })
-      // .then(() => {
-      //   console.log({membersInfo})
-      // })
-      .catch((error) => {
-        console.log('Error getting documents: ', error)
-      })
-    // console.log('ok')
-    await sleep1Sec()
-    console.log({membersInfo})
-    console.log('got data!')
+    const querySnapshot = await familyRef.get()
+
+    const members = []
+    querySnapshot.forEach((res) => {
+      const data = res.data()
+      //TODO: 一時的な処理。データを修正する必要がある。
+      if (typeof data.name !== 'string') return
+      members.push({id: res.id, ...data})
+    })
+
+    setMembersInfo(members)
   }
 
   //TODO: このfunctionはApp.jsからもってくる
@@ -80,12 +59,13 @@ function App() {
     // console.log({event}, {isEdit})
     console.log('handle changed')
     setTestName(event.target.value)
-    console.log({testName})
+    // console.log({testName})
   }
+
   useEffect(() => {
     console.log('render')
     getFirestoreMock()
-    console.log({membersInfo})
+    // console.log({membersInfo})
   }, [])
 
   //今度はrecomposeのlibraryを使ってpropsを渡すのに挑戦してみる
