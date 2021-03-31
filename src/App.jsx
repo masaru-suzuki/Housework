@@ -23,10 +23,10 @@ function App() {
           <Switch>
             <Route exact path="/" component={Home} />
             <Route exact path="/profile" component={Profile} />
-            <Route exact path="/editFamily" component={EditFamily} />
-            <Route exact path="/EditHousework" component={EditHousework} />
-            <Route exact path="/Member" component={Member} />
-            <Route exact path="/EditMember" component={EditMember} />
+            <Route exact path="/edit-family" component={EditFamily} />
+            <Route exact path="/edit-housework" component={EditHousework} />
+            <Route exact path="/member" component={Member} />
+            <Route exact path="/edit-member" component={EditMember} />
             <Route render={() => <p>not found.</p>} />
           </Switch>
         </Auth>
