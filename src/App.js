@@ -27,15 +27,10 @@ const makeListFromCollection = (querySnapshot) => {
 }
 
 // firebaseからdetaを取得
-// const memberRef = familyRef.doc(familyID).ref('member')
 function App() {
   const [membersInfo, setMembersInfo] = useState([])
   const [isEdit, setIsEdit] = useState(false)
-  // const initMemberListMock = []
   const history = useHistory()
-  // let memberListMock = []
-  // const sleep = (ms) => () => new Promise((r) => setTimeout(r, ms))
-  // const sleep1Sec = sleep(1000)
   //TODO: このfunctionはApp.jsからもってくる
   //submitボタンが押された時に発火
   //isEditをtrueにして、更新が終わったら、false にする
@@ -64,16 +59,6 @@ function App() {
     //firebaseが更新された時に、再レンダリングするように、isEditをセット
     setIsEdit(false)
   }
-
-  //TODO: このfunctionはApp.jsからもってくる
-  // const handeChange = (event) => {
-  //   // setIsEdit(true)
-  //   // console.log({event}, {isEdit})
-  //   console.log('handle changed')
-  //   setTestName(event.target.value)
-  //   // console.log({testName})
-  // }
-
   useEffect(() => {
     //submitがclickされるたびにfirestoreのデータを引っ張ってきて更新する
     console.log(isEdit)
