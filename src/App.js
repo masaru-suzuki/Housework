@@ -17,19 +17,30 @@ import EditMember from './screens/EditMember'
 const db = firebase.firestore()
 const familyRef = db.collection('family').doc('u9EnmX300LQsunRawSUwwrhEVhS2').collection('member')
 
+const makeListFromCollection = (querySnapshot) => {
+  const list = []
+  querySnapshot.forEach((res) => {
+    const data = res.data()
+    list.push({id: res.id, ...data})
+  })
+  return list
+}
+
+// firebaseからdetaを取得
+// const memberRef = familyRef.doc(familyID).ref('member')
 function App() {
   const [membersInfo, setMembersInfo] = useState([])
   const [isEdit, setIsEdit] = useState(false)
-  const initMemberListMock = []
+  // const initMemberListMock = []
   const history = useHistory()
-  let memberListMock = []
-  const sleep = (ms) => () => new Promise((r) => setTimeout(r, ms))
-  const sleep1Sec = sleep(1000)
+  // let memberListMock = []
+  // const sleep = (ms) => () => new Promise((r) => setTimeout(r, ms))
+  // const sleep1Sec = sleep(1000)
   //TODO: このfunctionはApp.jsからもってくる
   //submitボタンが押された時に発火
   //isEditをtrueにして、更新が終わったら、false にする
   const updateFirestoreOfMemberInfo = async (memberId, memberName, memberBirth) => {
-    // console.log('updating store...', {memberId}, {memberName}, {memberBirth})
+    console.log('updating store...', {memberId}, {memberName}, {memberBirth})
     familyRef.doc(memberId).set(
       {
         name: memberName,
@@ -47,41 +58,29 @@ function App() {
 
   //firebaseの情報をasyc awaitで取得
   const getFirestoreMock = async () => {
-    // console.log('getting data ...')
-    familyRef
-      .get()
-      .then((querySnapshot) => {
-        // console.log('fetch data')
-        querySnapshot.forEach((doc) => {
-          const arr = {memberId: doc.id}
-          const data = doc.data()
-          const newarr = {...arr, ...data}
-          // console.log(newarr)
-          memberListMock.push(newarr)
-          // console.log('push data')
-        })
-      })
-      .then(() => {
-        // console.log({memberListMock})
-        setMembersInfo(memberListMock)
-        // console.log('set member')
-        // console.log({membersInfo})
-      })
-      .catch((error) => {
-        console.log('Error getting documents: ', error)
-      })
-    // console.log('ok')
-    await sleep1Sec()
-    // console.log({membersInfo})
-    // console.log('got data!')
+    console.log('getting data ...')
+    const members = makeListFromCollection(await familyRef.get())
+    setMembersInfo(members.filter((v) => typeof v.name === 'string'))
+    //firebaseが更新された時に、再レンダリングするように、isEditをセット
+    setIsEdit(false)
   }
+
+  //TODO: このfunctionはApp.jsからもってくる
+  // const handeChange = (event) => {
+  //   // setIsEdit(true)
+  //   // console.log({event}, {isEdit})
+  //   console.log('handle changed')
+  //   setTestName(event.target.value)
+  //   // console.log({testName})
+  // }
 
   useEffect(() => {
     //submitがclickされるたびにfirestoreのデータを引っ張ってきて更新する
-    // console.log(isEdit)
-    memberListMock = initMemberListMock
+    console.log(isEdit)
+    // memberListMock = initMemberListMock
     getFirestoreMock()
-    setIsEdit(false)
+    // console.log({membersInfo})
+    console.log(isEdit)
   }, [isEdit])
 
   //画面遷移

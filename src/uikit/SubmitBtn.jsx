@@ -10,7 +10,7 @@ const useStyles = makeStyles(() => ({
 const SubmitBtn = ({value, name, birth, member, updateFirestoreOfMemberInfo, handleIsEdit}) => {
   const classes = useStyles()
   const onSubmitEvent = () => {
-    updateFirestoreOfMemberInfo(member.memberId, name, birth)
+    updateFirestoreOfMemberInfo(member.id, name, birth)
     handleIsEdit()
   }
   return (
