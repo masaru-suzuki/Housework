@@ -7,11 +7,12 @@ const useStyles = makeStyles(() => ({
   },
 }))
 
-const SubmitBtn = ({ value, name, birth, member, updateFirestoreOfMemberInfo, handleIsEdit }) => {
+//handleBackEditFamily is handel that chage flag in EditFamily.jsx
+const SubmitBtn = ({ value, name, birth, id, updateFirestoreOfMemberInfo, handleBackEditFamily }) => {
   const classes = useStyles()
   const onSubmitEvent = () => {
-    updateFirestoreOfMemberInfo(member.id, name, birth)
-    handleIsEdit()
+    updateFirestoreOfMemberInfo(id, name, birth)
+    handleBackEditFamily()
   }
   return (
     <Button fullWidth variant="contained" color="primary" className={classes.btn} onClick={() => onSubmitEvent()}>

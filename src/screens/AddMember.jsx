@@ -1,28 +1,29 @@
-import React, { useEffect, useState } from 'react'
-import { makeStyles } from '@material-ui/core/styles'
+import React, { useState } from 'react'
+// import { makeStyles } from '@material-ui/core/styles'
 import { ListSubheader, List, Container } from '@material-ui/core'
 import BackBtn from '../uikit/BackBtn'
 import SubmitBtn from '../uikit/SubmitBtn'
 import InputField from '../uikit/InputField'
-import { useHistory } from 'react-router-dom'
+// import { useHistory } from 'react-router-dom'
 
-const useStyles = makeStyles(() => ({
-  text_field: {
-    marginBottom: 16,
-  },
-  btn_back: {
-    marginTop: 8,
-    width: 30,
-    fontSize: 16,
-  },
-}))
+// const useStyles = makeStyles(() => ({
+//   text_field: {
+//     marginBottom: 16,
+//   },
+//   btn_back: {
+//     marginTop: 8,
+//     width: 30,
+//     fontSize: 16,
+//   },
+// }))
 
-const EditMember = ({ editMemberIndex, membersInfo, updateFirestoreOfMemberInfo, handleIsEdit }) => {
-  const classes = useStyles()
-  const member = membersInfo[editMemberIndex]
-  const history = useHistory()
-  const [name, setName] = useState()
-  const [birth, setBirth] = useState()
+const AddMember = ({ addMemberToFirestore, handleIsAdd }) => {
+  // const classes = useStyles()
+  // const member = membersInfo[editMemberIndex]
+  // const history = useHistory()
+  const [name, setName] = useState('')
+  const [birth, setBirth] = useState('')
+  const id = 'testId'
 
   //InputFeildに渡すnameとbirth をstateで管理して、<SubmitBtn>に渡す
   //その際にfamiliIdとmemberIdを渡す
@@ -36,27 +37,26 @@ const EditMember = ({ editMemberIndex, membersInfo, updateFirestoreOfMemberInfo,
       setBirth(value)
     }
   }
-  const handelbackEditFamily = () => {
-    history.push('/EditFamily')
-  }
-  // console.log({member})
-  useEffect(() => {
-    setName(member.name)
-    setBirth(member.birth)
-  }, [])
+  // const handelbackEditFamily = () => {
+  //   history.push('/EditFamily')
+  // }
+  // // console.log({member})
+  // useEffect(() => {
+  //   setName(member.name)
+  //   setBirth(member.birth)
+  // }, [])
   return (
     <Container>
       <BackBtn />
-      <button onClick={() => handelbackEditFamily()}>modo</button>
       <List
         component="nav"
         aria-labelledby="nested-list-subheader"
         subheader={
           <ListSubheader disableSticky component="div">
-            家族編集
+            家族追加
           </ListSubheader>
         }
-        className={classes.root}
+        // className={classes.root}
       >
         <InputField required={true} identificationName="name" label="名前" value={name} handleChange={handleChange} />
         <InputField
@@ -67,16 +67,16 @@ const EditMember = ({ editMemberIndex, membersInfo, updateFirestoreOfMemberInfo,
           handleChange={handleChange}
         />
         <SubmitBtn
-          value="変更する"
-          id={member.id}
-          updateFirestoreOfMemberInfo={updateFirestoreOfMemberInfo}
+          value="登録する"
+          id={id} //memberが存在しないのをどうしよう
+          updateFirestoreOfMemberInfo={addMemberToFirestore}
           name={name}
           birth={birth}
-          handleBackEditFamily={handleIsEdit}
+          handleBackEditFamily={handleIsAdd}
         />
       </List>
     </Container>
   )
 }
 
-export default EditMember
+export default AddMember
