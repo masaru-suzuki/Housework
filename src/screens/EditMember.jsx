@@ -1,10 +1,10 @@
-import React, {useEffect, useState} from 'react'
-import {makeStyles} from '@material-ui/core/styles'
-import {ListSubheader, List, Container} from '@material-ui/core'
+import React, { useEffect, useState } from 'react'
+import { makeStyles } from '@material-ui/core/styles'
+import { ListSubheader, List, Container } from '@material-ui/core'
 import BackBtn from '../uikit/BackBtn'
 import SubmitBtn from '../uikit/SubmitBtn'
 import InputField from '../uikit/InputField'
-import {useHistory} from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 
 const useStyles = makeStyles(() => ({
   text_field: {
@@ -17,7 +17,7 @@ const useStyles = makeStyles(() => ({
   },
 }))
 
-const EditMember = ({editMemberIndex, membersInfo, updateFirestoreOfMemberInfo, handleIsEdit}) => {
+const EditMember = ({ editMemberIndex, membersInfo, updateFirestoreOfMemberInfo, handleIsEdit }) => {
   const classes = useStyles()
   const member = membersInfo[editMemberIndex]
   const history = useHistory()

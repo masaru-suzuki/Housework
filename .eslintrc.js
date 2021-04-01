@@ -3,6 +3,10 @@ module.exports = {
     browser: true,
     es6: true,
   },
+  parser: 'babel-eslint',
+  parserOptions: {
+    sourceType: 'module',
+  },
   plugins: ['react', 'react-hooks'],
   rules: {
     'react/self-closing-comp': 'error',
