@@ -8,7 +8,7 @@ const useStyles = makeStyles(() => ({
   },
 }))
 
-const InputField = ({required, label, value, hanleNameChange}) => {
+const InputField = ({required, identificationName, label, value, handleChange}) => {
   const classes = useStyles()
   return (
     <TextField
@@ -16,10 +16,11 @@ const InputField = ({required, label, value, hanleNameChange}) => {
       fullWidth
       size="small"
       variant="filled"
+      name={identificationName}
       required={required}
       label={label}
       value={value}
-      onChange={hanleNameChange}
+      onChange={handleChange}
     />
   )
 }

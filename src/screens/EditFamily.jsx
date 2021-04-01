@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import {useHistory, Link} from 'react-router-dom'
+import {useHistory} from 'react-router-dom'
 import {useMediaQuery} from 'react-responsive'
 import {makeStyles} from '@material-ui/core/styles'
 import {
@@ -78,69 +78,26 @@ const useStyles = makeStyles(() => ({
     margin: 24,
   },
 }))
-
-// const memberListMock = [
-//   {
-//     name: 'John Doe',
-//     birth: 'what is this field',
-//     level: 100,
-//     experiencePoint: 500,
-//     requiredExperiencePoint: 1000,
-//     point: 42,
-//   },
-//   {
-//     name: 'Jane Doe',
-//     birth: 'what is this field',
-//     level: 120,
-//     experiencePoint: 12900,
-//     requiredExperiencePoint: 13098,
-//     point: 555,
-//   },
-// ]
-
-const EditFamily = ({membersInfo, handeChange, updateFirestoreMock}) => {
+const EditFamily = ({membersInfo, updateFirestoreOfMemberInfo}) => {
   const [isEdit, setIsEdit] = useState(false)
   const [editMemberIndex, setEditMemberIndex] = useState('')
-  console.log({editMemberIndex})
-  // console.log(setEditMemberIndex)
-  // console.log(membersInfo)
+  // console.log({editMemberIndex})
   const classes = useStyles()
   const history = useHistory()
-
-  //FIXME: location.state.membersInfoがそもそも存在してない。
-  //TODO: App.jsにstate作って渡した方がいい。
-  //FIXME: ReactはImmutableだからletではなく常にconstを使う
-  // let membersInfo = props.location.state.membersInfo;
-
-  //とりあえずダミーデータを使用
-  // const memberList = memberListMock
-
-  // updateFireStore();
-  // const updateFireStoreObj = { updateFireStore: updateFireStore };
-  // updateFireStoreObj.updateFireStore();
-  // console.log(updateFireStoreObj.updateFireStore());
 
   //media query
   const isTablet = useMediaQuery({query: '(min-device-width: 768px)'})
   const isSmartPhone = useMediaQuery({query: '(max-device-width: 767px)'})
 
-  //FIXME: ここのコードはコンポーネントがrerenderingするたびに実行されるからやめたほうがいい。addFuncInfoはどこで使われるの?
-  // let addfuncInfo = [];
-  // membersInfo.forEach((memberInfo) => {
-  // 	const newObj = { ...updateFireStoreObj, ...memberInfo };
-  // 	addfuncInfo.push(newObj);o
-
-  // });
-  //
-
-  //FIXME: membersInfoがそもそもundefinedだからmap使えない。
-  //FIXME: reassignをやめる
-  // membersInfo = membersInfo.map((info, index) => {
-  // 	return { ...updateFireStoreObj, ...info };
-  // });
-
   const handleBackHome = () => {
+    console.log({history})
     history.push({pathname: '/'})
+  }
+  // console.log({history})
+
+  //isSetを変更する
+  const handleIsEdit = () => {
+    setIsEdit(false)
   }
 
   //EditMember.jsxへ
@@ -148,22 +105,23 @@ const EditFamily = ({membersInfo, handeChange, updateFirestoreMock}) => {
     setEditMemberIndex(i)
     setIsEdit(true)
   }
-  // console.log(handleEditMember)
 
   //EditMember.jsxでsubmit buttonを押した際に使いたい
   const handleSubmitMember = async (member) => {
-    await updateFirestoreMock(member)
+    await updateFirestoreOfMemberInfo(member)
     handleBackHome()
   }
-
   if (isEdit) {
     return (
-      <EditMember
-        membersInfo={membersInfo}
-        editMemberIndex={editMemberIndex}
-        handeChange={handeChange}
-        updateFirestoreMock={updateFirestoreMock}
-      />
+      <>
+        <EditMember
+          membersInfo={membersInfo}
+          editMemberIndex={editMemberIndex}
+          updateFirestoreOfMemberInfo={updateFirestoreOfMemberInfo}
+          handleEditMember={handleEditMember}
+          handleIsEdit={handleIsEdit}
+        />
+      </>
     )
   } else {
     return (
@@ -243,18 +201,19 @@ const EditFamily = ({membersInfo, handeChange, updateFirestoreMock}) => {
                 <IconButton
                   aria-label="edit"
                   memberInfo={memberInfo}
-                  handleSubmitMember={(member) => handleSubmitMember(member)}
+                  // handleSubmitMember={(member) => handleSubmitMember(member)}
+                  handleSubmitMember={handleSubmitMember}
                   onClick={() => handleEditMember(i)}
                 >
                   <EditIcon />
                 </IconButton>
 
-                <Divider className={classes.divider} orientation="vertical" flexItem />
+                {/* <Divider className={classes.divider} orientation="vertical" flexItem />
                 <Link to={{pathname: '/EditMember', state: memberInfo}}>
                   <IconButton aria-label="edit">
                     <EditIcon />
                   </IconButton>
-                </Link>
+                </Link> */}
 
                 <Divider className={classes.divider} orientation="vertical" flexItem />
                 <IconButton aria-label="delete">

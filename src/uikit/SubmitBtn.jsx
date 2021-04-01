@@ -7,17 +7,14 @@ const useStyles = makeStyles(() => ({
   },
 }))
 
-const SubmitBtn = ({value, name, member, updateFirestoreMock, editMemberIndex}) => {
-  console.log(member)
+const SubmitBtn = ({value, name, birth, member, updateFirestoreOfMemberInfo, handleIsEdit}) => {
   const classes = useStyles()
+  const onSubmitEvent = () => {
+    updateFirestoreOfMemberInfo(member.memberId, name, birth)
+    handleIsEdit()
+  }
   return (
-    <Button
-      fullWidth
-      variant="contained"
-      color="primary"
-      className={classes.btn}
-      onClick={() => updateFirestoreMock(member, editMemberIndex, name)}
-    >
+    <Button fullWidth variant="contained" color="primary" className={classes.btn} onClick={() => onSubmitEvent()}>
       {value}
     </Button>
   )
