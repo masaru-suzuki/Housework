@@ -11,6 +11,7 @@ const useStyles = makeStyles(() => ({
 const SubmitBtn = ({
   value,
   flag,
+  member,
   name,
   birth,
   id,
@@ -23,7 +24,7 @@ const SubmitBtn = ({
   let onSubmitEvent = ''
   if (flag === 'isAdd') {
     onSubmitEvent = () => {
-      addMemberToFirestore(id, name, birth)
+      addMemberToFirestore(member)
       handleBackEditFamily()
     }
   } else if (flag === 'isEdit') {

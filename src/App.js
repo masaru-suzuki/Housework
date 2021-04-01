@@ -31,7 +31,8 @@ function App() {
   const [membersInfo, setMembersInfo] = useState([])
   const [isEdit, setIsEdit] = useState(false)
   const history = useHistory()
-  //TODO: このfunctionはApp.jsからもってくる
+
+  //firebaseのデータを更新する
   //submitボタンが押された時に発火
   //isEditをtrueにして、更新が終わったら、false にする
   const updateFirestoreOfMemberInfo = async (memberId, memberName, memberBirth) => {
@@ -45,25 +46,17 @@ function App() {
     )
     // await sleep1Sec()
     // console.log('store updated')
-    setIsEdit(true)
-    console.log(isEdit) //この時点でisEditがfalseになるのはなぜ？
+    setIsEdit(true) //isEditで再レンダリングを発火させる
+    // console.log(isEdit) //この時点でisEditがfalseになるのはなぜ？
   }
 
   //firestoreに新しいメンバー情報を登録する
-  //async必要？
-  const addMemberToFirestore = (memberId, memberName, memberBirth) => {
-    console.log('add new member', { memberId }, { memberName }, { memberBirth })
-    familyRef.add({
-      name: memberName,
-      birth: memberBirth,
-    })
-    setIsEdit(true)
-    console.log(isEdit)
+  const addMemberToFirestore = (member) => {
+    familyRef.add(member)
+    setIsEdit(true) //isEditで再レンダリングを発火させる
   }
 
-  //firebaseのデータを更新する
-
-  //firebaseの情報をasyc awaitで取得
+  //firebaseの情報を取得
   const getFirestoreMock = async () => {
     console.log('getting data ...')
     const members = makeListFromCollection(await familyRef.get())
@@ -71,13 +64,10 @@ function App() {
     //firebaseが更新された時に、再レンダリングするように、isEditをセット
     setIsEdit(false)
   }
+
   useEffect(() => {
     //submitがclickされるたびにfirestoreのデータを引っ張ってきて更新する
-    console.log(isEdit)
-    // memberListMock = initMemberListMock
     getFirestoreMock()
-    // console.log({membersInfo})
-    console.log(isEdit)
   }, [isEdit])
 
   //画面遷移

@@ -95,7 +95,6 @@ const EditFamily = ({ membersInfo, updateFirestoreOfMemberInfo, addMemberToFires
     console.log({ history })
     history.push({ pathname: '/' })
   }
-  // console.log({history})
 
   //isSetを変更する
   const handleIsEdit = () => {
@@ -222,14 +221,6 @@ const EditFamily = ({ membersInfo, updateFirestoreOfMemberInfo, addMemberToFires
                 >
                   <EditIcon />
                 </IconButton>
-
-                {/* <Divider className={classes.divider} orientation="vertical" flexItem />
-                <Link to={{pathname: '/EditMember', state: memberInfo}}>
-                  <IconButton aria-label="edit">
-                    <EditIcon />
-                  </IconButton>
-                </Link> */}
-
                 <Divider className={classes.divider} orientation="vertical" flexItem />
                 <IconButton aria-label="delete">
                   <DeleteIcon />
