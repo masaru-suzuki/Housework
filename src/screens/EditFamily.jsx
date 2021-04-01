@@ -119,18 +119,24 @@ const EditFamily = ({ membersInfo, updateFirestoreOfMemberInfo, addMemberToFires
   }
   //メンバー編集画面、メンバー追加画面はflagを使って対応させる
   if (isAdd && !isEdit) {
-    return <AddMember addMemberToFirestore={addMemberToFirestore} handleIsAdd={handleIsAdd} membersInfo={membersInfo} />
+    return (
+      <AddMember
+        addMemberToFirestore={addMemberToFirestore}
+        flag="isAdd"
+        handleIsAdd={handleIsAdd}
+        membersInfo={membersInfo}
+      />
+    )
   } else if (!isAdd && isEdit) {
     return (
-      <>
-        <EditMember
-          membersInfo={membersInfo}
-          editMemberIndex={editMemberIndex}
-          updateFirestoreOfMemberInfo={updateFirestoreOfMemberInfo}
-          handleEditMember={handleEditMember}
-          handleIsEdit={handleIsEdit}
-        />
-      </>
+      <EditMember
+        membersInfo={membersInfo}
+        editMemberIndex={editMemberIndex}
+        updateFirestoreOfMemberInfo={updateFirestoreOfMemberInfo}
+        flag="isEdit"
+        handleEditMember={handleEditMember}
+        handleIsEdit={handleIsEdit}
+      />
     )
   } else if (!isAdd && !isEdit) {
     return (

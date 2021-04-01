@@ -17,7 +17,7 @@ import InputField from '../uikit/InputField'
 //   },
 // }))
 
-const AddMember = ({ addMemberToFirestore, handleIsAdd }) => {
+const AddMember = ({ addMemberToFirestore, handleIsAdd, flag }) => {
   // const classes = useStyles()
   // const member = membersInfo[editMemberIndex]
   // const history = useHistory()
@@ -69,7 +69,8 @@ const AddMember = ({ addMemberToFirestore, handleIsAdd }) => {
         <SubmitBtn
           value="登録する"
           id={id} //memberが存在しないのをどうしよう
-          updateFirestoreOfMemberInfo={addMemberToFirestore}
+          addMemberToFirestore={addMemberToFirestore}
+          flag={flag}
           name={name}
           birth={birth}
           handleBackEditFamily={handleIsAdd}

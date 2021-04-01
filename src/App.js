@@ -50,8 +50,15 @@ function App() {
   }
 
   //firestoreに新しいメンバー情報を登録する
-  const addMemberToFirestore = () => {
-    console.log('add new member')
+  //async必要？
+  const addMemberToFirestore = (memberId, memberName, memberBirth) => {
+    console.log('add new member', { memberId }, { memberName }, { memberBirth })
+    familyRef.add({
+      name: memberName,
+      birth: memberBirth,
+    })
+    setIsEdit(true)
+    console.log(isEdit)
   }
 
   //firebaseのデータを更新する

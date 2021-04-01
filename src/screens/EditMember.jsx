@@ -17,7 +17,7 @@ const useStyles = makeStyles(() => ({
   },
 }))
 
-const EditMember = ({ editMemberIndex, membersInfo, updateFirestoreOfMemberInfo, handleIsEdit }) => {
+const EditMember = ({ editMemberIndex, membersInfo, updateFirestoreOfMemberInfo, handleIsEdit, flag }) => {
   const classes = useStyles()
   const member = membersInfo[editMemberIndex]
   const history = useHistory()
@@ -70,6 +70,7 @@ const EditMember = ({ editMemberIndex, membersInfo, updateFirestoreOfMemberInfo,
           value="変更する"
           id={member.id}
           updateFirestoreOfMemberInfo={updateFirestoreOfMemberInfo}
+          flag={flag}
           name={name}
           birth={birth}
           handleBackEditFamily={handleIsEdit}
