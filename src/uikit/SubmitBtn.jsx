@@ -7,34 +7,46 @@ const useStyles = makeStyles(() => ({
   },
 }))
 
-//handleBackEditFamily is handel that chage flag in EditFamily.jsx
+/**
+ *handleBackEditFamily is handel that chage flag in EditFamily.jsx
+ *AddHouseworkとEditHouseworkとAddMemberとEditMemberで共有
+/**
+ *  value=button name
+ *  data = updata or add data (member or housework)
+ *  handleBackPage = back to (EditFamily or EditHousework)
+ *  firestoreTask = firestore update or add (member information or housework infomation)
+ */
 const SubmitBtn = ({
   value,
-  flag,
-  member,
-  name,
-  birth,
-  id,
-  updateFirestoreOfMemberInfo,
-  addMemberToFirestore,
-  handleBackEditFamily,
+  data,
+  // member,
+  // name,
+  // birth,
+  // id,
+  // updateFirestoreOfMemberInfo,
+  firestoreTask,
+  handleBackPage,
 }) => {
   const classes = useStyles()
-  console.log(flag)
-  let onSubmitEvent = ''
-  if (flag === 'isAdd') {
-    onSubmitEvent = () => {
-      addMemberToFirestore(member)
-      handleBackEditFamily()
-    }
-  } else if (flag === 'isEdit') {
-    onSubmitEvent = () => {
-      updateFirestoreOfMemberInfo(id, name, birth)
-      handleBackEditFamily()
-    }
-  } else {
-    console.log('no flag')
+  console.log({ data })
+  // console.log({ flag })
+  // console.log({ firestoreTask })
+  // console.log({ handleBackPage })
+
+  // let onSubmitEvent = ''
+  // if (flag === 'isAdd') {
+  const onSubmitEvent = () => {
+    firestoreTask(data) //data
+    handleBackPage()
   }
+  // } else if (flag === 'isEdit') {
+  //   onSubmitEvent = () => {
+  //     firestoreTask(data)
+  //     handleBackPage()
+  //   }
+  // } else {
+  //   console.log('no flag')
+  // }
 
   return (
     <Button fullWidth variant="contained" color="primary" className={classes.btn} onClick={() => onSubmitEvent()}>

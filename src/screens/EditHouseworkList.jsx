@@ -23,6 +23,7 @@ import { ThemeProvider } from '@material-ui/styles'
 
 import EditMember from './EditMember'
 import AddMember from './AddMember'
+import AddHousework from './AddHousework'
 
 const useStyles = makeStyles(() => ({
   card: {
@@ -94,17 +95,17 @@ const theme = createMuiTheme({
   },
 })
 
-const EditFamily = ({ membersInfo, updateFirestoreOfMemberInfo, addMemberToFirestore, deleteFirestoreMember }) => {
+const EditHouseworkList = ({ addHouseworkToFirestore }) => {
   const [isEdit, setIsEdit] = useState(false)
   const [isAdd, setIsAdd] = useState(false)
-  const [editMemberIndex, setEditMemberIndex] = useState('')
-  console.log({ membersInfo })
+  // const [editMemberIndex, setEditMemberIndex] = useState('')
+  // console.log({editMemberIndex})
   const classes = useStyles()
   const history = useHistory()
 
   //media query
-  const isTablet = useMediaQuery({ query: '(min-device-width: 768px)' })
-  const isSmartPhone = useMediaQuery({ query: '(max-device-width: 767px)' })
+  // const isTablet = useMediaQuery({ query: '(min-device-width: 768px)' })
+  // const isSmartPhone = useMediaQuery({ query: '(max-device-width: 767px)' })
 
   const handleBackHome = () => {
     console.log({ history })
@@ -112,40 +113,41 @@ const EditFamily = ({ membersInfo, updateFirestoreOfMemberInfo, addMemberToFires
   }
 
   //isSetを変更する
-  const handleIsEdit = () => {
-    setIsEdit(false)
-  }
+  // const handleIsEdit = () => {
+  //   setIsEdit(false)
+  // }
   //isAddを変更する
   const handleIsAdd = () => {
     setIsAdd(false)
+    console.log({ isAdd })
   }
 
   //EditMember.jsxへ
-  const handleEditMember = (i) => {
-    setEditMemberIndex(i)
-    setIsEdit(true)
-  }
+  // const handleEditMember = (i) => {
+  //   setEditMemberIndex(i)
+  //   setIsEdit(true)
+  // }
 
   //EditMember.jsxでsubmit buttonを押した際に使いたい
-  const handleSubmitMember = async (member) => {
-    await updateFirestoreOfMemberInfo(member)
-    handleBackHome()
-  }
+  // const handleSubmitMember = async (member) => {
+  //   await updateFirestoreOfMemberInfo(member)
+  //   handleBackHome()
+  // }
 
-  //flagをfalseにしてEditFamily画面に戻る
-  const handleBackEditFamily = () => {
+  //flagをfalseにしてEditHousework画面に戻る
+  const handleBackEditHousework = () => {
     setIsEdit(false)
     setIsAdd(false)
   }
   //メンバー編集画面、メンバー追加画面はflagを使って対応させる
   if (isAdd && !isEdit) {
     return (
-      <AddMember
-        addMemberToFirestore={addMemberToFirestore}
+      <AddHousework
+        addHouseworkToFirestore={addHouseworkToFirestore}
         flag="isAdd"
         handleIsAdd={handleIsAdd}
-        membersInfo={membersInfo}
-        handleBackEditFamily={handleBackEditFamily}
+        // membersInfo={membersInfo}
+        handleBackEditHousework={handleBackEditHousework}
       />
     )
   } else if (!isAdd && isEdit) {
@@ -157,7 +159,7 @@ const EditFamily = ({ membersInfo, updateFirestoreOfMemberInfo, addMemberToFires
         flag="isEdit"
         handleEditMember={handleEditMember}
         handleIsEdit={handleIsEdit}
-        handleBackEditFamily={handleBackEditFamily}
+        handleBackEditHousework={handleBackEditHousework}
       />
     )
   } else if (!isAdd && !isEdit) {
@@ -178,71 +180,70 @@ const EditFamily = ({ membersInfo, updateFirestoreOfMemberInfo, addMemberToFires
           aria-labelledby="nested-list-subheader"
           subheader={
             <ListSubheader disableSticky component="div" id="nested-list-subheader">
-              家族編集
+              家事編集
             </ListSubheader>
           }
           className={classes.root}
         >
-          {membersInfo.map((memberInfo, i) => {
-            return (
-              <Card className={classes.card} key={i}>
-                <CardActionArea
-                  // memberInfo={memberInfo}
-                  // handleSubmitMember={(member) => handleSubmitMember(member)}
-                  // handleSubmitMember={handleSubmitMember}
-                  onClick={() => handleEditMember(i)}
+          {/* {membersInfo.map((memberInfo, i) => { */}
+          <Card className={classes.card} /* key={i}*/>
+            <CardActionArea
+            // memberInfo={memberInfo}
+            // handleSubmitMember={(member) => handleSubmitMember(member)}
+            // handleSubmitMember={handleSubmitMember}
+            // onClick={() => handleEditMember(i)}
+            >
+              <CardContent className={classes.txtbox}>
+                {/* {isSmartPhone && ( */}
+                {/* <CardContent className={classes.content_area}>
+                <Avatar className={classes.img_sp} variant="circular" />
+                <Typography
+                  align="left"
+                  display="inline"
+                  // gutterBottom
+                  variant="subtitle2"
                 >
-                  <CardContent className={classes.txtbox}>
-                    {isSmartPhone && (
-                      <CardContent className={classes.content_area}>
-                        <Avatar className={classes.img_sp} variant="circular" />
-                        <Typography
-                          align="left"
-                          display="inline"
-                          // gutterBottom
-                          variant="subtitle2"
-                        >
-                          {memberInfo.name}
-                        </Typography>
-                      </CardContent>
-                    )}
+                  {memberInfo.name}
+                </Typography>
+              </CardContent> */}
+                {/* )} */}
 
-                    {isTablet && (
-                      <CardContent className={classes.content_area}>
-                        <Avatar className={classes.img} variant="circular" />
-                        <Typography
-                          align="left"
-                          display="inline"
-                          // gutterBottom
-                          variant="h5"
-                          component="p"
-                        >
-                          {memberInfo.name}
-                        </Typography>
-                        <Typography
-                          className={classes.card_txt}
-                          display="inline"
-                          variant="body1"
-                          color="textSecondary"
-                          component="p"
-                        >
-                          {memberInfo.level} Lv
-                        </Typography>
-                        <Typography
-                          className={classes.card_txt}
-                          display="inline"
-                          variant="body1"
-                          color="textSecondary"
-                          component="p"
-                        >
-                          {memberInfo.point}Point
-                        </Typography>
-                      </CardContent>
-                    )}
-                  </CardContent>
-                </CardActionArea>
-                <ThemeProvider theme={theme}>
-                  {/* <Divider className={classes.divider} orientation="vertical" flexItem />
+                {/* {isTablet && ( */}
+                <CardContent className={classes.content_area}>
+                  <Avatar className={classes.img} variant="circular" />
+                  <Typography
+                    align="left"
+                    display="inline"
+                    // gutterBottom
+                    variant="h5"
+                    component="p"
+                  >
+                    test
+                  </Typography>
+                  <Typography
+                    className={classes.card_txt}
+                    display="inline"
+                    variant="body1"
+                    color="textSecondary"
+                    component="p"
+                  >
+                    1 Lv
+                  </Typography>
+                  <Typography
+                    className={classes.card_txt}
+                    display="inline"
+                    variant="body1"
+                    color="textSecondary"
+                    component="p"
+                  >
+                    1Point
+                  </Typography>
+                </CardContent>
+                {/* )} */}
+              </CardContent>
+            </CardActionArea>
+            <ThemeProvider theme={theme}>
+              {/* <Divider className={classes.divider} orientation="vertical" flexItem />
                   <IconButton
                     color="primary"
                     aria-label="edit"
@@ -253,18 +254,15 @@ const EditFamily = ({ membersInfo, updateFirestoreOfMemberInfo, addMemberToFires
                   >
                     <EditIcon />
                   </IconButton> */}
-                  <Divider className={classes.divider} orientation="vertical" flexItem />
-                  <IconButton
-                    color="secondary"
-                    onClick={() => deleteFirestoreMember(memberInfo.id)}
-                    aria-label="delete"
-                  >
-                    <DeleteIcon />
-                  </IconButton>
-                </ThemeProvider>
-              </Card>
-            )
-          })}
+              <Divider className={classes.divider} orientation="vertical" flexItem />
+              <IconButton
+                color="secondary"
+                /*onClick={() => deleteFirestoreMember(memberInfo.id)}*/ aria-label="delete"
+              >
+                <DeleteIcon />
+              </IconButton>
+            </ThemeProvider>
+          </Card>
         </List>
         <Button
           variant="contained"
@@ -273,11 +271,11 @@ const EditFamily = ({ membersInfo, updateFirestoreOfMemberInfo, addMemberToFires
           className={classes.btn}
           startIcon={<AddIcon />}
         >
-          家族を追加する
+          家事を追加する
         </Button>
       </Container>
     )
   }
 }
 
-export default EditFamily
+export default EditHouseworkList

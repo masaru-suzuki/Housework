@@ -46,13 +46,7 @@ const AddMember = ({ addMemberToFirestore, handleIsAdd, flag, handleBackEditFami
           value={birth}
           handleChange={handleChange}
         />
-        <SubmitBtn
-          value="登録する"
-          addMemberToFirestore={addMemberToFirestore}
-          member={member}
-          flag={flag}
-          handleBackEditFamily={handleIsAdd}
-        />
+        <SubmitBtn value="登録する" firestoreTask={addMemberToFirestore} data={member} handleBackPage={handleIsAdd} />
       </List>
     </Container>
   )
