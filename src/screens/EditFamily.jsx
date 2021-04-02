@@ -13,6 +13,7 @@ import {
   Container,
   Button,
   Divider,
+  CardActionArea,
 } from '@material-ui/core'
 import DeleteIcon from '@material-ui/icons/Delete'
 import AddIcon from '@material-ui/icons/Add'
@@ -177,56 +178,63 @@ const EditFamily = ({ membersInfo, updateFirestoreOfMemberInfo, addMemberToFires
           {membersInfo.map((memberInfo, i) => {
             return (
               <Card className={classes.card} key={i}>
-                <CardContent className={classes.txtbox}>
-                  {isSmartPhone && (
-                    <CardContent className={classes.content_area}>
-                      <Avatar className={classes.img_sp} variant="circular" />
-                      <Typography
-                        align="left"
-                        display="inline"
-                        // gutterBottom
-                        variant="subtitle2"
-                      >
-                        {memberInfo.name}
-                      </Typography>
-                    </CardContent>
-                  )}
+                <CardActionArea
+                  // memberInfo={memberInfo}
+                  // handleSubmitMember={(member) => handleSubmitMember(member)}
+                  // handleSubmitMember={handleSubmitMember}
+                  onClick={() => handleEditMember(i)}
+                >
+                  <CardContent className={classes.txtbox}>
+                    {isSmartPhone && (
+                      <CardContent className={classes.content_area}>
+                        <Avatar className={classes.img_sp} variant="circular" />
+                        <Typography
+                          align="left"
+                          display="inline"
+                          // gutterBottom
+                          variant="subtitle2"
+                        >
+                          {memberInfo.name}
+                        </Typography>
+                      </CardContent>
+                    )}
 
-                  {isTablet && (
-                    <CardContent className={classes.content_area}>
-                      <Avatar className={classes.img} variant="circular" />
-                      <Typography
-                        align="left"
-                        display="inline"
-                        // gutterBottom
-                        variant="h5"
-                        component="p"
-                      >
-                        {memberInfo.name}
-                      </Typography>
-                      <Typography
-                        className={classes.card_txt}
-                        display="inline"
-                        variant="body1"
-                        color="textSecondary"
-                        component="p"
-                      >
-                        {memberInfo.level} Lv
-                      </Typography>
-                      <Typography
-                        className={classes.card_txt}
-                        display="inline"
-                        variant="body1"
-                        color="textSecondary"
-                        component="p"
-                      >
-                        {memberInfo.point}Point
-                      </Typography>
-                    </CardContent>
-                  )}
-                </CardContent>
+                    {isTablet && (
+                      <CardContent className={classes.content_area}>
+                        <Avatar className={classes.img} variant="circular" />
+                        <Typography
+                          align="left"
+                          display="inline"
+                          // gutterBottom
+                          variant="h5"
+                          component="p"
+                        >
+                          {memberInfo.name}
+                        </Typography>
+                        <Typography
+                          className={classes.card_txt}
+                          display="inline"
+                          variant="body1"
+                          color="textSecondary"
+                          component="p"
+                        >
+                          {memberInfo.level} Lv
+                        </Typography>
+                        <Typography
+                          className={classes.card_txt}
+                          display="inline"
+                          variant="body1"
+                          color="textSecondary"
+                          component="p"
+                        >
+                          {memberInfo.point}Point
+                        </Typography>
+                      </CardContent>
+                    )}
+                  </CardContent>
+                </CardActionArea>
                 <ThemeProvider theme={theme}>
-                  <Divider className={classes.divider} orientation="vertical" flexItem />
+                  {/* <Divider className={classes.divider} orientation="vertical" flexItem />
                   <IconButton
                     color="primary"
                     aria-label="edit"
@@ -236,7 +244,7 @@ const EditFamily = ({ membersInfo, updateFirestoreOfMemberInfo, addMemberToFires
                     onClick={() => handleEditMember(i)}
                   >
                     <EditIcon />
-                  </IconButton>
+                  </IconButton> */}
                   <Divider className={classes.divider} orientation="vertical" flexItem />
                   <IconButton
                     color="secondary"

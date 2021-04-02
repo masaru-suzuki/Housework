@@ -8,3 +8,13 @@ export const initMember = () => {
     point: 0,
   }
 }
+
+export const initHousework = () => {
+  return {
+    name: '',
+    earnedPoint: '',
+    // earnedSkillPoint: '',
+    description: '',
+    // isEdit: false,
+  }
+}

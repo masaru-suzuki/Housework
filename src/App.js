@@ -16,6 +16,7 @@ import EditMember from './screens/EditMember'
 //comberListMocにisEditを入れて、このidEditを変更したら、firebaseに登録して、isEditをfalseにすればいいのかな？
 const db = firebase.firestore()
 const familyRef = db.collection('family').doc('u9EnmX300LQsunRawSUwwrhEVhS2').collection('member')
+const houseworkRef = db.collection('family').doc('u9EnmX300LQsunRawSUwwrhEVhS2').collection('housework')
 
 const makeListFromCollection = (querySnapshot) => {
   const list = []
@@ -79,6 +80,12 @@ const App = () => {
       })
   }
 
+  //firestoreに家事情報を追加する
+  const addHousework = () => {
+    houseworkRef.add({ name: 'test' })
+    console.log('add housework')
+  }
+
   useEffect(() => {
     //submitがclickされるたびにfirestoreのデータを引っ張ってきて更新する
     getFirestoreMock()
@@ -118,7 +125,7 @@ const App = () => {
                 />
               )}
             />
-            <Route exact path="/EditHousework" component={EditHousework} />
+            <Route exact path="/EditHousework" render={() => <EditHousework addHousework={addHousework} />} />
             <Route exact path="/Member" component={Member} />
             <Route exact path="/EditMember" render={() => <EditMember membersInfo={membersInfo} />} />
             {/* AddMemberは必要？ */}
