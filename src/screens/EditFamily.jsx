@@ -81,7 +81,7 @@ const useStyles = makeStyles(() => ({
     margin: 24,
   },
 }))
-
+//theme color change
 const theme = createMuiTheme({
   palette: {
     primary: {
@@ -130,6 +130,12 @@ const EditFamily = ({ membersInfo, updateFirestoreOfMemberInfo, addMemberToFires
     await updateFirestoreOfMemberInfo(member)
     handleBackHome()
   }
+
+  //flagをfalseにしてEditFamily画面に戻る
+  const handleBackEditFamily = () => {
+    setIsEdit(false)
+    setIsAdd(false)
+  }
   //メンバー編集画面、メンバー追加画面はflagを使って対応させる
   if (isAdd && !isEdit) {
     return (
@@ -138,6 +144,7 @@ const EditFamily = ({ membersInfo, updateFirestoreOfMemberInfo, addMemberToFires
         flag="isAdd"
         handleIsAdd={handleIsAdd}
         membersInfo={membersInfo}
+        handleBackEditFamily={handleBackEditFamily}
       />
     )
   } else if (!isAdd && isEdit) {
@@ -149,6 +156,7 @@ const EditFamily = ({ membersInfo, updateFirestoreOfMemberInfo, addMemberToFires
         flag="isEdit"
         handleEditMember={handleEditMember}
         handleIsEdit={handleIsEdit}
+        handleBackEditFamily={handleBackEditFamily}
       />
     )
   } else if (!isAdd && !isEdit) {
