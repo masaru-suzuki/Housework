@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { useMediaQuery } from 'react-responsive'
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles, createMuiTheme } from '@material-ui/core/styles'
 import {
   Card,
   ListSubheader,
@@ -18,6 +18,8 @@ import DeleteIcon from '@material-ui/icons/Delete'
 import AddIcon from '@material-ui/icons/Add'
 import EditIcon from '@material-ui/icons/Edit'
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos'
+import { ThemeProvider } from '@material-ui/styles'
+
 import EditMember from './EditMember'
 import AddMember from './AddMember'
 
@@ -79,6 +81,18 @@ const useStyles = makeStyles(() => ({
     margin: 24,
   },
 }))
+
+const theme = createMuiTheme({
+  palette: {
+    primary: {
+      main: '#6587ae',
+    },
+    secondary: {
+      main: '#765759',
+    },
+  },
+})
+
 const EditFamily = ({ membersInfo, updateFirestoreOfMemberInfo, addMemberToFirestore, deleteFirestoreMember }) => {
   const [isEdit, setIsEdit] = useState(false)
   const [isAdd, setIsAdd] = useState(false)
@@ -211,21 +225,27 @@ const EditFamily = ({ membersInfo, updateFirestoreOfMemberInfo, addMemberToFires
                     </CardContent>
                   )}
                 </CardContent>
-                <Divider className={classes.divider} orientation="vertical" flexItem />
-                <IconButton
-                  color="primary"
-                  aria-label="edit"
-                  memberInfo={memberInfo}
-                  // handleSubmitMember={(member) => handleSubmitMember(member)}
-                  handleSubmitMember={handleSubmitMember}
-                  onClick={() => handleEditMember(i)}
-                >
-                  <EditIcon />
-                </IconButton>
-                <Divider className={classes.divider} orientation="vertical" flexItem />
-                <IconButton color="secondary" onClick={() => deleteFirestoreMember(memberInfo.id)} aria-label="delete">
-                  <DeleteIcon />
-                </IconButton>
+                <ThemeProvider theme={theme}>
+                  <Divider className={classes.divider} orientation="vertical" flexItem />
+                  <IconButton
+                    color="primary"
+                    aria-label="edit"
+                    memberInfo={memberInfo}
+                    // handleSubmitMember={(member) => handleSubmitMember(member)}
+                    handleSubmitMember={handleSubmitMember}
+                    onClick={() => handleEditMember(i)}
+                  >
+                    <EditIcon />
+                  </IconButton>
+                  <Divider className={classes.divider} orientation="vertical" flexItem />
+                  <IconButton
+                    color="secondary"
+                    onClick={() => deleteFirestoreMember(memberInfo.id)}
+                    aria-label="delete"
+                  >
+                    <DeleteIcon />
+                  </IconButton>
+                </ThemeProvider>
               </Card>
             )
           })}
