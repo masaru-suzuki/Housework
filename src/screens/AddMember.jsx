@@ -28,7 +28,7 @@ const AddMember = ({ addMemberToFirestore, handleIsAdd, flag, handleBackEditFami
 
   return (
     <Container>
-      <BackBtn handleBackEditFamily={handleBackEditFamily} />
+      <BackBtn handleBack={handleBackEditFamily} />
       <List
         component="nav"
         aria-labelledby="nested-list-subheader"

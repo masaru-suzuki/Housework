@@ -29,18 +29,19 @@ const makeListFromCollection = (querySnapshot) => {
 // firebaseからdetaを取得
 const App = () => {
   const [membersInfo, setMembersInfo] = useState([])
+  const [houseworkListInfo, setHouseworkListInfo] = useState([])
   const [isEdit, setIsEdit] = useState(false)
   const history = useHistory()
 
   //firebaseの情報を取得
-  const getFirestoreMock = async () => {
-    console.log('getting data ...')
-    const members = makeListFromCollection(await familyRef.get())
-    setMembersInfo(members.filter((v) => typeof v.name === 'string'))
+  const getFirestoreMock = async (firestoreRef, stateSetter) => {
+    // console.log('getting data ...')
+    const data = makeListFromCollection(await firestoreRef.get())
+    stateSetter(data.filter((v) => typeof v.name === 'string'))
     //firebaseが更新された時に、再レンダリングするように、isEditをセット
     setIsEdit(false)
   }
-
+  // console.log({ houseworkListInfo })
   //firebaseのデータを更新する
   //submitボタンが押された時に発火
   //isEditをtrueにして、更新が終わったら、false にする
@@ -92,7 +93,8 @@ const App = () => {
 
   useEffect(() => {
     //submitがclickされるたびにfirestoreのデータを引っ張ってきて更新する
-    getFirestoreMock()
+    getFirestoreMock(familyRef, setMembersInfo)
+    getFirestoreMock(houseworkRef, setHouseworkListInfo)
   }, [isEdit])
 
   //画面遷移
@@ -132,7 +134,12 @@ const App = () => {
             <Route
               exact
               path="/EditHouseworkList"
-              render={() => <EditHouseworkList addHouseworkToFirestore={addHouseworkToFirestore} />}
+              render={() => (
+                <EditHouseworkList
+                  houseworkListInfo={houseworkListInfo}
+                  addHouseworkToFirestore={addHouseworkToFirestore}
+                />
+              )}
             />
             <Route exact path="/Member" component={Member} />
             <Route exact path="/EditMember" render={() => <EditMember membersInfo={membersInfo} />} />

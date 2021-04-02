@@ -6,7 +6,7 @@ import SubmitBtn from '../uikit/SubmitBtn'
 import InputField from '../uikit/InputField'
 import { initHousework } from '../initialData'
 
-const AddHousework = ({ handleIsAdd, flag, addHouseworkToFirestore, handleBackEditHousework }) => {
+const AddHousework = ({ handleIsAdd, flag, addHouseworkToFirestore, handleBackEditHouseworkList }) => {
   const [name, setName] = useState('')
   const [earnedPoint, setEarnedPoint] = useState('')
   const [description, setDescription] = useState('')
@@ -34,7 +34,7 @@ const AddHousework = ({ handleIsAdd, flag, addHouseworkToFirestore, handleBackEd
 
   return (
     <Container>
-      <BackBtn handleBackEditHousework={handleBackEditHousework} />
+      <BackBtn handleBack={handleBackEditHouseworkList} />
       <List
         component="nav"
         aria-labelledby="nested-list-subheader"
