@@ -7,12 +7,35 @@ const useStyles = makeStyles(() => ({
   },
 }))
 
-const SubmitBtn = ({ value, name, birth, member, updateFirestoreOfMemberInfo, handleIsEdit }) => {
+//handleBackEditFamily is handel that chage flag in EditFamily.jsx
+const SubmitBtn = ({
+  value,
+  flag,
+  member,
+  name,
+  birth,
+  id,
+  updateFirestoreOfMemberInfo,
+  addMemberToFirestore,
+  handleBackEditFamily,
+}) => {
   const classes = useStyles()
-  const onSubmitEvent = () => {
-    updateFirestoreOfMemberInfo(member.id, name, birth)
-    handleIsEdit()
+  console.log(flag)
+  let onSubmitEvent = ''
+  if (flag === 'isAdd') {
+    onSubmitEvent = () => {
+      addMemberToFirestore(member)
+      handleBackEditFamily()
+    }
+  } else if (flag === 'isEdit') {
+    onSubmitEvent = () => {
+      updateFirestoreOfMemberInfo(id, name, birth)
+      handleBackEditFamily()
+    }
+  } else {
+    console.log('no flag')
   }
+
   return (
     <Button fullWidth variant="contained" color="primary" className={classes.btn} onClick={() => onSubmitEvent()}>
       {value}

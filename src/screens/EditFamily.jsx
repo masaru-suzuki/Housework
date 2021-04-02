@@ -1,7 +1,7 @@
-import React, {useState} from 'react'
-import {useHistory} from 'react-router-dom'
-import {useMediaQuery} from 'react-responsive'
-import {makeStyles} from '@material-ui/core/styles'
+import React, { useState } from 'react'
+import { useHistory } from 'react-router-dom'
+import { useMediaQuery } from 'react-responsive'
+import { makeStyles } from '@material-ui/core/styles'
 import {
   Card,
   ListSubheader,
@@ -19,6 +19,7 @@ import AddIcon from '@material-ui/icons/Add'
 import EditIcon from '@material-ui/icons/Edit'
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos'
 import EditMember from './EditMember'
+import AddMember from './AddMember'
 
 const useStyles = makeStyles(() => ({
   card: {
@@ -78,26 +79,30 @@ const useStyles = makeStyles(() => ({
     margin: 24,
   },
 }))
-const EditFamily = ({membersInfo, updateFirestoreOfMemberInfo}) => {
+const EditFamily = ({ membersInfo, updateFirestoreOfMemberInfo, addMemberToFirestore }) => {
   const [isEdit, setIsEdit] = useState(false)
+  const [isAdd, setIsAdd] = useState(false)
   const [editMemberIndex, setEditMemberIndex] = useState('')
   // console.log({editMemberIndex})
   const classes = useStyles()
   const history = useHistory()
 
   //media query
-  const isTablet = useMediaQuery({query: '(min-device-width: 768px)'})
-  const isSmartPhone = useMediaQuery({query: '(max-device-width: 767px)'})
+  const isTablet = useMediaQuery({ query: '(min-device-width: 768px)' })
+  const isSmartPhone = useMediaQuery({ query: '(max-device-width: 767px)' })
 
   const handleBackHome = () => {
-    console.log({history})
-    history.push({pathname: '/'})
+    console.log({ history })
+    history.push({ pathname: '/' })
   }
-  // console.log({history})
 
   //isSetを変更する
   const handleIsEdit = () => {
     setIsEdit(false)
+  }
+  //isAddを変更する
+  const handleIsAdd = () => {
+    setIsAdd(false)
   }
 
   //EditMember.jsxへ
@@ -111,19 +116,28 @@ const EditFamily = ({membersInfo, updateFirestoreOfMemberInfo}) => {
     await updateFirestoreOfMemberInfo(member)
     handleBackHome()
   }
-  if (isEdit) {
+  //メンバー編集画面、メンバー追加画面はflagを使って対応させる
+  if (isAdd && !isEdit) {
     return (
-      <>
-        <EditMember
-          membersInfo={membersInfo}
-          editMemberIndex={editMemberIndex}
-          updateFirestoreOfMemberInfo={updateFirestoreOfMemberInfo}
-          handleEditMember={handleEditMember}
-          handleIsEdit={handleIsEdit}
-        />
-      </>
+      <AddMember
+        addMemberToFirestore={addMemberToFirestore}
+        flag="isAdd"
+        handleIsAdd={handleIsAdd}
+        membersInfo={membersInfo}
+      />
     )
-  } else {
+  } else if (!isAdd && isEdit) {
+    return (
+      <EditMember
+        membersInfo={membersInfo}
+        editMemberIndex={editMemberIndex}
+        updateFirestoreOfMemberInfo={updateFirestoreOfMemberInfo}
+        flag="isEdit"
+        handleEditMember={handleEditMember}
+        handleIsEdit={handleIsEdit}
+      />
+    )
+  } else if (!isAdd && !isEdit) {
     return (
       <Container className={classes.container} maxWidth="sm">
         <Button
@@ -207,14 +221,6 @@ const EditFamily = ({membersInfo, updateFirestoreOfMemberInfo}) => {
                 >
                   <EditIcon />
                 </IconButton>
-
-                {/* <Divider className={classes.divider} orientation="vertical" flexItem />
-                <Link to={{pathname: '/EditMember', state: memberInfo}}>
-                  <IconButton aria-label="edit">
-                    <EditIcon />
-                  </IconButton>
-                </Link> */}
-
                 <Divider className={classes.divider} orientation="vertical" flexItem />
                 <IconButton aria-label="delete">
                   <DeleteIcon />
@@ -223,7 +229,13 @@ const EditFamily = ({membersInfo, updateFirestoreOfMemberInfo}) => {
             )
           })}
         </List>
-        <Button variant="contained" color="primary" className={classes.btn} startIcon={<AddIcon />}>
+        <Button
+          variant="contained"
+          onClick={() => setIsAdd(true)}
+          color="primary"
+          className={classes.btn}
+          startIcon={<AddIcon />}
+        >
           家族を追加する
         </Button>
       </Container>

@@ -17,7 +17,7 @@ const useStyles = makeStyles(() => ({
   },
 }))
 
-const EditMember = ({ editMemberIndex, membersInfo, updateFirestoreOfMemberInfo, handleIsEdit }) => {
+const EditMember = ({ editMemberIndex, membersInfo, updateFirestoreOfMemberInfo, handleIsEdit, flag }) => {
   const classes = useStyles()
   const member = membersInfo[editMemberIndex]
   const history = useHistory()
@@ -68,11 +68,12 @@ const EditMember = ({ editMemberIndex, membersInfo, updateFirestoreOfMemberInfo,
         />
         <SubmitBtn
           value="変更する"
-          member={member}
+          id={member.id}
           updateFirestoreOfMemberInfo={updateFirestoreOfMemberInfo}
+          flag={flag}
           name={name}
           birth={birth}
-          handleIsEdit={handleIsEdit}
+          handleBackEditFamily={handleIsEdit}
         />
       </List>
     </Container>

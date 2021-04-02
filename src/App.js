@@ -1,7 +1,7 @@
-import React, {useState, useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
 import firebase from './firebase'
 import './App.css'
-import {BrowserRouter as Router, Switch, Route, useHistory} from 'react-router-dom'
+import { BrowserRouter as Router, Switch, Route, useHistory } from 'react-router-dom'
 import Auth from './auth/Auth'
 //screens
 import Home from './screens/Home'
@@ -21,7 +21,7 @@ const makeListFromCollection = (querySnapshot) => {
   const list = []
   querySnapshot.forEach((res) => {
     const data = res.data()
-    list.push({id: res.id, ...data})
+    list.push({ id: res.id, ...data })
   })
   return list
 }
@@ -31,27 +31,32 @@ function App() {
   const [membersInfo, setMembersInfo] = useState([])
   const [isEdit, setIsEdit] = useState(false)
   const history = useHistory()
-  //TODO: このfunctionはApp.jsからもってくる
+
+  //firebaseのデータを更新する
   //submitボタンが押された時に発火
   //isEditをtrueにして、更新が終わったら、false にする
   const updateFirestoreOfMemberInfo = async (memberId, memberName, memberBirth) => {
-    console.log('updating store...', {memberId}, {memberName}, {memberBirth})
+    console.log('updating store...', { memberId }, { memberName }, { memberBirth })
     familyRef.doc(memberId).set(
       {
         name: memberName,
         birth: memberBirth,
       },
-      {merge: true},
+      { merge: true },
     )
     // await sleep1Sec()
     // console.log('store updated')
-    setIsEdit(true)
-    console.log(isEdit) //この時点でisEditがfalseになるのはなぜ？
+    setIsEdit(true) //isEditで再レンダリングを発火させる
+    // console.log(isEdit) //この時点でisEditがfalseになるのはなぜ？
   }
 
-  //firebaseのデータを更新する
+  //firestoreに新しいメンバー情報を登録する
+  const addMemberToFirestore = (member) => {
+    familyRef.add(member)
+    setIsEdit(true) //isEditで再レンダリングを発火させる
+  }
 
-  //firebaseの情報をasyc awaitで取得
+  //firebaseの情報を取得
   const getFirestoreMock = async () => {
     console.log('getting data ...')
     const members = makeListFromCollection(await familyRef.get())
@@ -59,23 +64,20 @@ function App() {
     //firebaseが更新された時に、再レンダリングするように、isEditをセット
     setIsEdit(false)
   }
+
   useEffect(() => {
     //submitがclickされるたびにfirestoreのデータを引っ張ってきて更新する
-    console.log(isEdit)
-    // memberListMock = initMemberListMock
     getFirestoreMock()
-    // console.log({membersInfo})
-    console.log(isEdit)
   }, [isEdit])
 
   //画面遷移
   const handleHome = () => {
     console.log('move to Home')
-    history.push({pathname: '/'})
+    history.push({ pathname: '/' })
   }
   const handleEditFamily = () => {
     console.log('move to EditFamily')
-    history.push({pathname: '/EditFamily'})
+    history.push({ pathname: '/EditFamily' })
   }
   //今度はrecomposeのlibraryを使ってpropsを渡すのに挑戦してみる
   return (
@@ -97,12 +99,14 @@ function App() {
                   handleEditFamily={handleEditFamily}
                   handleHome={handleHome}
                   updateFirestoreOfMemberInfo={updateFirestoreOfMemberInfo}
+                  addMemberToFirestore={addMemberToFirestore}
                 />
               )}
             />
             <Route exact path="/EditHousework" component={EditHousework} />
             <Route exact path="/Member" component={Member} />
             <Route exact path="/EditMember" render={() => <EditMember membersInfo={membersInfo} />} />
+            {/* AddMemberは必要？ */}
             <Route render={() => <p>not found.</p>} />
           </Switch>
         </Auth>
