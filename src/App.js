@@ -6,7 +6,7 @@ import Auth from './auth/Auth'
 //screens
 import Home from './screens/Home'
 import EditFamily from './screens/EditFamily'
-import EditHousework from './screens/EditHousework'
+import EditHouseworkList from './screens/EditHouseworkList'
 import Profile from './screens/Member'
 import SignInOrUp from './screens/SignInOrUp'
 import SignUp from './screens/SignUp'
@@ -131,8 +131,8 @@ const App = () => {
             />
             <Route
               exact
-              path="/EditHousework"
-              render={() => <EditHousework addHouseworkToFirestore={addHouseworkToFirestore} />}
+              path="/EditHouseworkList"
+              render={() => <EditHouseworkList addHouseworkToFirestore={addHouseworkToFirestore} />}
             />
             <Route exact path="/Member" component={Member} />
             <Route exact path="/EditMember" render={() => <EditMember membersInfo={membersInfo} />} />

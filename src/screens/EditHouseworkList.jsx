@@ -95,7 +95,7 @@ const theme = createMuiTheme({
   },
 })
 
-const EditHousework = ({ addHouseworkToFirestore }) => {
+const EditHouseworkList = ({ addHouseworkToFirestore }) => {
   const [isEdit, setIsEdit] = useState(false)
   const [isAdd, setIsAdd] = useState(false)
   // const [editMemberIndex, setEditMemberIndex] = useState('')
@@ -278,4 +278,4 @@ const EditHousework = ({ addHouseworkToFirestore }) => {
   }
 }
 
-export default EditHousework
+export default EditHouseworkList

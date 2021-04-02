@@ -1,9 +1,9 @@
-import React, {useState} from 'react'
-import {handleLogout} from '../firebase'
+import React, { useState } from 'react'
+import { handleLogout } from '../firebase'
 import SettingBtn from './SettingBtn'
-import {makeStyles} from '@material-ui/core/styles'
-import {useHistory} from 'react-router-dom'
-import {Drawer, List, ListItem, ListItemIcon, ListItemText} from '@material-ui/core'
+import { makeStyles } from '@material-ui/core/styles'
+import { useHistory } from 'react-router-dom'
+import { Drawer, List, ListItem, ListItemIcon, ListItemText } from '@material-ui/core'
 import ExitToAppIcon from '@material-ui/icons/ExitToApp'
 import GroupIcon from '@material-ui/icons/Group'
 import PlaylistAddIcon from '@material-ui/icons/PlaylistAdd'
@@ -38,13 +38,13 @@ const DrawerNav = () => {
       // state: {membersInfo},
     })
   }
-  const handleEditHousework = () => history.push('/EditHousework')
+  const handleEditHousework = () => history.push('/EditHouseworkList')
   const toggleDrawer = (open) => (event) => {
     if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
       return
     }
 
-    setState({right: open})
+    setState({ right: open })
   }
 
   //ドロワーナビのリスト //リンク先も登録
