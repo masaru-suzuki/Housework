@@ -21,7 +21,7 @@ import EditIcon from '@material-ui/icons/Edit'
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos'
 import { ThemeProvider } from '@material-ui/styles'
 
-import EditMember from './EditMember'
+import EditHousework from './EditHousework'
 import AddMember from './AddMember'
 import AddHousework from './AddHousework'
 import BackBtn from '../uikit/BackBtn'
@@ -96,10 +96,10 @@ const theme = createMuiTheme({
   },
 })
 
-const EditHouseworkList = ({ addHouseworkToFirestore, houseworkListInfo }) => {
+const EditHouseworkList = ({ addHouseworkToFirestore, houseworkListInfo, updateFirestoreOfHouseworkInfo }) => {
   const [isEdit, setIsEdit] = useState(false)
   const [isAdd, setIsAdd] = useState(false)
-  // const [editMemberIndex, setEditMemberIndex] = useState('')
+  const [editHouseworkIndex, setEditHouseworkIndex] = useState('')
   // console.log({ houseworkListInfo })
   const classes = useStyles()
   const history = useHistory()
@@ -123,15 +123,15 @@ const EditHouseworkList = ({ addHouseworkToFirestore, houseworkListInfo }) => {
     console.log({ isAdd })
   }
 
-  //EditMember.jsxへ
-  // const handleEditMember = (i) => {
-  //   setEditMemberIndex(i)
-  //   setIsEdit(true)
-  // }
+  //EditHousework.jsxへ
+  const handleEditHousework = (i) => {
+    setEditHouseworkIndex(i)
+    setIsEdit(true)
+  }
 
-  //EditMember.jsxでsubmit buttonを押した際に使いたい
-  // const handleSubmitMember = async (member) => {
-  //   await updateFirestoreOfhouseworkInfo(member)
+  //EditHousework.jsxでsubmit buttonを押した際に使いたい
+  // const handleSubmitHousework = async (Housework) => {
+  //   await updateFirestoreOfHouseworkInfo(Housework)
   //   handleBackHome()
   // }
 
@@ -147,19 +147,16 @@ const EditHouseworkList = ({ addHouseworkToFirestore, houseworkListInfo }) => {
         addHouseworkToFirestore={addHouseworkToFirestore}
         flag="isAdd"
         handleIsAdd={handleIsAdd}
-        // membersInfo={membersInfo}
+        // HouseworksInfo={houseworkListInfo}
         handleBackEditHouseworkList={handleBackEditHouseworkList}
       />
     )
   } else if (!isAdd && isEdit) {
     return (
-      <EditMember
-        membersInfo={membersInfo}
-        editMemberIndex={editMemberIndex}
-        updateFirestoreOfhouseworkInfo={updateFirestoreOfhouseworkInfo}
-        flag="isEdit"
-        handleEditMember={handleEditMember}
-        handleIsEdit={handleIsEdit}
+      <EditHousework
+        houseworkListInfo={houseworkListInfo}
+        editHouseworkIndex={editHouseworkIndex}
+        updateFirestoreOfHouseworkInfo={updateFirestoreOfHouseworkInfo}
         handleBackEditHouseworkList={handleBackEditHouseworkList}
       />
     )
@@ -180,21 +177,11 @@ const EditHouseworkList = ({ addHouseworkToFirestore, houseworkListInfo }) => {
           {houseworkListInfo.map((houseworkInfo, i) => {
             return (
               <Card className={classes.card} key={i}>
-                <CardActionArea
-                  houseworkInfo={houseworkInfo}
-                  // handleSubmitMember={(member) => handleSubmitMember(member)}
-                  // handleSubmitMember={handleSubmitMember}
-                  // onClick={() => handleEditMember(i)}
-                >
+                <CardActionArea onClick={() => handleEditHousework(i)}>
                   <CardContent className={classes.txtbox}>
                     {isSmartPhone && (
                       <CardContent className={classes.content_area}>
-                        <Typography
-                          align="left"
-                          display="inline"
-                          // gutterBottom
-                          variant="subtitle2"
-                        >
+                        <Typography align="left" display="inline" variant="subtitle2">
                           {houseworkInfo.name}
                         </Typography>
                         <Typography
@@ -250,7 +237,7 @@ const EditHouseworkList = ({ addHouseworkToFirestore, houseworkListInfo }) => {
                     houseworkInfo={houseworkInfo}
                     // handleSubmitMember={(member) => handleSubmitMember(member)}
                     handleSubmitMember={handleSubmitMember}
-                    onClick={() => handleEditMember(i)}
+                    onClick={() => handleEditHousework(i)}
                   >
                     <EditIcon />
                   </IconButton> */}

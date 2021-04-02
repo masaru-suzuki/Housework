@@ -64,6 +64,21 @@ const App = () => {
     // console.log(isEdit) //この時点でisEditがfalseになるのはなぜ？
   }
 
+  const updateFirestoreOfHouseworkInfo = (housework) => {
+    console.log('updating store housework list', { housework })
+    const houseworkId = housework.id
+    const houseworkName = housework.name
+    const houseworkEarnedPoint = housework.earnedPoint
+    houseworkRef.doc(houseworkId).set(
+      {
+        name: houseworkName,
+        earnedPoint: houseworkEarnedPoint,
+      },
+      { merge: true },
+    )
+    setIsEdit(true) //isEditで再レンダリングを発火させる
+  }
+
   //firestoreに新しいメンバー情報を登録する
   const addMemberToFirestore = (member) => {
     familyRef.add(member)
@@ -138,6 +153,7 @@ const App = () => {
                 <EditHouseworkList
                   houseworkListInfo={houseworkListInfo}
                   addHouseworkToFirestore={addHouseworkToFirestore}
+                  updateFirestoreOfHouseworkInfo={updateFirestoreOfHouseworkInfo}
                 />
               )}
             />
