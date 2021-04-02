@@ -17,7 +17,14 @@ const useStyles = makeStyles(() => ({
   },
 }))
 
-const EditMember = ({ editMemberIndex, membersInfo, updateFirestoreOfMemberInfo, handleIsEdit, flag }) => {
+const EditMember = ({
+  editMemberIndex,
+  membersInfo,
+  updateFirestoreOfMemberInfo,
+  handleIsEdit,
+  flag,
+  handleBackEditFamily,
+}) => {
   const classes = useStyles()
   const member = membersInfo[editMemberIndex]
   const history = useHistory()
@@ -46,7 +53,7 @@ const EditMember = ({ editMemberIndex, membersInfo, updateFirestoreOfMemberInfo,
   }, [])
   return (
     <Container>
-      <BackBtn />
+      <BackBtn handleBackEditFamily={handleBackEditFamily} />
       <button onClick={() => handelbackEditFamily()}>modo</button>
       <List
         component="nav"

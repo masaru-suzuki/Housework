@@ -6,7 +6,7 @@ import SubmitBtn from '../uikit/SubmitBtn'
 import InputField from '../uikit/InputField'
 import { initMember } from '../initialData'
 
-const AddMember = ({ addMemberToFirestore, handleIsAdd, flag }) => {
+const AddMember = ({ addMemberToFirestore, handleIsAdd, flag, handleBackEditFamily }) => {
   const [name, setName] = useState('')
   const [birth, setBirth] = useState('')
 
@@ -28,7 +28,7 @@ const AddMember = ({ addMemberToFirestore, handleIsAdd, flag }) => {
 
   return (
     <Container>
-      <BackBtn />
+      <BackBtn handleBackEditFamily={handleBackEditFamily} />
       <List
         component="nav"
         aria-labelledby="nested-list-subheader"
