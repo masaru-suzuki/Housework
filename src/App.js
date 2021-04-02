@@ -25,12 +25,20 @@ const makeListFromCollection = (querySnapshot) => {
   })
   return list
 }
-
 // firebaseからdetaを取得
-function App() {
+const App = () => {
   const [membersInfo, setMembersInfo] = useState([])
   const [isEdit, setIsEdit] = useState(false)
   const history = useHistory()
+
+  //firebaseの情報を取得
+  const getFirestoreMock = async () => {
+    console.log('getting data ...')
+    const members = makeListFromCollection(await familyRef.get())
+    setMembersInfo(members.filter((v) => typeof v.name === 'string'))
+    //firebaseが更新された時に、再レンダリングするように、isEditをセット
+    setIsEdit(false)
+  }
 
   //firebaseのデータを更新する
   //submitボタンが押された時に発火
@@ -56,13 +64,19 @@ function App() {
     setIsEdit(true) //isEditで再レンダリングを発火させる
   }
 
-  //firebaseの情報を取得
-  const getFirestoreMock = async () => {
-    console.log('getting data ...')
-    const members = makeListFromCollection(await familyRef.get())
-    setMembersInfo(members.filter((v) => typeof v.name === 'string'))
-    //firebaseが更新された時に、再レンダリングするように、isEditをセット
-    setIsEdit(false)
+  //firestoreのメンバーの削除
+  const deleteFirestoreMember = (id) => {
+    console.log('delete member', { id })
+    familyRef
+      .doc(id)
+      .delete()
+      .then(() => {
+        console.log(`id=#{id}を削除しました。`)
+        setIsEdit(true) //isEditで再レンダリングを発火させる
+      })
+      .catch((error) => {
+        console.error('Error removeing document: ', error)
+      })
   }
 
   useEffect(() => {
@@ -100,6 +114,7 @@ function App() {
                   handleHome={handleHome}
                   updateFirestoreOfMemberInfo={updateFirestoreOfMemberInfo}
                   addMemberToFirestore={addMemberToFirestore}
+                  deleteFirestoreMember={deleteFirestoreMember}
                 />
               )}
             />

@@ -79,7 +79,7 @@ const useStyles = makeStyles(() => ({
     margin: 24,
   },
 }))
-const EditFamily = ({ membersInfo, updateFirestoreOfMemberInfo, addMemberToFirestore }) => {
+const EditFamily = ({ membersInfo, updateFirestoreOfMemberInfo, addMemberToFirestore, deleteFirestoreMember }) => {
   const [isEdit, setIsEdit] = useState(false)
   const [isAdd, setIsAdd] = useState(false)
   const [editMemberIndex, setEditMemberIndex] = useState('')
@@ -213,6 +213,7 @@ const EditFamily = ({ membersInfo, updateFirestoreOfMemberInfo, addMemberToFires
                 </CardContent>
                 <Divider className={classes.divider} orientation="vertical" flexItem />
                 <IconButton
+                  color="primary"
                   aria-label="edit"
                   memberInfo={memberInfo}
                   // handleSubmitMember={(member) => handleSubmitMember(member)}
@@ -222,7 +223,7 @@ const EditFamily = ({ membersInfo, updateFirestoreOfMemberInfo, addMemberToFires
                   <EditIcon />
                 </IconButton>
                 <Divider className={classes.divider} orientation="vertical" flexItem />
-                <IconButton aria-label="delete">
+                <IconButton color="secondary" onClick={() => deleteFirestoreMember(memberInfo.id)} aria-label="delete">
                   <DeleteIcon />
                 </IconButton>
               </Card>
