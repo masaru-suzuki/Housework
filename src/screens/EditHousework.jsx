@@ -23,6 +23,7 @@ import { ThemeProvider } from '@material-ui/styles'
 
 import EditMember from './EditMember'
 import AddMember from './AddMember'
+import AddHousework from './AddHousework'
 
 const useStyles = makeStyles(() => ({
   card: {
@@ -94,13 +95,13 @@ const theme = createMuiTheme({
   },
 })
 
-const EditHousework = () => {
-  // const [isEdit, setIsEdit] = useState(false)
-  // const [isAdd, setIsAdd] = useState(false)
+const EditHousework = ({ addHouseworkToFirestore }) => {
+  const [isEdit, setIsEdit] = useState(false)
+  const [isAdd, setIsAdd] = useState(false)
   // const [editMemberIndex, setEditMemberIndex] = useState('')
   // console.log({editMemberIndex})
   const classes = useStyles()
-  // const history = useHistory()
+  const history = useHistory()
 
   //media query
   // const isTablet = useMediaQuery({ query: '(min-device-width: 768px)' })
@@ -116,9 +117,10 @@ const EditHousework = () => {
   //   setIsEdit(false)
   // }
   //isAddを変更する
-  // const handleIsAdd = () => {
-  //   setIsAdd(false)
-  // }
+  const handleIsAdd = () => {
+    setIsAdd(false)
+    console.log({ isAdd })
+  }
 
   //EditMember.jsxへ
   // const handleEditMember = (i) => {
@@ -132,68 +134,68 @@ const EditHousework = () => {
   //   handleBackHome()
   // }
 
-  //flagをfalseにしてEditFamily画面に戻る
-  // const handleBackEditFamily = () => {
-  //   setIsEdit(false)
-  //   setIsAdd(false)
-  // }
+  //flagをfalseにしてEditHousework画面に戻る
+  const handleBackEditHousework = () => {
+    setIsEdit(false)
+    setIsAdd(false)
+  }
   //メンバー編集画面、メンバー追加画面はflagを使って対応させる
-  // if (isAdd && !isEdit) {
-  //   return (
-  //     <AddMember
-  //       addMemberToFirestore={addMemberToFirestore}
-  //       flag="isAdd"
-  //       handleIsAdd={handleIsAdd}
-  //       membersInfo={membersInfo}
-  //       handleBackEditFamily={handleBackEditFamily}
-  //     />
-  //   )
-  // } else if (!isAdd && isEdit) {
-  //   return (
-  //     <EditMember
-  //       membersInfo={membersInfo}
-  //       editMemberIndex={editMemberIndex}
-  //       updateFirestoreOfMemberInfo={updateFirestoreOfMemberInfo}
-  //       flag="isEdit"
-  //       handleEditMember={handleEditMember}
-  //       handleIsEdit={handleIsEdit}
-  //       handleBackEditFamily={handleBackEditFamily}
-  //     />
-  //   )
-  // } else if (!isAdd && !isEdit) {
-  return (
-    <Container className={classes.container} maxWidth="sm">
-      <Button
-        variant="text"
-        color="inherit"
-        size="small"
-        className={classes.btn_back}
-        onClick={() => handleBackHome()}
-        startIcon={<ArrowBackIosIcon className={classes.btn_icon} />}
-      >
-        back
-      </Button>
-      <List
-        component="nav"
-        aria-labelledby="nested-list-subheader"
-        subheader={
-          <ListSubheader disableSticky component="div" id="nested-list-subheader">
-            家事編集
-          </ListSubheader>
-        }
-        className={classes.root}
-      >
-        {/* {membersInfo.map((memberInfo, i) => { */}
-        <Card className={classes.card} /* key={i}*/>
-          <CardActionArea
-          // memberInfo={memberInfo}
-          // handleSubmitMember={(member) => handleSubmitMember(member)}
-          // handleSubmitMember={handleSubmitMember}
-          // onClick={() => handleEditMember(i)}
-          >
-            <CardContent className={classes.txtbox}>
-              {/* {isSmartPhone && ( */}
-              {/* <CardContent className={classes.content_area}>
+  if (isAdd && !isEdit) {
+    return (
+      <AddHousework
+        addHouseworkToFirestore={addHouseworkToFirestore}
+        flag="isAdd"
+        handleIsAdd={handleIsAdd}
+        // membersInfo={membersInfo}
+        handleBackEditHousework={handleBackEditHousework}
+      />
+    )
+  } else if (!isAdd && isEdit) {
+    return (
+      <EditMember
+        membersInfo={membersInfo}
+        editMemberIndex={editMemberIndex}
+        updateFirestoreOfMemberInfo={updateFirestoreOfMemberInfo}
+        flag="isEdit"
+        handleEditMember={handleEditMember}
+        handleIsEdit={handleIsEdit}
+        handleBackEditHousework={handleBackEditHousework}
+      />
+    )
+  } else if (!isAdd && !isEdit) {
+    return (
+      <Container className={classes.container} maxWidth="sm">
+        <Button
+          variant="text"
+          color="inherit"
+          size="small"
+          className={classes.btn_back}
+          onClick={() => handleBackHome()}
+          startIcon={<ArrowBackIosIcon className={classes.btn_icon} />}
+        >
+          back
+        </Button>
+        <List
+          component="nav"
+          aria-labelledby="nested-list-subheader"
+          subheader={
+            <ListSubheader disableSticky component="div" id="nested-list-subheader">
+              家事編集
+            </ListSubheader>
+          }
+          className={classes.root}
+        >
+          {/* {membersInfo.map((memberInfo, i) => { */}
+          <Card className={classes.card} /* key={i}*/>
+            <CardActionArea
+            // memberInfo={memberInfo}
+            // handleSubmitMember={(member) => handleSubmitMember(member)}
+            // handleSubmitMember={handleSubmitMember}
+            // onClick={() => handleEditMember(i)}
+            >
+              <CardContent className={classes.txtbox}>
+                {/* {isSmartPhone && ( */}
+                {/* <CardContent className={classes.content_area}>
                 <Avatar className={classes.img_sp} variant="circular" />
                 <Typography
                   align="left"
@@ -204,44 +206,44 @@ const EditHousework = () => {
                   {memberInfo.name}
                 </Typography>
               </CardContent> */}
-              {/* )} */}
+                {/* )} */}
 
-              {/* {isTablet && ( */}
-              <CardContent className={classes.content_area}>
-                <Avatar className={classes.img} variant="circular" />
-                <Typography
-                  align="left"
-                  display="inline"
-                  // gutterBottom
-                  variant="h5"
-                  component="p"
-                >
-                  test
-                </Typography>
-                <Typography
-                  className={classes.card_txt}
-                  display="inline"
-                  variant="body1"
-                  color="textSecondary"
-                  component="p"
-                >
-                  1 Lv
-                </Typography>
-                <Typography
-                  className={classes.card_txt}
-                  display="inline"
-                  variant="body1"
-                  color="textSecondary"
-                  component="p"
-                >
-                  1Point
-                </Typography>
+                {/* {isTablet && ( */}
+                <CardContent className={classes.content_area}>
+                  <Avatar className={classes.img} variant="circular" />
+                  <Typography
+                    align="left"
+                    display="inline"
+                    // gutterBottom
+                    variant="h5"
+                    component="p"
+                  >
+                    test
+                  </Typography>
+                  <Typography
+                    className={classes.card_txt}
+                    display="inline"
+                    variant="body1"
+                    color="textSecondary"
+                    component="p"
+                  >
+                    1 Lv
+                  </Typography>
+                  <Typography
+                    className={classes.card_txt}
+                    display="inline"
+                    variant="body1"
+                    color="textSecondary"
+                    component="p"
+                  >
+                    1Point
+                  </Typography>
+                </CardContent>
+                {/* )} */}
               </CardContent>
-              {/* )} */}
-            </CardContent>
-          </CardActionArea>
-          <ThemeProvider theme={theme}>
-            {/* <Divider className={classes.divider} orientation="vertical" flexItem />
+            </CardActionArea>
+            <ThemeProvider theme={theme}>
+              {/* <Divider className={classes.divider} orientation="vertical" flexItem />
                   <IconButton
                     color="primary"
                     aria-label="edit"
@@ -252,25 +254,28 @@ const EditHousework = () => {
                   >
                     <EditIcon />
                   </IconButton> */}
-            <Divider className={classes.divider} orientation="vertical" flexItem />
-            <IconButton color="secondary" /*onClick={() => deleteFirestoreMember(memberInfo.id)}*/ aria-label="delete">
-              <DeleteIcon />
-            </IconButton>
-          </ThemeProvider>
-        </Card>
-      </List>
-      <Button
-        variant="contained"
-        onClick={() => setIsAdd(true)}
-        color="primary"
-        className={classes.btn}
-        startIcon={<AddIcon />}
-      >
-        家族を追加する
-      </Button>
-    </Container>
-  )
-  // }
+              <Divider className={classes.divider} orientation="vertical" flexItem />
+              <IconButton
+                color="secondary"
+                /*onClick={() => deleteFirestoreMember(memberInfo.id)}*/ aria-label="delete"
+              >
+                <DeleteIcon />
+              </IconButton>
+            </ThemeProvider>
+          </Card>
+        </List>
+        <Button
+          variant="contained"
+          onClick={() => setIsAdd(true)}
+          color="primary"
+          className={classes.btn}
+          startIcon={<AddIcon />}
+        >
+          家事を追加する
+        </Button>
+      </Container>
+    )
+  }
 }
 
 export default EditHousework

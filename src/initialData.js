@@ -15,6 +15,5 @@ export const initHousework = () => {
     earnedPoint: '',
     // earnedSkillPoint: '',
     description: '',
-    // isEdit: false,
   }
 }

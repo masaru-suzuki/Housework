@@ -37,16 +37,24 @@ const EditMember = ({
   const handleChange = (event) => {
     const identificationName = event.target.name
     const value = event.target.value
+    console.log({ value })
     if (identificationName === 'name') {
       setName(value)
+      // member.name = name //最後の一文字まで更新されない・・・！このターンでは前回setされたstateを参照してしまうから！なぜ？
+      member.name = value
     } else if (identificationName === 'birth') {
       setBirth(value)
+      member.birth = value
     }
+    // console.log({ member })
   }
+  // console.log({ member })
+
+  // member.name = name
+  // member.birth = birth
   const handelbackEditFamily = () => {
     history.push('/EditFamily')
   }
-  // console.log({member})
   useEffect(() => {
     setName(member.name)
     setBirth(member.birth)
@@ -75,12 +83,13 @@ const EditMember = ({
         />
         <SubmitBtn
           value="変更する"
-          id={member.id}
-          updateFirestoreOfMemberInfo={updateFirestoreOfMemberInfo}
-          flag={flag}
-          name={name}
-          birth={birth}
-          handleBackEditFamily={handleIsEdit}
+          // id={member.id}
+          firestoreTask={updateFirestoreOfMemberInfo}
+          // flag={flag}
+          // name={name}
+          // birth={birth}
+          data={member}
+          handleBackPage={handleIsEdit}
         />
       </List>
     </Container>

@@ -98,7 +98,7 @@ const EditFamily = ({ membersInfo, updateFirestoreOfMemberInfo, addMemberToFires
   const [isEdit, setIsEdit] = useState(false)
   const [isAdd, setIsAdd] = useState(false)
   const [editMemberIndex, setEditMemberIndex] = useState('')
-  // console.log({editMemberIndex})
+  console.log({ membersInfo })
   const classes = useStyles()
   const history = useHistory()
 

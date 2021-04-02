@@ -44,8 +44,12 @@ const App = () => {
   //firebaseのデータを更新する
   //submitボタンが押された時に発火
   //isEditをtrueにして、更新が終わったら、false にする
-  const updateFirestoreOfMemberInfo = async (memberId, memberName, memberBirth) => {
-    console.log('updating store...', { memberId }, { memberName }, { memberBirth })
+  // const updateFirestoreOfMemberInfo = async (memberId, memberName, memberBirth) => {
+  const updateFirestoreOfMemberInfo = async (member) => {
+    console.log('updating store...', { member })
+    const memberId = member.id
+    const memberName = member.name
+    const memberBirth = member.birth
     familyRef.doc(memberId).set(
       {
         name: memberName,
@@ -81,9 +85,9 @@ const App = () => {
   }
 
   //firestoreに家事情報を追加する
-  const addHousework = () => {
-    houseworkRef.add({ name: 'test' })
-    console.log('add housework')
+  const addHouseworkToFirestore = (data) => {
+    console.log('add housework', { data })
+    houseworkRef.add(data)
   }
 
   useEffect(() => {
@@ -125,7 +129,11 @@ const App = () => {
                 />
               )}
             />
-            <Route exact path="/EditHousework" render={() => <EditHousework addHousework={addHousework} />} />
+            <Route
+              exact
+              path="/EditHousework"
+              render={() => <EditHousework addHouseworkToFirestore={addHouseworkToFirestore} />}
+            />
             <Route exact path="/Member" component={Member} />
             <Route exact path="/EditMember" render={() => <EditMember membersInfo={membersInfo} />} />
             {/* AddMemberは必要？ */}
