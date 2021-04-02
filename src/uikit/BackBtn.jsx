@@ -10,7 +10,7 @@ const useStyles = makeStyles(() => ({
   },
 }))
 
-const BackBtn = ({ handleBackEditFamily }) => {
+const BackBtn = ({ handleBack }) => {
   const classes = useStyles()
   return (
     <Button
@@ -18,7 +18,7 @@ const BackBtn = ({ handleBackEditFamily }) => {
       color="inherit"
       size="small"
       className={classes.btn_back}
-      onClick={() => handleBackEditFamily()}
+      onClick={() => handleBack()}
       startIcon={<ArrowBackIosIcon className={classes.btn_icon} />}
     >
       back

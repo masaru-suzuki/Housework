@@ -61,7 +61,7 @@ const EditMember = ({
   }, [])
   return (
     <Container>
-      <BackBtn handleBackEditFamily={handleBackEditFamily} />
+      <BackBtn handleBack={handleBackEditFamily} />
       <button onClick={() => handelbackEditFamily()}>modo</button>
       <List
         component="nav"

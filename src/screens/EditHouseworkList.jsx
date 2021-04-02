@@ -95,17 +95,17 @@ const theme = createMuiTheme({
   },
 })
 
-const EditHouseworkList = ({ addHouseworkToFirestore }) => {
+const EditHouseworkList = ({ addHouseworkToFirestore, houseworkListInfo }) => {
   const [isEdit, setIsEdit] = useState(false)
   const [isAdd, setIsAdd] = useState(false)
   // const [editMemberIndex, setEditMemberIndex] = useState('')
-  // console.log({editMemberIndex})
+  // console.log({ houseworkListInfo })
   const classes = useStyles()
   const history = useHistory()
 
   //media query
-  // const isTablet = useMediaQuery({ query: '(min-device-width: 768px)' })
-  // const isSmartPhone = useMediaQuery({ query: '(max-device-width: 767px)' })
+  const isTablet = useMediaQuery({ query: '(min-device-width: 768px)' })
+  const isSmartPhone = useMediaQuery({ query: '(max-device-width: 767px)' })
 
   const handleBackHome = () => {
     console.log({ history })
@@ -130,12 +130,12 @@ const EditHouseworkList = ({ addHouseworkToFirestore }) => {
 
   //EditMember.jsxでsubmit buttonを押した際に使いたい
   // const handleSubmitMember = async (member) => {
-  //   await updateFirestoreOfMemberInfo(member)
+  //   await updateFirestoreOfhouseworkInfo(member)
   //   handleBackHome()
   // }
 
   //flagをfalseにしてEditHousework画面に戻る
-  const handleBackEditHousework = () => {
+  const handleBackEditHouseworkList = () => {
     setIsEdit(false)
     setIsAdd(false)
   }
@@ -147,7 +147,7 @@ const EditHouseworkList = ({ addHouseworkToFirestore }) => {
         flag="isAdd"
         handleIsAdd={handleIsAdd}
         // membersInfo={membersInfo}
-        handleBackEditHousework={handleBackEditHousework}
+        handleBackEditHouseworkList={handleBackEditHouseworkList}
       />
     )
   } else if (!isAdd && isEdit) {
@@ -155,11 +155,11 @@ const EditHouseworkList = ({ addHouseworkToFirestore }) => {
       <EditMember
         membersInfo={membersInfo}
         editMemberIndex={editMemberIndex}
-        updateFirestoreOfMemberInfo={updateFirestoreOfMemberInfo}
+        updateFirestoreOfhouseworkInfo={updateFirestoreOfhouseworkInfo}
         flag="isEdit"
         handleEditMember={handleEditMember}
         handleIsEdit={handleIsEdit}
-        handleBackEditHousework={handleBackEditHousework}
+        handleBackEditHouseworkList={handleBackEditHouseworkList}
       />
     )
   } else if (!isAdd && !isEdit) {
@@ -185,84 +185,94 @@ const EditHouseworkList = ({ addHouseworkToFirestore }) => {
           }
           className={classes.root}
         >
-          {/* {membersInfo.map((memberInfo, i) => { */}
-          <Card className={classes.card} /* key={i}*/>
-            <CardActionArea
-            // memberInfo={memberInfo}
-            // handleSubmitMember={(member) => handleSubmitMember(member)}
-            // handleSubmitMember={handleSubmitMember}
-            // onClick={() => handleEditMember(i)}
-            >
-              <CardContent className={classes.txtbox}>
-                {/* {isSmartPhone && ( */}
-                {/* <CardContent className={classes.content_area}>
-                <Avatar className={classes.img_sp} variant="circular" />
-                <Typography
-                  align="left"
-                  display="inline"
-                  // gutterBottom
-                  variant="subtitle2"
+          {houseworkListInfo.map((houseworkInfo, i) => {
+            return (
+              <Card className={classes.card} key={i}>
+                <CardActionArea
+                  houseworkInfo={houseworkInfo}
+                  // handleSubmitMember={(member) => handleSubmitMember(member)}
+                  // handleSubmitMember={handleSubmitMember}
+                  // onClick={() => handleEditMember(i)}
                 >
-                  {memberInfo.name}
-                </Typography>
-              </CardContent> */}
-                {/* )} */}
+                  <CardContent className={classes.txtbox}>
+                    {isSmartPhone && (
+                      <CardContent className={classes.content_area}>
+                        <Typography
+                          align="left"
+                          display="inline"
+                          // gutterBottom
+                          variant="subtitle2"
+                        >
+                          {houseworkInfo.name}
+                        </Typography>
+                        <Typography
+                          className={classes.card_txt}
+                          display="inline"
+                          variant="caption"
+                          color="textSecondary"
+                          component="p"
+                        >
+                          {houseworkInfo.earnedPoint}
+                        </Typography>
+                      </CardContent>
+                    )}
 
-                {/* {isTablet && ( */}
-                <CardContent className={classes.content_area}>
-                  <Avatar className={classes.img} variant="circular" />
-                  <Typography
-                    align="left"
-                    display="inline"
-                    // gutterBottom
-                    variant="h5"
-                    component="p"
-                  >
-                    test
-                  </Typography>
-                  <Typography
-                    className={classes.card_txt}
-                    display="inline"
-                    variant="body1"
-                    color="textSecondary"
-                    component="p"
-                  >
-                    1 Lv
-                  </Typography>
-                  <Typography
-                    className={classes.card_txt}
-                    display="inline"
-                    variant="body1"
-                    color="textSecondary"
-                    component="p"
-                  >
-                    1Point
-                  </Typography>
-                </CardContent>
-                {/* )} */}
-              </CardContent>
-            </CardActionArea>
-            <ThemeProvider theme={theme}>
-              {/* <Divider className={classes.divider} orientation="vertical" flexItem />
+                    {isTablet && (
+                      <CardContent className={classes.content_area}>
+                        <Typography
+                          align="left"
+                          display="inline"
+                          // gutterBottom
+                          variant="h5"
+                          component="p"
+                        >
+                          {houseworkInfo.name}
+                        </Typography>
+                        <Typography
+                          className={classes.card_txt}
+                          display="inline"
+                          variant="body1"
+                          color="textSecondary"
+                          component="p"
+                        >
+                          {houseworkInfo.earnedPoint}
+                        </Typography>
+                        <Typography
+                          className={classes.card_txt}
+                          display="inline"
+                          variant="body1"
+                          color="textSecondary"
+                          component="p"
+                        >
+                          {houseworkInfo.description}
+                        </Typography>
+                      </CardContent>
+                    )}
+                  </CardContent>
+                </CardActionArea>
+                <ThemeProvider theme={theme}>
+                  {/* <Divider className={classes.divider} orientation="vertical" flexItem />
                   <IconButton
                     color="primary"
                     aria-label="edit"
-                    memberInfo={memberInfo}
+                    houseworkInfo={houseworkInfo}
                     // handleSubmitMember={(member) => handleSubmitMember(member)}
                     handleSubmitMember={handleSubmitMember}
                     onClick={() => handleEditMember(i)}
                   >
                     <EditIcon />
                   </IconButton> */}
-              <Divider className={classes.divider} orientation="vertical" flexItem />
-              <IconButton
-                color="secondary"
-                /*onClick={() => deleteFirestoreMember(memberInfo.id)}*/ aria-label="delete"
-              >
-                <DeleteIcon />
-              </IconButton>
-            </ThemeProvider>
-          </Card>
+                  <Divider className={classes.divider} orientation="vertical" flexItem />
+                  <IconButton
+                    color="secondary"
+                    /*onClick={() => deleteFirestoreMember(houseworkInfo.id)}*/ aria-label="delete"
+                  >
+                    <DeleteIcon />
+                  </IconButton>
+                </ThemeProvider>
+              </Card>
+            )
+          })}
         </List>
         <Button
           variant="contained"
