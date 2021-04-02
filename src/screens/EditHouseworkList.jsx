@@ -24,6 +24,7 @@ import { ThemeProvider } from '@material-ui/styles'
 import EditMember from './EditMember'
 import AddMember from './AddMember'
 import AddHousework from './AddHousework'
+import BackBtn from '../uikit/BackBtn'
 
 const useStyles = makeStyles(() => ({
   card: {
@@ -165,16 +166,7 @@ const EditHouseworkList = ({ addHouseworkToFirestore, houseworkListInfo }) => {
   } else if (!isAdd && !isEdit) {
     return (
       <Container className={classes.container} maxWidth="sm">
-        <Button
-          variant="text"
-          color="inherit"
-          size="small"
-          className={classes.btn_back}
-          onClick={() => handleBackHome()}
-          startIcon={<ArrowBackIosIcon className={classes.btn_icon} />}
-        >
-          back
-        </Button>
+        <BackBtn handleBack={handleBackHome} />
         <List
           component="nav"
           aria-labelledby="nested-list-subheader"
