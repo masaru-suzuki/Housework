@@ -96,12 +96,7 @@ const theme = createMuiTheme({
   },
 })
 
-const EditHouseworkList = ({
-  addHouseworkToFirestore,
-  houseworkListInfo,
-  updateFirestoreOfHouseworkInfo,
-  updateFirestore,
-}) => {
+const EditHouseworkList = ({ addFirestore, houseworkListInfo, updateFirestore }) => {
   const [isEdit, setIsEdit] = useState(false)
   const [isAdd, setIsAdd] = useState(false)
   const [editHouseworkIndex, setEditHouseworkIndex] = useState('')
@@ -149,7 +144,7 @@ const EditHouseworkList = ({
   if (isAdd && !isEdit) {
     return (
       <AddHousework
-        addHouseworkToFirestore={addHouseworkToFirestore}
+        addFirestore={addFirestore}
         flag="isAdd"
         handleIsAdd={handleIsAdd}
         // HouseworksInfo={houseworkListInfo}

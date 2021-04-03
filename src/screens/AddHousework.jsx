@@ -6,7 +6,7 @@ import SubmitBtn from '../uikit/SubmitBtn'
 import InputField from '../uikit/InputField'
 import { initHousework } from '../initialData'
 
-const AddHousework = ({ handleIsAdd, flag, addHouseworkToFirestore, handleBackEditHouseworkList }) => {
+const AddHousework = ({ handleIsAdd, flag, addFirestore, handleBackEditHouseworkList }) => {
   const [name, setName] = useState('')
   const [earnedPoint, setEarnedPoint] = useState('')
   const [description, setDescription] = useState('')
@@ -67,8 +67,9 @@ const AddHousework = ({ handleIsAdd, flag, addHouseworkToFirestore, handleBackEd
         />
         <SubmitBtn
           value="登録する"
-          firestoreTask={addHouseworkToFirestore}
+          firestoreTask={addFirestore}
           data={housework}
+          targetRef="housework"
           // flag={flag}
           handleBackPage={handleIsAdd} //ここ対応していないのなんでだっけ？？
         />

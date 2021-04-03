@@ -85,7 +85,7 @@ const EditHousework = ({
           // earnedPoint={earnedPoint}
           data={housework}
           updateTarget={['name', 'earnedPoint']}
-          firestoreRef="housework"
+          targetRef="housework"
           handleBackPage={handleBackEditHouseworkList}
         />
       </List>

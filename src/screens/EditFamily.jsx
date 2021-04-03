@@ -94,7 +94,7 @@ const theme = createMuiTheme({
   },
 })
 
-const EditFamily = ({ membersInfo, updateFirestore, addMemberToFirestore, deleteFirestoreMember }) => {
+const EditFamily = ({ membersInfo, updateFirestore, addFirestore, deleteFirestoreMember }) => {
   const [isEdit, setIsEdit] = useState(false)
   const [isAdd, setIsAdd] = useState(false)
   const [editMemberIndex, setEditMemberIndex] = useState('')
@@ -141,7 +141,7 @@ const EditFamily = ({ membersInfo, updateFirestore, addMemberToFirestore, delete
   if (isAdd && !isEdit) {
     return (
       <AddMember
-        addMemberToFirestore={addMemberToFirestore}
+        addFirestore={addFirestore}
         flag="isAdd"
         handleIsAdd={handleIsAdd}
         membersInfo={membersInfo}

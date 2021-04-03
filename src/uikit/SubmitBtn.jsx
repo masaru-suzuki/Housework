@@ -26,7 +26,7 @@ const SubmitBtn = ({
   // updateFirestoreOfMemberInfo,
   firestoreTask,
   updateTarget,
-  firestoreRef,
+  targetRef,
   handleBackPage,
 }) => {
   const classes = useStyles()
@@ -38,7 +38,7 @@ const SubmitBtn = ({
   // let onSubmitEvent = ''
   // if (flag === 'isAdd') {
   const onSubmitEvent = () => {
-    firestoreTask(data, updateTarget, firestoreRef) //data
+    firestoreTask(data, targetRef, updateTarget) //data
     handleBackPage()
   }
   // } else if (flag === 'isEdit') {

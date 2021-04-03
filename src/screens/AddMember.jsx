@@ -6,7 +6,7 @@ import SubmitBtn from '../uikit/SubmitBtn'
 import InputField from '../uikit/InputField'
 import { initMember } from '../initialData'
 
-const AddMember = ({ addMemberToFirestore, handleIsAdd, flag, handleBackEditFamily }) => {
+const AddMember = ({ addFirestore, handleIsAdd, flag, handleBackEditFamily }) => {
   const [name, setName] = useState('')
   const [birth, setBirth] = useState('')
 
@@ -46,7 +46,13 @@ const AddMember = ({ addMemberToFirestore, handleIsAdd, flag, handleBackEditFami
           value={birth}
           handleChange={handleChange}
         />
-        <SubmitBtn value="登録する" firestoreTask={addMemberToFirestore} data={member} handleBackPage={handleIsAdd} />
+        <SubmitBtn
+          value="登録する"
+          firestoreTask={addFirestore}
+          data={member}
+          targetRef="family"
+          handleBackPage={handleIsAdd}
+        />
       </List>
     </Container>
   )

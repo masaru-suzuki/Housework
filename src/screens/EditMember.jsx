@@ -83,7 +83,7 @@ const EditMember = ({ editMemberIndex, membersInfo, updateFirestore, handleIsEdi
           // birth={birth}
           data={member}
           updateTarget={['name', 'birth']}
-          firestoreRef="family"
+          targetRef="family"
           handleBackPage={handleIsEdit}
         />
       </List>
