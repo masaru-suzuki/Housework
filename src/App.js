@@ -79,6 +79,33 @@ const App = () => {
     setIsEdit(true) //isEditで再レンダリングを発火させる
   }
 
+  /**
+   * firebase update task (EditMember , EditHouseworkで使う)
+   * data : submitボタンを押した際に渡ってくるデータ member,housework
+   * updateTarget : 変更する要素 id, name,birth ,earnedPoint
+   * firestoreRef : firestoreのref familyRef, houseworkRef
+   */
+  const updateFirestore = (data, updateTarget, targetRef) => {
+    //登録するRefの判定
+    let firestoreRef = ''
+    if (targetRef === 'family') {
+      firestoreRef = familyRef
+    } else if (targetRef === 'housework') {
+      firestoreRef = houseworkRef
+    } else {
+      console.log('firestore ref is undefined!')
+    }
+    const targetId = data.id
+    //登録するdataを生成
+    const dataArr = updateTarget.map((target) => ({ [target]: data[target] }))
+    //updateTargetListは配列の中にobjectが複数入っている
+    //TODO updateTargetListの型をfirestoreと合わせる(object同士を都合する)
+    const updateData = Object.assign(...dataArr)
+    // console.log({ updateData })
+    firestoreRef.doc(targetId).set(updateData, { merge: true })
+    setIsEdit(true) //isEditで再レンダリングを発火させる
+  }
+
   //firestoreに新しいメンバー情報を登録する
   const addMemberToFirestore = (member) => {
     familyRef.add(member)
@@ -140,7 +167,7 @@ const App = () => {
                   membersInfo={membersInfo}
                   handleEditFamily={handleEditFamily}
                   handleHome={handleHome}
-                  updateFirestoreOfMemberInfo={updateFirestoreOfMemberInfo}
+                  updateFirestore={updateFirestore}
                   addMemberToFirestore={addMemberToFirestore}
                   deleteFirestoreMember={deleteFirestoreMember}
                 />
@@ -153,7 +180,8 @@ const App = () => {
                 <EditHouseworkList
                   houseworkListInfo={houseworkListInfo}
                   addHouseworkToFirestore={addHouseworkToFirestore}
-                  updateFirestoreOfHouseworkInfo={updateFirestoreOfHouseworkInfo}
+                  // updateFirestoreOfHouseworkInfo={updateFirestoreOfHouseworkInfo}
+                  updateFirestore={updateFirestore}
                 />
               )}
             />

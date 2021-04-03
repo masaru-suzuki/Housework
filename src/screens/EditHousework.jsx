@@ -20,7 +20,8 @@ const useStyles = makeStyles(() => ({
 const EditHousework = ({
   editHouseworkIndex,
   houseworkListInfo,
-  updateFirestoreOfHouseworkInfo,
+  // updateFirestoreOfHouseworkInfo,
+  updateFirestore,
   handleBackEditHouseworkList,
 }) => {
   const classes = useStyles()
@@ -35,7 +36,7 @@ const EditHousework = ({
   const handleChange = (event) => {
     const identificationName = event.target.name
     const value = event.target.value
-    console.log({ value })
+    // console.log({ value })
     if (identificationName === 'name') {
       setName(value)
       // housework.name = name //最後の一文字まで更新されない・・・！このターンでは前回setされたstateを参照してしまうから！なぜ？
@@ -78,11 +79,13 @@ const EditHousework = ({
         <SubmitBtn
           value="変更する"
           // id={housework.id}
-          firestoreTask={updateFirestoreOfHouseworkInfo}
+          firestoreTask={updateFirestore}
           // flag={flag}
           // name={name}
           // earnedPoint={earnedPoint}
           data={housework}
+          updateTarget={['name', 'earnedPoint']}
+          firestoreRef="housework"
           handleBackPage={handleBackEditHouseworkList}
         />
       </List>
