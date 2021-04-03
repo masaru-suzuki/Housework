@@ -41,27 +41,31 @@ const App = () => {
     //firebaseが更新された時に、再レンダリングするように、isEditをセット
     setIsEdit(false)
   }
-  // console.log({ houseworkListInfo })
-  //firebaseのデータを更新する
-  //submitボタンが押された時に発火
-  //isEditをtrueにして、更新が終わったら、false にする
-  // const updateFirestoreOfMemberInfo = async (memberId, memberName, memberBirth) => {
-  const updateFirestoreOfMemberInfo = async (member) => {
-    console.log('updating store...', { member })
-    const memberId = member.id
-    const memberName = member.name
-    const memberBirth = member.birth
-    familyRef.doc(memberId).set(
-      {
-        name: memberName,
-        birth: memberBirth,
-      },
-      { merge: true },
-    )
-    // await sleep1Sec()
-    // console.log('store updated')
+
+  const getFirestoreRef = (targetRef) =>
+    targetRef === 'family'
+      ? familyRef
+      : targetRef === 'housework'
+      ? houseworkRef
+      : console.log('firestore ref is undefined!')
+  /**
+   * firebase update task (EditMember , EditHouseworkで使う)
+   * data : submitボタンを押した際に渡ってくるデータ member,housework
+   * updateTarget : 変更する要素 id, name,birth ,earnedPoint
+   * firestoreRef : firestoreのref familyRef, houseworkRef
+   */
+  const updateFirestore = (data, targetRef, updateTarget) => {
+    //登録するRefの判定
+    let firestoreRef = getFirestoreRef(targetRef)
+    const targetId = data.id
+    //登録するdataを生成
+    const dataArr = updateTarget.map((target) => ({ [target]: data[target] }))
+    //updateTargetListは配列の中にobjectが複数入っている
+    //TODO updateTargetListの型をfirestoreと合わせる(object同士を都合する)
+    const updateData = Object.assign(...dataArr)
+    // console.log({ updateData })
+    firestoreRef.doc(targetId).set(updateData, { merge: true })
     setIsEdit(true) //isEditで再レンダリングを発火させる
-    // console.log(isEdit) //この時点でisEditがfalseになるのはなぜ？
   }
 
   //firestoreに新しいメンバー情報を登録する
@@ -85,10 +89,10 @@ const App = () => {
       })
   }
 
-  //firestoreに家事情報を追加する
-  const addHouseworkToFirestore = (data) => {
-    console.log('add housework', { data })
-    houseworkRef.add(data)
+  const addFirestore = (data, targetRef) => {
+    const firestoreRef = getFirestoreRef(targetRef)
+    firestoreRef.add(data)
+    setIsEdit(true) //isEditで再レンダリングを発火させる
   }
 
   useEffect(() => {
@@ -125,8 +129,8 @@ const App = () => {
                   membersInfo={membersInfo}
                   handleEditFamily={handleEditFamily}
                   handleHome={handleHome}
-                  updateFirestoreOfMemberInfo={updateFirestoreOfMemberInfo}
-                  addMemberToFirestore={addMemberToFirestore}
+                  updateFirestore={updateFirestore}
+                  addFirestore={addFirestore}
                   deleteFirestoreMember={deleteFirestoreMember}
                 />
               )}
@@ -137,7 +141,9 @@ const App = () => {
               render={() => (
                 <EditHouseworkList
                   houseworkListInfo={houseworkListInfo}
-                  addHouseworkToFirestore={addHouseworkToFirestore}
+                  addFirestore={addFirestore}
+                  // updateFirestoreOfHouseworkInfo={updateFirestoreOfHouseworkInfo}
+                  updateFirestore={updateFirestore}
                 />
               )}
             />

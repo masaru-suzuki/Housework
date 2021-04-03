@@ -17,58 +17,53 @@ const useStyles = makeStyles(() => ({
   },
 }))
 
-const EditMember = ({
-  editMemberIndex,
-  membersInfo,
-  updateFirestoreOfMemberInfo,
-  handleIsEdit,
-  flag,
-  handleBackEditFamily,
+const EditHousework = ({
+  editHouseworkIndex,
+  houseworkListInfo,
+  // updateFirestoreOfHouseworkInfo,
+  updateFirestore,
+  handleBackEditHouseworkList,
 }) => {
   const classes = useStyles()
-  const member = membersInfo[editMemberIndex]
+  const housework = houseworkListInfo[editHouseworkIndex]
   const history = useHistory()
   const [name, setName] = useState()
-  const [birth, setBirth] = useState()
+  const [earnedPoint, setEarnedPoint] = useState()
 
-  //InputFeildに渡すnameとbirth をstateで管理して、<SubmitBtn>に渡す
-  //その際にfamiliIdとmemberIdを渡す
+  //InputFeildに渡すnameとearnedPoint をstateで管理して、<SubmitBtn>に渡す
+  //その際にfamiliIdとhouseworkIdを渡す
   //その情報をApp.jsxに持っていって、firebaseを更新する
   const handleChange = (event) => {
     const identificationName = event.target.name
     const value = event.target.value
-    console.log({ value })
+    // console.log({ value })
     if (identificationName === 'name') {
       setName(value)
-      // member.name = name //最後の一文字まで更新されない・・・！このターンでは前回setされたstateを参照してしまうから！なぜ？
-      member.name = value
-    } else if (identificationName === 'birth') {
-      setBirth(value)
-      member.birth = value
+      // housework.name = name //最後の一文字まで更新されない・・・！このターンでは前回setされたstateを参照してしまうから！なぜ？
+      housework.name = value
+    } else if (identificationName === 'earnedPoint') {
+      setEarnedPoint(value)
+      housework.earnedPoint = value
     }
-    // console.log({ member })
+    // console.log({ housework })
   }
-  // console.log({ member })
+  // console.log({ housework })
 
-  // member.name = name
-  // member.birth = birth
-  const handelbackEditFamily = () => {
-    history.push('/EditFamily')
-  }
+  // housework.name = name
+  // housework.earnedPoint = earnedPoint
   useEffect(() => {
-    setName(member.name)
-    setBirth(member.birth)
+    setName(housework.name)
+    setEarnedPoint(housework.earnedPoint)
   }, [])
   return (
     <Container>
-      <BackBtn handleBack={handleBackEditFamily} />
-      <button onClick={() => handelbackEditFamily()}>modo</button>
+      <BackBtn handleBack={handleBackEditHouseworkList} />
       <List
         component="nav"
         aria-labelledby="nested-list-subheader"
         subheader={
           <ListSubheader disableSticky component="div">
-            家族編集
+            家事編集
           </ListSubheader>
         }
         className={classes.root}
@@ -76,24 +71,26 @@ const EditMember = ({
         <InputField required={true} identificationName="name" label="名前" value={name} handleChange={handleChange} />
         <InputField
           required={true}
-          identificationName="birth"
-          label="生年月日"
-          value={birth}
+          identificationName="earnedPoint"
+          label="獲得ポイント"
+          value={earnedPoint}
           handleChange={handleChange}
         />
         <SubmitBtn
           value="変更する"
-          // id={member.id}
-          firestoreTask={updateFirestoreOfMemberInfo}
+          // id={housework.id}
+          firestoreTask={updateFirestore}
           // flag={flag}
           // name={name}
-          // birth={birth}
-          data={member}
-          handleBackPage={handleIsEdit}
+          // earnedPoint={earnedPoint}
+          data={housework}
+          updateTarget={['name', 'earnedPoint']}
+          targetRef="housework"
+          handleBackPage={handleBackEditHouseworkList}
         />
       </List>
     </Container>
   )
 }
 
-export default EditMember
+export default EditHousework
