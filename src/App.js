@@ -42,12 +42,14 @@ const App = () => {
     setIsEdit(false)
   }
 
+  //登録するRefの判定
   const getFirestoreRef = (targetRef) =>
     targetRef === 'family'
       ? familyRef
       : targetRef === 'housework'
       ? houseworkRef
       : console.log('firestore ref is undefined!')
+
   /**
    * firebase update task (EditMember , EditHouseworkで使う)
    * data : submitボタンを押した際に渡ってくるデータ member,housework
@@ -55,44 +57,37 @@ const App = () => {
    * firestoreRef : firestoreのref familyRef, houseworkRef
    */
   const updateFirestore = (data, targetRef, updateTarget) => {
-    //登録するRefの判定
-    let firestoreRef = getFirestoreRef(targetRef)
+    const firestoreRef = getFirestoreRef(targetRef)
     const targetId = data.id
     //登録するdataを生成
     const dataArr = updateTarget.map((target) => ({ [target]: data[target] }))
-    //updateTargetListは配列の中にobjectが複数入っている
-    //TODO updateTargetListの型をfirestoreと合わせる(object同士を都合する)
+    //updateTargetListは配列の中にobjectが複数入っているので、updateTargetListの型をfirestoreと合わせる(object同士を都合する)
     const updateData = Object.assign(...dataArr)
     // console.log({ updateData })
     firestoreRef.doc(targetId).set(updateData, { merge: true })
     setIsEdit(true) //isEditで再レンダリングを発火させる
   }
 
-  //firestoreに新しいメンバー情報を登録する
-  const addMemberToFirestore = (member) => {
-    familyRef.add(member)
+  //firestoreへデータの登録
+  const addFirestore = (data, targetRef) => {
+    const firestoreRef = getFirestoreRef(targetRef)
+    firestoreRef.add(data)
     setIsEdit(true) //isEditで再レンダリングを発火させる
   }
 
+  //TODOfunctionの共通化
   //firestoreのメンバーの削除
-  const deleteFirestoreMember = (id) => {
-    console.log('delete member', { id })
-    familyRef
+  const deleteFirestore = (targetRef, id) => {
+    const firestoreRef = getFirestoreRef(targetRef)
+    firestoreRef
       .doc(id)
       .delete()
       .then(() => {
-        console.log(`id=#{id}を削除しました。`)
         setIsEdit(true) //isEditで再レンダリングを発火させる
       })
       .catch((error) => {
         console.error('Error removeing document: ', error)
       })
-  }
-
-  const addFirestore = (data, targetRef) => {
-    const firestoreRef = getFirestoreRef(targetRef)
-    firestoreRef.add(data)
-    setIsEdit(true) //isEditで再レンダリングを発火させる
   }
 
   useEffect(() => {
@@ -101,15 +96,6 @@ const App = () => {
     getFirestoreMock(houseworkRef, setHouseworkListInfo)
   }, [isEdit])
 
-  //画面遷移
-  const handleHome = () => {
-    console.log('move to Home')
-    history.push({ pathname: '/' })
-  }
-  const handleEditFamily = () => {
-    console.log('move to EditFamily')
-    history.push({ pathname: '/EditFamily' })
-  }
   //今度はrecomposeのlibraryを使ってpropsを渡すのに挑戦してみる
   return (
     <Router>
@@ -127,11 +113,9 @@ const App = () => {
               render={() => (
                 <EditFamily
                   membersInfo={membersInfo}
-                  handleEditFamily={handleEditFamily}
-                  handleHome={handleHome}
                   updateFirestore={updateFirestore}
                   addFirestore={addFirestore}
-                  deleteFirestoreMember={deleteFirestoreMember}
+                  deleteFirestore={deleteFirestore}
                 />
               )}
             />
@@ -144,6 +128,7 @@ const App = () => {
                   addFirestore={addFirestore}
                   // updateFirestoreOfHouseworkInfo={updateFirestoreOfHouseworkInfo}
                   updateFirestore={updateFirestore}
+                  deleteFirestore={deleteFirestore}
                 />
               )}
             />
