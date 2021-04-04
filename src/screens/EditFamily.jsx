@@ -94,7 +94,7 @@ const theme = createMuiTheme({
   },
 })
 
-const EditFamily = ({ membersInfo, updateFirestore, addFirestore, deleteFirestoreMember }) => {
+const EditFamily = ({ membersInfo, updateFirestore, addFirestore, deleteFirestore }) => {
   const [isEdit, setIsEdit] = useState(false)
   const [isAdd, setIsAdd] = useState(false)
   const [editMemberIndex, setEditMemberIndex] = useState('')
@@ -256,7 +256,7 @@ const EditFamily = ({ membersInfo, updateFirestore, addFirestore, deleteFirestor
                   <Divider className={classes.divider} orientation="vertical" flexItem />
                   <IconButton
                     color="secondary"
-                    onClick={() => deleteFirestoreMember(memberInfo.id)}
+                    onClick={() => deleteFirestore('family', memberInfo.id)}
                     aria-label="delete"
                   >
                     <DeleteIcon />

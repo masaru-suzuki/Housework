@@ -45,9 +45,6 @@ const EditMember = ({ editMemberIndex, membersInfo, updateFirestore, handleIsEdi
 
   // member.name = name
   // member.birth = birth
-  const handelbackEditFamily = () => {
-    history.push('/EditFamily')
-  }
   useEffect(() => {
     setName(member.name)
     setBirth(member.birth)
@@ -55,7 +52,6 @@ const EditMember = ({ editMemberIndex, membersInfo, updateFirestore, handleIsEdi
   return (
     <Container>
       <BackBtn handleBack={handleBackEditFamily} />
-      <button onClick={() => handelbackEditFamily()}>modo</button>
       <List
         component="nav"
         aria-labelledby="nested-list-subheader"
