@@ -5,17 +5,22 @@ import BackBtn from '../uikit/BackBtn'
 import SubmitBtn from '../uikit/SubmitBtn'
 import InputField from '../uikit/InputField'
 import { initHousework } from '../initialData'
+import Button from '@material-ui/core/Button'
 
-const AddHousework = ({ handleIsAdd, flag, addFirestore, handleBackEditHouseworkList }) => {
+const AddHousework = ({ handleIsAdd, flag, addHousework, handleBackEditHouseworkList }) => {
   const [name, setName] = useState('')
   const [earnedPoint, setEarnedPoint] = useState('')
   const [description, setDescription] = useState('')
-  let housework = initHousework()
 
-  housework.name = name
-  housework.earnedPoint = earnedPoint
-  housework.description = description
-  console.log({ housework })
+  //TODO: houseworkっていうobjectを使うほうがすっきりして良いと思う。
+  const [housework, setHousework] = useState({})
+  // let housework = initHousework()
+
+  //FIXME: これは何? Reactはimmutableにしないといけないからこれはやってはいけない。というかhandleChangeとやってることかぶってる
+  // housework.name = name
+  // housework.earnedPoint = earnedPoint
+  // housework.description = description
+  // console.log({ housework })
 
   //textare への入力をする
   const handleChange = (event) => {
@@ -30,6 +35,14 @@ const AddHousework = ({ handleIsAdd, flag, addFirestore, handleBackEditHousework
     } else if (identificationName === 'description') {
       setDescription(value)
     }
+  }
+
+  const handleSubmit = () => {
+    addHousework({
+      name,
+      earnedPoint,
+      description,
+    })
   }
 
   return (
@@ -65,14 +78,7 @@ const AddHousework = ({ handleIsAdd, flag, addFirestore, handleBackEditHousework
           value={description}
           handleChange={handleChange}
         />
-        <SubmitBtn
-          value="登録する"
-          firestoreTask={addFirestore}
-          data={housework}
-          targetRef="housework"
-          // flag={flag}
-          handleBackPage={handleIsAdd} //ここ対応していないのなんでだっけ？？
-        />
+        <SubmitBtn onClick={handleSubmit} value="submit" />
       </List>
     </Container>
   )
