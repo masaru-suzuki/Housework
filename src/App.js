@@ -91,10 +91,17 @@ const App = () => {
   }
 
   //firestoreへデータの登録
-  const addFirestore = (data, targetRef) => {
-    const firestoreRef = getFirestoreRef(targetRef)
-    firestoreRef.add(data)
+  const addFirestore = (data, refName) => {
+    const firestoreRef = getFirestoreRef(refName)
+    //TODO: remove comment
+    // firestoreRef.add(data)
+    console.log({ data })
     setIsEdit(true) //isEditで再レンダリングを発火させる
+  }
+
+  //housework専用のfunctionをつくる
+  const addHousework = (data) => {
+    addFirestore(data, 'housework')
   }
 
   //TODOfunctionの共通化
@@ -154,7 +161,7 @@ const App = () => {
               render={() => (
                 <EditHouseworkList
                   houseworkListInfo={houseworkListInfo}
-                  addFirestore={addFirestore}
+                  addHousework={addHousework}
                   // updateFirestoreOfHouseworkInfo={updateFirestoreOfHouseworkInfo}
                   updateFirestore={updateFirestore}
                   deleteFirestore={deleteFirestore}

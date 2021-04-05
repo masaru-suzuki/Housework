@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import { Button } from '@material-ui/core'
 const useStyles = makeStyles(() => ({
   btn: {
-    marginBottom: 24,
+    marginBottom: 24, //FIXME: 共通コンポーネントにmarginとかpaddingとかを入れると、めっちゃ使いづらくなるからやめたほうがいい
   },
 }))
 
@@ -17,17 +17,18 @@ const useStyles = makeStyles(() => ({
  *  firestoreTask = firestore update or add (member information or housework infomation)
  */
 const SubmitBtn = ({
-  value,
+  value, //FIXME: should be text
   data,
+  onClick,
   // member,
   // name,
   // birth,
   // id,
   // updateFirestoreOfMemberInfo,
-  firestoreTask,
-  updateTarget,
+  firestoreTask, //TODO: 名前がおかしい。これだとfirestoreと一緒にしか使えない感じに見える。
+  updateTarget, //TODO: これも名前がおかしい。targetRefとupdateTargetは何が違うの?ってなる。
   targetRef,
-  handleBackPage,
+  handleBackPage, //TODO: handleBackPageはfireSstoreTaskの中に含まれてた方がいい。
 }) => {
   const classes = useStyles()
   // console.log({ data })
@@ -38,6 +39,10 @@ const SubmitBtn = ({
   // let onSubmitEvent = ''
   // if (flag === 'isAdd') {
   const onSubmitEvent = () => {
+    //TODO: 他のコンポーネントがbreakしないようにifを使用。後でonClickのみにする
+    if (onClick) {
+      return onClick()
+    }
     firestoreTask(data, targetRef, updateTarget) //data
     handleBackPage()
   }

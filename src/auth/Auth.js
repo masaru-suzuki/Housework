@@ -3,8 +3,8 @@ import { Redirect } from 'react-router-dom'
 import firebase from '../firebase'
 import LoadingOverlay from 'react-loading-overlay'
 
-//uidをエクスポート
-let uid = ''
+//uidをエクスポート. mock id
+let uid = 'u9EnmX300LQsunRawSUwwrhEVhS2'
 export const getUid = () => uid
 
 class Auth extends React.Component {
