@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import firebase from './firebase'
 import './App.css'
 import { BrowserRouter as Router, Switch, Route, useHistory } from 'react-router-dom'
-import Auth from './auth/Auth'
+import Auth, { getUid } from './auth/Auth'
 //screens
 import Home from './screens/Home'
 import EditFamily from './screens/EditFamily'
@@ -15,8 +15,6 @@ import EditMember from './screens/EditMember'
 
 //comberListMocにisEditを入れて、このidEditを変更したら、firebaseに登録して、isEditをfalseにすればいいのかな？
 const db = firebase.firestore()
-const familyRef = db.collection('family').doc('u9EnmX300LQsunRawSUwwrhEVhS2').collection('member')
-const houseworkRef = db.collection('family').doc('u9EnmX300LQsunRawSUwwrhEVhS2').collection('housework')
 
 const makeListFromCollection = (querySnapshot) => {
   const list = []
@@ -31,12 +29,36 @@ const App = () => {
   const [membersInfo, setMembersInfo] = useState([])
   const [houseworkListInfo, setHouseworkListInfo] = useState([])
   const [isEdit, setIsEdit] = useState(false)
+  const [uid, setUid] = useState('')
   const history = useHistory()
 
+  // console.log(uid)
+  //
+  const familyRef = db.collection('family').doc('u9EnmX300LQsunRawSUwwrhEVhS2').collection('member')
+  const houseworkRef = db.collection('family').doc('u9EnmX300LQsunRawSUwwrhEVhS2').collection('housework')
   //firebaseの情報を取得
-  const getFirestoreMock = async (firestoreRef, stateSetter) => {
-    // console.log('getting data ...')
-    const data = makeListFromCollection(await firestoreRef.get())
+  // const getFirebeseUid = async () => {
+  //   console.log('getting userID...')
+  //   const id = await getUid()
+  //   setUid(id)
+  //   console.log(uid)
+  // }
+  // const getFirestoreMock = async (firestoreRef, stateSetter) => {
+  //   const data = makeListFromCollection(await firestoreRef.get())
+  //   stateSetter(data.filter((v) => typeof v.name === 'string'))
+  //   //firebaseが更新された時に、再レンダリングするように、isEditをセット
+  //   setIsEdit(false)
+  // }
+
+  //どういうふうに非同期処理にしたらいいのか分からない・・・！
+  const getRef = (uid, targetRef) => {
+    return db.collection('family').doc(uid).collection(targetRef)
+  }
+  const getFirestoreMock = async (targetRef, stateSetter) => {
+    const id = await getUid()
+    setUid(await getUid) //この式の方に対しては効果がありませんってなるのなんで？
+    const Ref = await getRef(id, targetRef)
+    const data = makeListFromCollection(await Ref.get())
     stateSetter(data.filter((v) => typeof v.name === 'string'))
     //firebaseが更新された時に、再レンダリングするように、isEditをセット
     setIsEdit(false)
@@ -91,9 +113,12 @@ const App = () => {
   }
 
   useEffect(() => {
+    //userIDをセット
+    console.log(getUid())
+    console.log('get id')
     //submitがclickされるたびにfirestoreのデータを引っ張ってきて更新する
-    getFirestoreMock(familyRef, setMembersInfo)
-    getFirestoreMock(houseworkRef, setHouseworkListInfo)
+    getFirestoreMock('family', setMembersInfo)
+    getFirestoreMock('housework', setHouseworkListInfo)
   }, [isEdit])
 
   //今度はrecomposeのlibraryを使ってpropsを渡すのに挑戦してみる
@@ -105,7 +130,11 @@ const App = () => {
         {/* 以下認証のみ */}
         <Auth>
           <Switch>
-            <Route exact path="/" render={() => <Home membersInfo={membersInfo} />} />
+            <Route
+              exact
+              path="/"
+              render={() => <Home membersInfo={membersInfo} houseworkListInfo={houseworkListInfo} />}
+            />
             <Route exact path="/profile" component={Profile} />
             <Route
               exact
