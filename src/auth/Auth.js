@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Redirect } from 'react-router-dom'
 import firebase from '../firebase'
 import LoadingOverlay from 'react-loading-overlay'
@@ -6,6 +6,15 @@ import LoadingOverlay from 'react-loading-overlay'
 //uidをエクスポート. mock id
 let uid = 'u9EnmX300LQsunRawSUwwrhEVhS2'
 export const getUid = () => uid
+
+export const useAuth = () => {
+  //TODO: contextにする
+  const [userId, setUserId] = useState(undefined)
+  firebase.auth().onAuthStateChanged((user) => {
+    setUserId(user?.uid)
+  })
+  return { userId }
+}
 
 class Auth extends React.Component {
   state = {

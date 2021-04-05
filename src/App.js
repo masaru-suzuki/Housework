@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import firebase from './firebase'
 import './App.css'
-import { BrowserRouter as Router, Switch, Route, useHistory } from 'react-router-dom'
-import Auth, { getUid } from './auth/Auth'
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
+import Auth, { useAuth } from './auth/Auth'
 //screens
 import Home from './screens/Home'
 import EditFamily from './screens/EditFamily'
@@ -26,51 +26,23 @@ const makeListFromCollection = (querySnapshot) => {
 }
 // firebaseからdetaを取得
 const App = () => {
+  const { userId } = useAuth()
+
   const [membersInfo, setMembersInfo] = useState([])
   const [houseworkListInfo, setHouseworkListInfo] = useState([])
   const [isEdit, setIsEdit] = useState(false)
-  const [uid, setUid] = useState('')
-  const history = useHistory()
-
-  // console.log(uid)
-  //
-  const familyRef = db.collection('family').doc('u9EnmX300LQsunRawSUwwrhEVhS2').collection('member')
-  const houseworkRef = db.collection('family').doc('u9EnmX300LQsunRawSUwwrhEVhS2').collection('housework')
-  //firebaseの情報を取得
-  // const getFirebeseUid = async () => {
-  //   console.log('getting userID...')
-  //   const id = await getUid()
-  //   setUid(id)
-  //   console.log(uid)
-  // }
-  // const getFirestoreMock = async (firestoreRef, stateSetter) => {
-  //   const data = makeListFromCollection(await firestoreRef.get())
-  //   stateSetter(data.filter((v) => typeof v.name === 'string'))
-  //   //firebaseが更新された時に、再レンダリングするように、isEditをセット
-  //   setIsEdit(false)
-  // }
 
   //どういうふうに非同期処理にしたらいいのか分からない・・・！
-  const getRef = (uid, targetRef) => {
-    return db.collection('family').doc(uid).collection(targetRef)
+  const getRef = (refName) => {
+    return db.collection('family').doc(userId).collection(refName)
   }
-  const getFirestoreMock = async (targetRef, stateSetter) => {
-    const id = await getUid()
-    setUid(await getUid) //この式の方に対しては効果がありませんってなるのなんで？
-    const Ref = await getRef(id, targetRef)
+  const getFirestoreMock = async (refName, stateSetter) => {
+    const Ref = await getRef(refName)
     const data = makeListFromCollection(await Ref.get())
     stateSetter(data.filter((v) => typeof v.name === 'string'))
     //firebaseが更新された時に、再レンダリングするように、isEditをセット
     setIsEdit(false)
   }
-
-  //登録するRefの判定
-  const getFirestoreRef = (targetRef) =>
-    targetRef === 'family'
-      ? familyRef
-      : targetRef === 'housework'
-      ? houseworkRef
-      : console.log('firestore ref is undefined!')
 
   /**
    * firebase update task (EditMember , EditHouseworkで使う)
@@ -78,8 +50,9 @@ const App = () => {
    * updateTarget : 変更する要素 id, name,birth ,earnedPoint
    * firestoreRef : firestoreのref familyRef, houseworkRef
    */
-  const updateFirestore = (data, targetRef, updateTarget) => {
-    const firestoreRef = getFirestoreRef(targetRef)
+  const updateFirestore = (data, refName, updateTarget) => {
+    //TODO: updateTargetをparametersから削除する
+    const firestoreRef = getRef(refName)
     const targetId = data.id
     //登録するdataを生成
     const dataArr = updateTarget.map((target) => ({ [target]: data[target] }))
@@ -92,10 +65,8 @@ const App = () => {
 
   //firestoreへデータの登録
   const addFirestore = (data, refName) => {
-    const firestoreRef = getFirestoreRef(refName)
-    //TODO: remove comment
-    // firestoreRef.add(data)
-    console.log({ data })
+    const firestoreRef = getRef(refName)
+    firestoreRef.add(data)
     setIsEdit(true) //isEditで再レンダリングを発火させる
   }
 
@@ -106,8 +77,8 @@ const App = () => {
 
   //TODOfunctionの共通化
   //firestoreのメンバーの削除
-  const deleteFirestore = (targetRef, id) => {
-    const firestoreRef = getFirestoreRef(targetRef)
+  const deleteFirestore = (refName, id) => {
+    const firestoreRef = getRef(refName)
     firestoreRef
       .doc(id)
       .delete()
@@ -120,13 +91,12 @@ const App = () => {
   }
 
   useEffect(() => {
-    //userIDをセット
-    console.log(getUid())
-    console.log('get id')
+    if (!userId) return
+
     //submitがclickされるたびにfirestoreのデータを引っ張ってきて更新する
     getFirestoreMock('family', setMembersInfo)
     getFirestoreMock('housework', setHouseworkListInfo)
-  }, [isEdit])
+  }, [isEdit, userId])
 
   //今度はrecomposeのlibraryを使ってpropsを渡すのに挑戦してみる
   return (
