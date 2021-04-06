@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import firebase from './firebase'
 import './App.css'
-import { BrowserRouter as Router, Switch, Route, useHistory } from 'react-router-dom'
-import Auth from './auth/Auth'
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
+import Auth, { useAuth } from './auth/Auth'
 //screens
 import Home from './screens/Home'
 import EditFamily from './screens/EditFamily'
@@ -15,8 +15,6 @@ import EditMember from './screens/EditMember'
 
 //comberListMocにisEditを入れて、このidEditを変更したら、firebaseに登録して、isEditをfalseにすればいいのかな？
 const db = firebase.firestore()
-const familyRef = db.collection('family').doc('u9EnmX300LQsunRawSUwwrhEVhS2').collection('member')
-const houseworkRef = db.collection('family').doc('u9EnmX300LQsunRawSUwwrhEVhS2').collection('housework')
 
 const makeListFromCollection = (querySnapshot) => {
   const list = []
@@ -28,27 +26,23 @@ const makeListFromCollection = (querySnapshot) => {
 }
 // firebaseからdetaを取得
 const App = () => {
+  const { userId } = useAuth()
+
   const [membersInfo, setMembersInfo] = useState([])
   const [houseworkListInfo, setHouseworkListInfo] = useState([])
   const [isEdit, setIsEdit] = useState(false)
-  const history = useHistory()
 
-  //firebaseの情報を取得
-  const getFirestoreMock = async (firestoreRef, stateSetter) => {
-    // console.log('getting data ...')
-    const data = makeListFromCollection(await firestoreRef.get())
+  //どういうふうに非同期処理にしたらいいのか分からない・・・！
+  const getRef = (refName) => {
+    return db.collection('family').doc(userId).collection(refName)
+  }
+  const getFirestoreMock = async (refName, stateSetter) => {
+    const Ref = await getRef(refName)
+    const data = makeListFromCollection(await Ref.get())
     stateSetter(data.filter((v) => typeof v.name === 'string'))
     //firebaseが更新された時に、再レンダリングするように、isEditをセット
     setIsEdit(false)
   }
-
-  //登録するRefの判定
-  const getFirestoreRef = (targetRef) =>
-    targetRef === 'family'
-      ? familyRef
-      : targetRef === 'housework'
-      ? houseworkRef
-      : console.log('firestore ref is undefined!')
 
   /**
    * firebase update task (EditMember , EditHouseworkで使う)
@@ -56,8 +50,9 @@ const App = () => {
    * updateTarget : 変更する要素 id, name,birth ,earnedPoint
    * firestoreRef : firestoreのref familyRef, houseworkRef
    */
-  const updateFirestore = (data, targetRef, updateTarget) => {
-    const firestoreRef = getFirestoreRef(targetRef)
+  const updateFirestore = (data, refName, updateTarget) => {
+    //TODO: updateTargetをparametersから削除する
+    const firestoreRef = getRef(refName)
     const targetId = data.id
     //登録するdataを生成
     const dataArr = updateTarget.map((target) => ({ [target]: data[target] }))
@@ -69,16 +64,21 @@ const App = () => {
   }
 
   //firestoreへデータの登録
-  const addFirestore = (data, targetRef) => {
-    const firestoreRef = getFirestoreRef(targetRef)
+  const addFirestore = (data, refName) => {
+    const firestoreRef = getRef(refName)
     firestoreRef.add(data)
     setIsEdit(true) //isEditで再レンダリングを発火させる
   }
 
+  //housework専用のfunctionをつくる
+  const addHousework = (data) => {
+    addFirestore(data, 'housework')
+  }
+
   //TODOfunctionの共通化
   //firestoreのメンバーの削除
-  const deleteFirestore = (targetRef, id) => {
-    const firestoreRef = getFirestoreRef(targetRef)
+  const deleteFirestore = (refName, id) => {
+    const firestoreRef = getRef(refName)
     firestoreRef
       .doc(id)
       .delete()
@@ -91,10 +91,12 @@ const App = () => {
   }
 
   useEffect(() => {
+    if (!userId) return
+
     //submitがclickされるたびにfirestoreのデータを引っ張ってきて更新する
-    getFirestoreMock(familyRef, setMembersInfo)
-    getFirestoreMock(houseworkRef, setHouseworkListInfo)
-  }, [isEdit])
+    getFirestoreMock('family', setMembersInfo)
+    getFirestoreMock('housework', setHouseworkListInfo)
+  }, [isEdit, userId])
 
   //今度はrecomposeのlibraryを使ってpropsを渡すのに挑戦してみる
   return (
@@ -105,7 +107,11 @@ const App = () => {
         {/* 以下認証のみ */}
         <Auth>
           <Switch>
-            <Route exact path="/" render={() => <Home membersInfo={membersInfo} />} />
+            <Route
+              exact
+              path="/"
+              render={() => <Home membersInfo={membersInfo} houseworkListInfo={houseworkListInfo} />}
+            />
             <Route exact path="/profile" component={Profile} />
             <Route
               exact
@@ -125,7 +131,7 @@ const App = () => {
               render={() => (
                 <EditHouseworkList
                   houseworkListInfo={houseworkListInfo}
-                  addFirestore={addFirestore}
+                  addHousework={addHousework}
                   // updateFirestoreOfHouseworkInfo={updateFirestoreOfHouseworkInfo}
                   updateFirestore={updateFirestore}
                   deleteFirestore={deleteFirestore}

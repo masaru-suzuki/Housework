@@ -1,7 +1,20 @@
-import React from 'react'
-import {Redirect} from 'react-router-dom'
+import React, { useState } from 'react'
+import { Redirect } from 'react-router-dom'
 import firebase from '../firebase'
 import LoadingOverlay from 'react-loading-overlay'
+
+//uidをエクスポート. mock id
+let uid = 'u9EnmX300LQsunRawSUwwrhEVhS2'
+export const getUid = () => uid
+
+export const useAuth = () => {
+  //TODO: contextにする
+  const [userId, setUserId] = useState(undefined)
+  firebase.auth().onAuthStateChanged((user) => {
+    setUserId(user?.uid)
+  })
+  return { userId }
+}
 
 class Auth extends React.Component {
   state = {
@@ -20,6 +33,8 @@ class Auth extends React.Component {
       if (user) {
         // console.log("if userログインしている");
         //してる
+        // console.log(user.uid)
+        uid = user.uid
         if (this._isMounted) {
           this.setState({
             signinCheck: true,
@@ -48,7 +63,7 @@ class Auth extends React.Component {
     if (!this.state.signinCheck) {
       return (
         <LoadingOverlay active={true} spinner text="Loading...">
-          <div style={{height: '100vh', width: '100vw'}} />
+          <div style={{ height: '100vh', width: '100vw' }} />
         </LoadingOverlay>
       )
     }
@@ -56,6 +71,7 @@ class Auth extends React.Component {
     //チェックが終わりかつ
     if (this.state.signedIn) {
       //サインインしてるとき（そのまま表示）
+      // return this.props.children
       return this.props.children
     } else {
       //してないとき（ログイン画面にリダイレクト）

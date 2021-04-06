@@ -1,7 +1,7 @@
 import React from 'react'
 import DrawerNav from '../components/DrawerNav'
-import {makeStyles} from '@material-ui/core/styles'
-import {Container, Grid} from '@material-ui/core'
+import { makeStyles } from '@material-ui/core/styles'
+import { Container, Grid } from '@material-ui/core'
 import MemberCard from '../components/MemberCard'
 
 const useStyles = makeStyles(() => ({
@@ -11,8 +11,8 @@ const useStyles = makeStyles(() => ({
   },
 }))
 
-const Home = ({membersInfo}) => {
-  // console.log({membersInfo})
+const Home = ({ membersInfo, houseworkListInfo }) => {
+  console.log({ houseworkListInfo })
   const classes = useStyles()
   return (
     <Container className={classes.root} maxWidth="sm">
