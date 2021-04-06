@@ -94,7 +94,7 @@ const theme = createMuiTheme({
   },
 })
 
-const EditFamily = ({ membersInfo, updateFirestore, addFirestore, deleteFirestore }) => {
+const EditFamily = ({ membersInfo, updateFirestoreMember, addFiestoreHousework, deleteFirestore }) => {
   const [isEdit, setIsEdit] = useState(false)
   const [isAdd, setIsAdd] = useState(false)
   const [editMemberIndex, setEditMemberIndex] = useState('')
@@ -128,7 +128,7 @@ const EditFamily = ({ membersInfo, updateFirestore, addFirestore, deleteFirestor
 
   //EditMember.jsxでsubmit buttonを押した際に使いたい
   const handleSubmitMember = async (member) => {
-    await updateFirestore(member)
+    await updateFirestoreMember(member)
     handleBackHome()
   }
 
@@ -141,7 +141,7 @@ const EditFamily = ({ membersInfo, updateFirestore, addFirestore, deleteFirestor
   if (isAdd && !isEdit) {
     return (
       <AddMember
-        addFirestore={addFirestore}
+        addFiestoreHousework={addFiestoreHousework}
         flag="isAdd"
         handleIsAdd={handleIsAdd}
         membersInfo={membersInfo}
@@ -153,7 +153,7 @@ const EditFamily = ({ membersInfo, updateFirestore, addFirestore, deleteFirestor
       <EditMember
         membersInfo={membersInfo}
         editMemberIndex={editMemberIndex}
-        updateFirestore={updateFirestore}
+        updateFirestoreMember={updateFirestoreMember}
         flag="isEdit"
         handleEditMember={handleEditMember}
         handleIsEdit={handleIsEdit}

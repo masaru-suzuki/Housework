@@ -17,7 +17,14 @@ const useStyles = makeStyles(() => ({
   },
 }))
 
-const EditMember = ({ editMemberIndex, membersInfo, updateFirestore, handleIsEdit, flag, handleBackEditFamily }) => {
+const EditMember = ({
+  editMemberIndex,
+  membersInfo,
+  updateFirestoreMember,
+  handleIsEdit,
+  flag,
+  handleBackEditFamily,
+}) => {
   const classes = useStyles()
   const member = membersInfo[editMemberIndex]
   const history = useHistory()
@@ -45,6 +52,12 @@ const EditMember = ({ editMemberIndex, membersInfo, updateFirestore, handleIsEdi
 
   // member.name = name
   // member.birth = birth
+
+  //submitBtnで使うfunction
+  const onSubmit = () => {
+    updateFirestoreMember(member)
+    handleBackEditFamily()
+  }
   useEffect(() => {
     setName(member.name)
     setBirth(member.birth)
@@ -71,16 +84,17 @@ const EditMember = ({ editMemberIndex, membersInfo, updateFirestore, handleIsEdi
           handleChange={handleChange}
         />
         <SubmitBtn
-          value="変更する"
+          text="変更する"
           // id={member.id}
-          firestoreTask={updateFirestore}
+          // firestoreTask={updateFirestoreMember}
+          onSubmit={onSubmit}
           // flag={flag}
           // name={name}
           // birth={birth}
-          data={member}
-          updateTarget={['name', 'birth']}
-          targetRef="family"
-          handleBackPage={handleIsEdit}
+          // data={member}
+          // updateTarget={['name', 'birth']}
+          // targetRef="family"
+          // handleBackPage={handleIsEdit}
         />
       </List>
     </Container>

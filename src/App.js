@@ -27,7 +27,6 @@ const makeListFromCollection = (querySnapshot) => {
 // firebaseからdetaを取得
 const App = () => {
   const { userId } = useAuth()
-
   const [membersInfo, setMembersInfo] = useState([])
   const [houseworkListInfo, setHouseworkListInfo] = useState([])
   const [isEdit, setIsEdit] = useState(false)
@@ -50,17 +49,17 @@ const App = () => {
    * updateTarget : 変更する要素 id, name,birth ,earnedPoint
    * firestoreRef : firestoreのref familyRef, houseworkRef
    */
-  const updateFirestore = (data, refName, updateTarget) => {
-    //TODO: updateTargetをparametersから削除する
+  const updateFirestore = (data, refName) => {
     const firestoreRef = getRef(refName)
     const targetId = data.id
-    //登録するdataを生成
-    const dataArr = updateTarget.map((target) => ({ [target]: data[target] }))
-    //updateTargetListは配列の中にobjectが複数入っているので、updateTargetListの型をfirestoreと合わせる(object同士を都合する)
-    const updateData = Object.assign(...dataArr)
-    // console.log({ updateData })
-    firestoreRef.doc(targetId).set(updateData, { merge: true })
+    firestoreRef.doc(targetId).set(data, { merge: true })
     setIsEdit(true) //isEditで再レンダリングを発火させる
+  }
+  const updateFirestoreMember = (data) => {
+    updateFirestore(data, 'family')
+  }
+  const updateFirestoreHousework = (data) => {
+    updateFirestore(data, 'housework')
   }
 
   //firestoreへデータの登録
@@ -71,7 +70,7 @@ const App = () => {
   }
 
   //housework専用のfunctionをつくる
-  const addHousework = (data) => {
+  const addFiestoreHousework = (data) => {
     addFirestore(data, 'housework')
   }
 
@@ -96,6 +95,7 @@ const App = () => {
     //submitがclickされるたびにfirestoreのデータを引っ張ってきて更新する
     getFirestoreMock('family', setMembersInfo)
     getFirestoreMock('housework', setHouseworkListInfo)
+    //userIdが変わった時も情報を撮り直す
   }, [isEdit, userId])
 
   //今度はrecomposeのlibraryを使ってpropsを渡すのに挑戦してみる
@@ -119,8 +119,8 @@ const App = () => {
               render={() => (
                 <EditFamily
                   membersInfo={membersInfo}
-                  updateFirestore={updateFirestore}
-                  addFirestore={addFirestore}
+                  updateFirestoreMember={updateFirestoreMember}
+                  addFiestoreHousework={addFiestoreHousework}
                   deleteFirestore={deleteFirestore}
                 />
               )}

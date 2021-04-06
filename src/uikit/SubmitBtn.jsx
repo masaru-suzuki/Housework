@@ -17,18 +17,13 @@ const useStyles = makeStyles(() => ({
  *  firestoreTask = firestore update or add (member information or housework infomation)
  */
 const SubmitBtn = ({
-  value, //FIXME: should be text
-  data,
-  onClick,
-  // member,
-  // name,
-  // birth,
-  // id,
-  // updateFirestoreOfMemberInfo,
-  firestoreTask, //TODO: 名前がおかしい。これだとfirestoreと一緒にしか使えない感じに見える。
-  updateTarget, //TODO: これも名前がおかしい。targetRefとupdateTargetは何が違うの?ってなる。
-  targetRef,
-  handleBackPage, //TODO: handleBackPageはfireSstoreTaskの中に含まれてた方がいい。
+  text,
+  // data,
+  onSubmit,
+  // onClick,
+  // firestoreTask, //TODO: 名前がおかしい。これだとfirestoreと一緒にしか使えない感じに見える。
+  // targetRef,
+  // handleBackPage, //TODO: handleBackPageはfireSstoreTaskの中に含まれてた方がいい。
 }) => {
   const classes = useStyles()
   // console.log({ data })
@@ -43,7 +38,7 @@ const SubmitBtn = ({
     if (onClick) {
       return onClick()
     }
-    firestoreTask(data, targetRef, updateTarget) //data
+    firestoreTask(data, targetRef) //data
     handleBackPage()
   }
   // } else if (flag === 'isEdit') {
@@ -56,8 +51,8 @@ const SubmitBtn = ({
   // }
 
   return (
-    <Button fullWidth variant="contained" color="primary" className={classes.btn} onClick={() => onSubmitEvent()}>
-      {value}
+    <Button fullWidth variant="contained" color="primary" className={classes.btn} onClick={() => onSubmit()}>
+      {text}
     </Button>
   )
 }
