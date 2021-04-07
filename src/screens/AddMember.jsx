@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 // import { makeStyles } from '@material-ui/core/styles'
 import { ListSubheader, List, Container } from '@material-ui/core'
 import BackBtn from '../uikit/BackBtn'
@@ -6,25 +6,26 @@ import SubmitBtn from '../uikit/SubmitBtn'
 import InputField from '../uikit/InputField'
 import { initMember } from '../initialData'
 
-const AddMember = ({ addFiestoreHousework, handleIsAdd, flag, handleBackEditFamily }) => {
-  const [name, setName] = useState('')
-  const [birth, setBirth] = useState('')
+const AddMember = ({ addFiestoreMember, handleIsAdd, flag, handleBackEditFamily }) => {
+  const [memberData, setMemberData] = useState({})
 
-  let member = initMember()
-
-  member.name = name
-  member.birth = birth
-
-  //textare への入力をする
   const handleChange = (event) => {
     const identificationName = event.target.name
     const value = event.target.value
     if (identificationName === 'name') {
-      setName(value)
+      setMemberData((prevState) => ({ ...prevState, name: value }))
     } else if (identificationName === 'birth') {
-      setBirth(value)
+      setMemberData((prevState) => ({ ...prevState, birth: value }))
     }
   }
+  //SubmitBtn
+  const onSubmitEvent = () => {
+    addFiestoreMember(memberData)
+    handleBackEditFamily()
+  }
+  useEffect(() => {
+    setMemberData(initMember())
+  }, [])
 
   return (
     <Container>
@@ -38,21 +39,21 @@ const AddMember = ({ addFiestoreHousework, handleIsAdd, flag, handleBackEditFami
           </ListSubheader>
         }
       >
-        <InputField required={true} identificationName="name" label="名前" value={name} handleChange={handleChange} />
+        <InputField
+          required={true}
+          identificationName="name"
+          label="名前"
+          value={memberData.name}
+          handleChange={handleChange}
+        />
         <InputField
           required={true}
           identificationName="birth"
           label="生年月日"
-          value={birth}
+          value={memberData.birth}
           handleChange={handleChange}
         />
-        <SubmitBtn
-          value="登録する"
-          firestoreTask={addFiestoreHousework}
-          data={member}
-          targetRef="family"
-          handleBackPage={handleIsAdd}
-        />
+        <SubmitBtn text="登録する" onSubmitEvent={onSubmitEvent} />
       </List>
     </Container>
   )

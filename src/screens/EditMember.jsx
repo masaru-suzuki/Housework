@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import { ListSubheader, List, Container } from '@material-ui/core'
 import BackBtn from '../uikit/BackBtn'
 import SubmitBtn from '../uikit/SubmitBtn'
 import InputField from '../uikit/InputField'
-import { useHistory } from 'react-router-dom'
 
 const useStyles = makeStyles(() => ({
   text_field: {
@@ -17,51 +16,25 @@ const useStyles = makeStyles(() => ({
   },
 }))
 
-const EditMember = ({
-  editMemberIndex,
-  membersInfo,
-  updateFirestoreMember,
-  handleIsEdit,
-  flag,
-  handleBackEditFamily,
-}) => {
+const EditMember = ({ editMemberIndex, membersInfo, updateFirestoreMember, handleBackEditFamily }) => {
   const classes = useStyles()
   const member = membersInfo[editMemberIndex]
-  const history = useHistory()
-  const [name, setName] = useState()
-  const [birth, setBirth] = useState()
+  const [memberData, setMemberData] = useState(member)
 
-  //InputFeildに渡すnameとbirth をstateで管理して、<SubmitBtn>に渡す
-  //その際にfamiliIdとmemberIdを渡す
-  //その情報をApp.jsxに持っていって、firebaseを更新する
   const handleChange = (event) => {
     const identificationName = event.target.name
     const value = event.target.value
-    console.log({ value })
     if (identificationName === 'name') {
-      setName(value)
-      // member.name = name //最後の一文字まで更新されない・・・！このターンでは前回setされたstateを参照してしまうから！なぜ？
-      member.name = value
+      setMemberData((prevState) => ({ ...prevState, name: value }))
     } else if (identificationName === 'birth') {
-      setBirth(value)
-      member.birth = value
+      setMemberData((prevState) => ({ ...prevState, birth: value }))
     }
-    // console.log({ member })
   }
-  // console.log({ member })
-
-  // member.name = name
-  // member.birth = birth
-
   //submitBtnで使うfunction
-  const onSubmit = () => {
-    updateFirestoreMember(member)
+  const onSubmitEvent = () => {
+    updateFirestoreMember(memberData)
     handleBackEditFamily()
   }
-  useEffect(() => {
-    setName(member.name)
-    setBirth(member.birth)
-  }, [])
   return (
     <Container>
       <BackBtn handleBack={handleBackEditFamily} />
@@ -75,27 +48,21 @@ const EditMember = ({
         }
         className={classes.root}
       >
-        <InputField required={true} identificationName="name" label="名前" value={name} handleChange={handleChange} />
+        <InputField
+          required={true}
+          identificationName="name"
+          label="名前"
+          value={memberData.name}
+          handleChange={handleChange}
+        />
         <InputField
           required={true}
           identificationName="birth"
           label="生年月日"
-          value={birth}
+          value={memberData.birth}
           handleChange={handleChange}
         />
-        <SubmitBtn
-          text="変更する"
-          // id={member.id}
-          // firestoreTask={updateFirestoreMember}
-          onSubmit={onSubmit}
-          // flag={flag}
-          // name={name}
-          // birth={birth}
-          // data={member}
-          // updateTarget={['name', 'birth']}
-          // targetRef="family"
-          // handleBackPage={handleIsEdit}
-        />
+        <SubmitBtn text="変更する" onSubmitEvent={onSubmitEvent} />
       </List>
     </Container>
   )

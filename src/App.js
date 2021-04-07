@@ -70,6 +70,9 @@ const App = () => {
   }
 
   //housework専用のfunctionをつくる
+  const addFiestoreMember = (data) => {
+    addFirestore(data, 'family')
+  }
   const addFiestoreHousework = (data) => {
     addFirestore(data, 'housework')
   }
@@ -120,7 +123,7 @@ const App = () => {
                 <EditFamily
                   membersInfo={membersInfo}
                   updateFirestoreMember={updateFirestoreMember}
-                  addFiestoreHousework={addFiestoreHousework}
+                  addFiestoreMember={addFiestoreMember}
                   deleteFirestore={deleteFirestore}
                 />
               )}
@@ -131,9 +134,9 @@ const App = () => {
               render={() => (
                 <EditHouseworkList
                   houseworkListInfo={houseworkListInfo}
-                  addHousework={addHousework}
+                  addFiestoreHousework={addFiestoreHousework}
                   // updateFirestoreOfHouseworkInfo={updateFirestoreOfHouseworkInfo}
-                  updateFirestore={updateFirestore}
+                  updateFirestoreHousework={updateFirestoreHousework}
                   deleteFirestore={deleteFirestore}
                 />
               )}

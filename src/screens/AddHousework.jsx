@@ -1,48 +1,29 @@
 import React, { useState } from 'react'
-// import { makeStyles } from '@material-ui/core/styles'
 import { ListSubheader, List, Container } from '@material-ui/core'
 import BackBtn from '../uikit/BackBtn'
 import SubmitBtn from '../uikit/SubmitBtn'
 import InputField from '../uikit/InputField'
 import { initHousework } from '../initialData'
-import Button from '@material-ui/core/Button'
 
-const AddHousework = ({ handleIsAdd, flag, addHousework, handleBackEditHouseworkList }) => {
-  const [name, setName] = useState('')
-  const [earnedPoint, setEarnedPoint] = useState('')
-  const [description, setDescription] = useState('')
-
-  //TODO: houseworkっていうobjectを使うほうがすっきりして良いと思う。
-  const [housework, setHousework] = useState({})
-  // let housework = initHousework()
-
-  //FIXME: これは何? Reactはimmutableにしないといけないからこれはやってはいけない。というかhandleChangeとやってることかぶってる
-  // housework.name = name
-  // housework.earnedPoint = earnedPoint
-  // housework.description = description
-  // console.log({ housework })
+const AddHousework = ({ addFiestoreHousework, handleBackEditHouseworkList }) => {
+  const [housework, setHousework] = useState(initHousework())
 
   //textare への入力をする
   const handleChange = (event) => {
     const identificationName = event.target.name
     const value = event.target.value
-    console.log(identificationName)
-    console.log(value)
     if (identificationName === 'name') {
-      setName(value)
+      setHousework((prevState) => ({ ...prevState, name: value }))
     } else if (identificationName === 'earnedPoint') {
-      setEarnedPoint(value)
+      setHousework((prevState) => ({ ...prevState, earnedPoint: value }))
     } else if (identificationName === 'description') {
-      setDescription(value)
+      setHousework((prevState) => ({ ...prevState, description: value }))
     }
   }
 
-  const handleSubmit = () => {
-    addHousework({
-      name,
-      earnedPoint,
-      description,
-    })
+  const onSubmitEvent = () => {
+    addFiestoreHousework(housework)
+    handleBackEditHouseworkList()
   }
 
   return (
@@ -61,24 +42,24 @@ const AddHousework = ({ handleIsAdd, flag, addHousework, handleBackEditHousework
           required={true}
           identificationName="name"
           label="家事の名前"
-          value={name}
+          value={housework.name}
           handleChange={handleChange}
         />
         <InputField
           required={true}
           identificationName="earnedPoint"
           label="獲得ポイント"
-          value={earnedPoint}
+          value={housework.earnedPoint}
           handleChange={handleChange}
         />
         <InputField
           required={false}
           identificationName="description"
           label="説明"
-          value={description}
+          value={housework.description}
           handleChange={handleChange}
         />
-        <SubmitBtn onClick={handleSubmit} value="submit" />
+        <SubmitBtn onSubmitEvent={onSubmitEvent} text="家事を登録する" />
       </List>
     </Container>
   )

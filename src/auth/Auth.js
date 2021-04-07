@@ -11,8 +11,8 @@ export const useAuth = () => {
   //TODO: contextにする
   const [userId, setUserId] = useState(undefined)
   firebase.auth().onAuthStateChanged((user) => {
-    console.log(user)
-    console.log(user.uid)
+    // console.log(user)
+    // console.log(user.uid)
     setUserId(user?.uid)
   })
   return { userId }
