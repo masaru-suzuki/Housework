@@ -13,7 +13,6 @@ import SignUp from './screens/SignUp'
 import Member from './screens/Member'
 import EditMember from './screens/EditMember'
 
-//comberListMocにisEditを入れて、このidEditを変更したら、firebaseに登録して、isEditをfalseにすればいいのかな？
 const db = firebase.firestore()
 
 const makeListFromCollection = (querySnapshot) => {
@@ -43,12 +42,7 @@ const App = () => {
     setIsEdit(false)
   }
 
-  /**
-   * firebase update task (EditMember , EditHouseworkで使う)
-   * data : submitボタンを押した際に渡ってくるデータ member,housework
-   * updateTarget : 変更する要素 id, name,birth ,earnedPoint
-   * firestoreRef : firestoreのref familyRef, houseworkRef
-   */
+  //update firestore
   const updateFirestore = (data, refName) => {
     const firestoreRef = getRef(refName)
     const targetId = data.id
@@ -62,14 +56,12 @@ const App = () => {
     updateFirestore(data, 'housework')
   }
 
-  //firestoreへデータの登録
+  //add data to firestore
   const addFirestore = (data, refName) => {
     const firestoreRef = getRef(refName)
     firestoreRef.add(data)
     setIsEdit(true) //isEditで再レンダリングを発火させる
   }
-
-  //housework専用のfunctionをつくる
   const addFiestoreMember = (data) => {
     addFirestore(data, 'family')
   }
@@ -77,7 +69,6 @@ const App = () => {
     addFirestore(data, 'housework')
   }
 
-  //TODOfunctionの共通化
   //firestoreのメンバーの削除
   const deleteFirestore = (refName, id) => {
     const firestoreRef = getRef(refName)
@@ -90,6 +81,12 @@ const App = () => {
       .catch((error) => {
         console.error('Error removeing document: ', error)
       })
+  }
+  const deleteFirestoreMember = (id) => {
+    deleteFirestore('family', id)
+  }
+  const deleteFirestoreHousework = (id) => {
+    deleteFirestore('housework', id)
   }
 
   useEffect(() => {
@@ -124,7 +121,7 @@ const App = () => {
                   membersInfo={membersInfo}
                   updateFirestoreMember={updateFirestoreMember}
                   addFiestoreMember={addFiestoreMember}
-                  deleteFirestore={deleteFirestore}
+                  deleteFirestoreMember={deleteFirestoreMember}
                 />
               )}
             />
@@ -135,9 +132,8 @@ const App = () => {
                 <EditHouseworkList
                   houseworkListInfo={houseworkListInfo}
                   addFiestoreHousework={addFiestoreHousework}
-                  // updateFirestoreOfHouseworkInfo={updateFirestoreOfHouseworkInfo}
                   updateFirestoreHousework={updateFirestoreHousework}
-                  deleteFirestore={deleteFirestore}
+                  deleteFirestoreHousework={deleteFirestoreHousework}
                 />
               )}
             />

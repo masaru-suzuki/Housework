@@ -17,7 +17,6 @@ import {
 } from '@material-ui/core'
 import DeleteIcon from '@material-ui/icons/Delete'
 import AddIcon from '@material-ui/icons/Add'
-import EditIcon from '@material-ui/icons/Edit'
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos'
 import { ThemeProvider } from '@material-ui/styles'
 
@@ -94,7 +93,7 @@ const theme = createMuiTheme({
   },
 })
 
-const EditFamily = ({ membersInfo, updateFirestoreMember, addFiestoreMember, deleteFirestore }) => {
+const EditFamily = ({ membersInfo, updateFirestoreMember, addFiestoreMember, deleteFirestoreMember }) => {
   const [isEdit, setIsEdit] = useState(false)
   const [isAdd, setIsAdd] = useState(false)
   const [editMemberIndex, setEditMemberIndex] = useState('')
@@ -124,12 +123,6 @@ const EditFamily = ({ membersInfo, updateFirestoreMember, addFiestoreMember, del
   const handleEditMember = (i) => {
     setEditMemberIndex(i)
     setIsEdit(true)
-  }
-
-  //EditMember.jsxでsubmit buttonを押した際に使いたい
-  const handleSubmitMember = async (member) => {
-    await updateFirestoreMember(member)
-    handleBackHome()
   }
 
   //flagをfalseにしてEditFamily画面に戻る
@@ -242,21 +235,10 @@ const EditFamily = ({ membersInfo, updateFirestoreMember, addFiestoreMember, del
                   </CardContent>
                 </CardActionArea>
                 <ThemeProvider theme={theme}>
-                  {/* <Divider className={classes.divider} orientation="vertical" flexItem />
-                  <IconButton
-                    color="primary"
-                    aria-label="edit"
-                    memberInfo={memberInfo}
-                    // handleSubmitMember={(member) => handleSubmitMember(member)}
-                    handleSubmitMember={handleSubmitMember}
-                    onClick={() => handleEditMember(i)}
-                  >
-                    <EditIcon />
-                  </IconButton> */}
                   <Divider className={classes.divider} orientation="vertical" flexItem />
                   <IconButton
                     color="secondary"
-                    onClick={() => deleteFirestore('family', memberInfo.id)}
+                    onClick={() => deleteFirestoreMember(memberInfo.id)}
                     aria-label="delete"
                   >
                     <DeleteIcon />

@@ -92,7 +92,12 @@ const theme = createMuiTheme({
   },
 })
 
-const EditHouseworkList = ({ addFiestoreHousework, houseworkListInfo, updateFirestoreHousework, deleteFirestore }) => {
+const EditHouseworkList = ({
+  addFiestoreHousework,
+  houseworkListInfo,
+  updateFirestoreHousework,
+  deleteFirestoreHousework,
+}) => {
   const [isEdit, setIsEdit] = useState(false)
   const [isAdd, setIsAdd] = useState(false)
   const [editHouseworkIndex, setEditHouseworkIndex] = useState('')
@@ -237,7 +242,7 @@ const EditHouseworkList = ({ addFiestoreHousework, houseworkListInfo, updateFire
                   <Divider className={classes.divider} orientation="vertical" flexItem />
                   <IconButton
                     color="secondary"
-                    onClick={() => deleteFirestore('housework', houseworkInfo.id)}
+                    onClick={() => deleteFirestoreHousework(houseworkInfo.id)}
                     aria-label="delete"
                   >
                     <DeleteIcon />
