@@ -1,18 +1,10 @@
 import React from 'react'
 import { TextField } from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles'
 
-const useStyles = makeStyles(() => ({
-  text_field: {
-    marginBottom: 16,
-  },
-}))
-
-const InputField = ({ required, identificationName, label, value, handleChange }) => {
-  const classes = useStyles()
+const InputField = ({ className, required, identificationName, label, value, handleChange }) => {
   return (
     <TextField
-      className={classes.text_field}
+      className={className}
       fullWidth
       size="small"
       variant="filled"

@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react'
-// import { makeStyles } from '@material-ui/core/styles'
 import { ListSubheader, List, Container } from '@material-ui/core'
 import BackBtn from '../uikit/BackBtn'
 import SubmitBtn from '../uikit/SubmitBtn'
 import InputField from '../uikit/InputField'
 import { initMember } from '../initialData'
 
-const AddMember = ({ addFiestoreMember, handleIsAdd, flag, handleBackEditFamily }) => {
+const AddMember = ({ addFiestoreMember, handleBackEditFamily }) => {
   const [memberData, setMemberData] = useState({})
 
   const handleChange = (event) => {

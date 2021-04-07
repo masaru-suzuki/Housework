@@ -6,8 +6,8 @@ import SubmitBtn from '../uikit/SubmitBtn'
 import InputField from '../uikit/InputField'
 
 const useStyles = makeStyles(() => ({
-  text_field: {
-    marginBottom: 16,
+  input_field: {
+    marginBottom: 12,
   },
   btn_back: {
     marginTop: 8,
@@ -43,7 +43,7 @@ const EditHousework = ({
   }
   return (
     <Container>
-      <BackBtn handleBack={handleBackEditHouseworkList} />
+      <BackBtn handleBack={handleBackEditHouseworkList} className={classes.btn_back} />
       <List
         component="nav"
         aria-labelledby="nested-list-subheader"
@@ -55,6 +55,7 @@ const EditHousework = ({
         className={classes.root}
       >
         <InputField
+          className={classes.input_field}
           required={true}
           identificationName="name"
           label="名前"
@@ -62,6 +63,7 @@ const EditHousework = ({
           handleChange={handleChange}
         />
         <InputField
+          className={classes.input_field}
           required={true}
           identificationName="earnedPoint"
           label="獲得ポイント"
@@ -69,6 +71,7 @@ const EditHousework = ({
           handleChange={handleChange}
         />
         <InputField
+          className={classes.input_field}
           identificationName="description"
           label="説明"
           value={houseworkData.description}

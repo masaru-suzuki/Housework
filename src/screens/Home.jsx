@@ -24,7 +24,7 @@ const Home = ({ membersInfo, houseworkListInfo }) => {
           // console.log(memberInfo)
           return (
             <Grid item xs={12} sm={6} key={memberInfo.memberId}>
-              <MemberCard memberInfo={memberInfo} />
+              <MemberCard memberInfo={memberInfo} key={memberInfo.id} />
             </Grid>
           )
         })}
