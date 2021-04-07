@@ -13,7 +13,6 @@ import SignUp from './screens/SignUp'
 import Member from './screens/Member'
 import EditMember from './screens/EditMember'
 
-//comberListMocにisEditを入れて、このidEditを変更したら、firebaseに登録して、isEditをfalseにすればいいのかな？
 const db = firebase.firestore()
 
 const makeListFromCollection = (querySnapshot) => {
@@ -27,7 +26,6 @@ const makeListFromCollection = (querySnapshot) => {
 // firebaseからdetaを取得
 const App = () => {
   const { userId } = useAuth()
-
   const [membersInfo, setMembersInfo] = useState([])
   const [houseworkListInfo, setHouseworkListInfo] = useState([])
   const [isEdit, setIsEdit] = useState(false)
@@ -44,38 +42,33 @@ const App = () => {
     setIsEdit(false)
   }
 
-  /**
-   * firebase update task (EditMember , EditHouseworkで使う)
-   * data : submitボタンを押した際に渡ってくるデータ member,housework
-   * updateTarget : 変更する要素 id, name,birth ,earnedPoint
-   * firestoreRef : firestoreのref familyRef, houseworkRef
-   */
-  const updateFirestore = (data, refName, updateTarget) => {
-    //TODO: updateTargetをparametersから削除する
+  //update firestore
+  const updateFirestore = (data, refName) => {
     const firestoreRef = getRef(refName)
     const targetId = data.id
-    //登録するdataを生成
-    const dataArr = updateTarget.map((target) => ({ [target]: data[target] }))
-    //updateTargetListは配列の中にobjectが複数入っているので、updateTargetListの型をfirestoreと合わせる(object同士を都合する)
-    const updateData = Object.assign(...dataArr)
-    // console.log({ updateData })
-    firestoreRef.doc(targetId).set(updateData, { merge: true })
+    firestoreRef.doc(targetId).set(data, { merge: true })
     setIsEdit(true) //isEditで再レンダリングを発火させる
   }
+  const updateFirestoreMember = (data) => {
+    updateFirestore(data, 'family')
+  }
+  const updateFirestoreHousework = (data) => {
+    updateFirestore(data, 'housework')
+  }
 
-  //firestoreへデータの登録
+  //add data to firestore
   const addFirestore = (data, refName) => {
     const firestoreRef = getRef(refName)
     firestoreRef.add(data)
     setIsEdit(true) //isEditで再レンダリングを発火させる
   }
-
-  //housework専用のfunctionをつくる
-  const addHousework = (data) => {
+  const addFiestoreMember = (data) => {
+    addFirestore(data, 'family')
+  }
+  const addFiestoreHousework = (data) => {
     addFirestore(data, 'housework')
   }
 
-  //TODOfunctionの共通化
   //firestoreのメンバーの削除
   const deleteFirestore = (refName, id) => {
     const firestoreRef = getRef(refName)
@@ -89,6 +82,12 @@ const App = () => {
         console.error('Error removeing document: ', error)
       })
   }
+  const deleteFirestoreMember = (id) => {
+    deleteFirestore('family', id)
+  }
+  const deleteFirestoreHousework = (id) => {
+    deleteFirestore('housework', id)
+  }
 
   useEffect(() => {
     if (!userId) return
@@ -96,6 +95,7 @@ const App = () => {
     //submitがclickされるたびにfirestoreのデータを引っ張ってきて更新する
     getFirestoreMock('family', setMembersInfo)
     getFirestoreMock('housework', setHouseworkListInfo)
+    //userIdが変わった時も情報を撮り直す
   }, [isEdit, userId])
 
   //今度はrecomposeのlibraryを使ってpropsを渡すのに挑戦してみる
@@ -119,9 +119,9 @@ const App = () => {
               render={() => (
                 <EditFamily
                   membersInfo={membersInfo}
-                  updateFirestore={updateFirestore}
-                  addFirestore={addFirestore}
-                  deleteFirestore={deleteFirestore}
+                  updateFirestoreMember={updateFirestoreMember}
+                  addFiestoreMember={addFiestoreMember}
+                  deleteFirestoreMember={deleteFirestoreMember}
                 />
               )}
             />
@@ -131,10 +131,9 @@ const App = () => {
               render={() => (
                 <EditHouseworkList
                   houseworkListInfo={houseworkListInfo}
-                  addHousework={addHousework}
-                  // updateFirestoreOfHouseworkInfo={updateFirestoreOfHouseworkInfo}
-                  updateFirestore={updateFirestore}
-                  deleteFirestore={deleteFirestore}
+                  addFiestoreHousework={addFiestoreHousework}
+                  updateFirestoreHousework={updateFirestoreHousework}
+                  deleteFirestoreHousework={deleteFirestoreHousework}
                 />
               )}
             />

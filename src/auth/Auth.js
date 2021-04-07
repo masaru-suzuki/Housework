@@ -4,13 +4,15 @@ import firebase from '../firebase'
 import LoadingOverlay from 'react-loading-overlay'
 
 //uidをエクスポート. mock id
-let uid = 'u9EnmX300LQsunRawSUwwrhEVhS2'
+let uid = ''
 export const getUid = () => uid
 
 export const useAuth = () => {
   //TODO: contextにする
   const [userId, setUserId] = useState(undefined)
   firebase.auth().onAuthStateChanged((user) => {
+    // console.log(user)
+    // console.log(user.uid)
     setUserId(user?.uid)
   })
   return { userId }
@@ -31,9 +33,6 @@ class Auth extends React.Component {
     //ログインしてるかどうかチェック
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
-        // console.log("if userログインしている");
-        //してる
-        // console.log(user.uid)
         uid = user.uid
         if (this._isMounted) {
           this.setState({

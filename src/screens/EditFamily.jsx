@@ -17,7 +17,6 @@ import {
 } from '@material-ui/core'
 import DeleteIcon from '@material-ui/icons/Delete'
 import AddIcon from '@material-ui/icons/Add'
-import EditIcon from '@material-ui/icons/Edit'
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos'
 import { ThemeProvider } from '@material-ui/styles'
 
@@ -94,7 +93,7 @@ const theme = createMuiTheme({
   },
 })
 
-const EditFamily = ({ membersInfo, updateFirestore, addFirestore, deleteFirestore }) => {
+const EditFamily = ({ membersInfo, updateFirestoreMember, addFiestoreMember, deleteFirestoreMember }) => {
   const [isEdit, setIsEdit] = useState(false)
   const [isAdd, setIsAdd] = useState(false)
   const [editMemberIndex, setEditMemberIndex] = useState('')
@@ -126,12 +125,6 @@ const EditFamily = ({ membersInfo, updateFirestore, addFirestore, deleteFirestor
     setIsEdit(true)
   }
 
-  //EditMember.jsxでsubmit buttonを押した際に使いたい
-  const handleSubmitMember = async (member) => {
-    await updateFirestore(member)
-    handleBackHome()
-  }
-
   //flagをfalseにしてEditFamily画面に戻る
   const handleBackEditFamily = () => {
     setIsEdit(false)
@@ -141,7 +134,7 @@ const EditFamily = ({ membersInfo, updateFirestore, addFirestore, deleteFirestor
   if (isAdd && !isEdit) {
     return (
       <AddMember
-        addFirestore={addFirestore}
+        addFiestoreMember={addFiestoreMember}
         flag="isAdd"
         handleIsAdd={handleIsAdd}
         membersInfo={membersInfo}
@@ -153,7 +146,7 @@ const EditFamily = ({ membersInfo, updateFirestore, addFirestore, deleteFirestor
       <EditMember
         membersInfo={membersInfo}
         editMemberIndex={editMemberIndex}
-        updateFirestore={updateFirestore}
+        updateFirestoreMember={updateFirestoreMember}
         flag="isEdit"
         handleEditMember={handleEditMember}
         handleIsEdit={handleIsEdit}
@@ -242,21 +235,10 @@ const EditFamily = ({ membersInfo, updateFirestore, addFirestore, deleteFirestor
                   </CardContent>
                 </CardActionArea>
                 <ThemeProvider theme={theme}>
-                  {/* <Divider className={classes.divider} orientation="vertical" flexItem />
-                  <IconButton
-                    color="primary"
-                    aria-label="edit"
-                    memberInfo={memberInfo}
-                    // handleSubmitMember={(member) => handleSubmitMember(member)}
-                    handleSubmitMember={handleSubmitMember}
-                    onClick={() => handleEditMember(i)}
-                  >
-                    <EditIcon />
-                  </IconButton> */}
                   <Divider className={classes.divider} orientation="vertical" flexItem />
                   <IconButton
                     color="secondary"
-                    onClick={() => deleteFirestore('family', memberInfo.id)}
+                    onClick={() => deleteFirestoreMember(memberInfo.id)}
                     aria-label="delete"
                   >
                     <DeleteIcon />

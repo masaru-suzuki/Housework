@@ -17,12 +17,8 @@ import {
 } from '@material-ui/core'
 import DeleteIcon from '@material-ui/icons/Delete'
 import AddIcon from '@material-ui/icons/Add'
-import EditIcon from '@material-ui/icons/Edit'
-import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos'
 import { ThemeProvider } from '@material-ui/styles'
-
 import EditHousework from './EditHousework'
-import AddMember from './AddMember'
 import AddHousework from './AddHousework'
 import BackBtn from '../uikit/BackBtn'
 
@@ -96,7 +92,12 @@ const theme = createMuiTheme({
   },
 })
 
-const EditHouseworkList = ({ addHousework, houseworkListInfo, updateFirestore, deleteFirestore }) => {
+const EditHouseworkList = ({
+  addFiestoreHousework,
+  houseworkListInfo,
+  updateFirestoreHousework,
+  deleteFirestoreHousework,
+}) => {
   const [isEdit, setIsEdit] = useState(false)
   const [isAdd, setIsAdd] = useState(false)
   const [editHouseworkIndex, setEditHouseworkIndex] = useState('')
@@ -113,10 +114,6 @@ const EditHouseworkList = ({ addHousework, houseworkListInfo, updateFirestore, d
     history.push({ pathname: '/' })
   }
 
-  //isSetを変更する
-  // const handleIsEdit = () => {
-  //   setIsEdit(false)
-  // }
   //isAddを変更する
   const handleIsAdd = () => {
     setIsAdd(false)
@@ -144,7 +141,7 @@ const EditHouseworkList = ({ addHousework, houseworkListInfo, updateFirestore, d
   if (isAdd && !isEdit) {
     return (
       <AddHousework
-        addHousework={addHousework}
+        addFiestoreHousework={addFiestoreHousework}
         flag="isAdd"
         handleIsAdd={handleIsAdd}
         // HouseworksInfo={houseworkListInfo}
@@ -157,7 +154,7 @@ const EditHouseworkList = ({ addHousework, houseworkListInfo, updateFirestore, d
         houseworkListInfo={houseworkListInfo}
         editHouseworkIndex={editHouseworkIndex}
         // updateFirestoreOfHouseworkInfo={updateFirestoreOfHouseworkInfo}
-        updateFirestore={updateFirestore}
+        updateFirestoreHousework={updateFirestoreHousework}
         handleBackEditHouseworkList={handleBackEditHouseworkList}
       />
     )
@@ -245,7 +242,7 @@ const EditHouseworkList = ({ addHousework, houseworkListInfo, updateFirestore, d
                   <Divider className={classes.divider} orientation="vertical" flexItem />
                   <IconButton
                     color="secondary"
-                    onClick={() => deleteFirestore('housework', houseworkInfo.id)}
+                    onClick={() => deleteFirestoreHousework(houseworkInfo.id)}
                     aria-label="delete"
                   >
                     <DeleteIcon />
