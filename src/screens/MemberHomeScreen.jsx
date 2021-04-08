@@ -40,12 +40,20 @@ const useStyles = makeStyles({
 const MemberHomeScreen = ({ memberInfo, houseworkListInfo, handleBackHome }) => {
   const [value, setValue] = useState(0)
   const classes = useStyles()
-  const history = useHistory()
+  const [flag, setFlag] = useState({ isExchange: false, isHome: true, isUsePont: false })
+
+  const handleFlag = (text) => {
+    console.log({ text })
+    for (let key in flag) {
+      if (flag[key]) setFlag((prevState) => ({ ...prevState, [key]: false }))
+    }
+    setFlag((prevState) => ({ ...prevState, [text]: true }))
+  }
 
   return (
     <Container maxWidth="md" className={classes.container}>
       <ContentsArea memberInfo={memberInfo} houseworkListInfo={houseworkListInfo} handleBackHome={handleBackHome} />
-      <BottomNav />
+      <BottomNav flag={flag} handleFlag={handleFlag} />
     </Container>
   )
 }

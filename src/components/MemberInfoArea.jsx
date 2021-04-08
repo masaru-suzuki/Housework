@@ -13,7 +13,7 @@ const useStyles = makeStyles(() => ({
 
 const MemberInfoArea = ({ memberInfo }) => {
   const classes = useStyles()
-  console.log(memberInfo)
+  // console.log(memberInfo)
   return (
     <Container>
       <Grid container spacing={3}>
