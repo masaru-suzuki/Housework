@@ -4,18 +4,24 @@ import Container from '@material-ui/core/Container'
 import { Button, Grid, Paper } from '@material-ui/core'
 import StatusBar from '../uikit/StatusBar'
 
-const useStyles = makeStyles(() => ({}))
+const useStyles = makeStyles(() => ({
+  name: {
+    fontWeight: 'bold',
+    fontSize: 20,
+  },
+}))
 
 const MemberInfoArea = ({ memberInfo }) => {
+  const classes = useStyles()
   console.log(memberInfo)
   return (
     <Container>
       <Grid container spacing={3}>
         <Grid item xs={6}>
-          <p>{memberInfo.name}</p>
+          <p className={classes.name}>{memberInfo.name}</p>
           <p>{memberInfo.level}Lv</p>
           <p>
-            連続10日<span>+10%up</span>
+            連続10日<span>換金率+10%up</span>
           </p>
         </Grid>
         <Grid item xs={6}>
@@ -24,7 +30,7 @@ const MemberInfoArea = ({ memberInfo }) => {
           <Button>熟練度</Button>
         </Grid>
       </Grid>
-      <StatusBar />
+      <StatusBar memberInfo={memberInfo} />
     </Container>
   )
 }
