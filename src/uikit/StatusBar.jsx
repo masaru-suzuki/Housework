@@ -43,7 +43,6 @@ const StatusBar = ({ memberInfo }) => {
   const { level, experiencePoint, requiredExpreriencePoint } = memberInfo
   const calcProgress = () => {
     const result = Math.round((requiredExpreriencePoint / experiencePoint) * 1000) / 10
-    console.log(result)
     return experiencePoint === 0 ? 0 : result
   }
   useEffect(() => {

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import BottomNavigation from '@material-ui/core/BottomNavigation'
 import { withStyles } from '@material-ui/core'
@@ -41,41 +41,36 @@ const theme = createMuiTheme({
     },
   },
 })
-//TODO selected => color #fff
-const BottomNav = ({ flag, handleFlag }) => {
-  const [value, setValue] = useState(1) //current selected
+const BottomNav = ({ isPage, flag, handleFlag }) => {
+  const [value, setValue] = useState() //初期値はisPageでisPageの初期値はisHome
   const classes = useStyles()
-  console.log(flag.isHome)
 
+  useEffect(() => {
+    setValue(isPage)
+  }, [isPage])
   return (
     <ThemeProvider theme={theme}>
-      <BottomNavigation
-        value={value}
-        onChange={(event, newValue) => {
-          setValue(newValue)
-        }}
-        showLabels
-        className={classes.root}
-      >
+      <BottomNavigation value={value} showLabels className={classes.root}>
         <BottomNavigationAction
           classes={{ selected: classes.selected }}
-          // className={classes.nav_action}
-          label="exchange"
-          onClick={() => handleFlag('isExchange')}
-          icon={<InsertEmoticonIcon color={flag.isExchange ? 'primary' : 'disabled'} />}
+          label="Cash"
+          value="isCash"
+          onClick={() => handleFlag('isCash')}
+          icon={<InsertEmoticonIcon color={flag.isCash ? 'primary' : 'disabled'} />}
         />
         <BottomNavigationAction
           classes={{ selected: classes.selected }}
-          // className={classes.nav_action}
           label="Home"
+          value="isHome"
           onClick={() => handleFlag('isHome')}
           icon={<HomeIcon color={flag.isHome ? 'primary' : 'disabled'} />}
         />
         <BottomNavigationAction
           classes={{ selected: classes.selected }}
-          label="use point"
-          onClick={() => handleFlag('isUsePoint')}
-          icon={<AutorenewIcon color={flag.isUsePoint ? 'primary' : 'disabled'} />}
+          label="Exchange"
+          value="isExchange"
+          onClick={() => handleFlag('isExchange')}
+          icon={<AutorenewIcon color={flag.isExchange ? 'primary' : 'disabled'} />}
         />
       </BottomNavigation>
     </ThemeProvider>

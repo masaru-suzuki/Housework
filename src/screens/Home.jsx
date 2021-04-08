@@ -3,7 +3,7 @@ import DrawerNav from '../components/DrawerNav'
 import { makeStyles } from '@material-ui/core/styles'
 import { Container, Grid } from '@material-ui/core'
 import MemberCard from '../components/MemberCard'
-import MemberHomeScreen from './MemberHomeScreen'
+import MemberHome from './MemberHome'
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -28,9 +28,7 @@ const Home = ({ membersInfo, houseworkListInfo }) => {
 
   const memberInfo = membersInfo[memberIndex]
   if (isMemberScreen) {
-    return (
-      <MemberHomeScreen memberInfo={memberInfo} houseworkListInfo={houseworkListInfo} handleBackHome={handleBackHome} />
-    )
+    return <MemberHome memberInfo={memberInfo} houseworkListInfo={houseworkListInfo} handleBackHome={handleBackHome} />
   } else {
     return (
       <Container className={classes.root} maxWidth="sm">

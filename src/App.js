@@ -7,12 +7,12 @@ import Auth, { useAuth } from './auth/Auth'
 import Home from './screens/Home'
 import EditFamily from './screens/EditFamily'
 import EditHouseworkList from './screens/EditHouseworkList'
-import Profile from './screens/MemberHomeScreen'
+import Profile from './screens/MemberHome'
 import SignInOrUp from './screens/SignInOrUp'
 import SignUp from './screens/SignUp'
-import Member from './screens/MemberHomeScreen'
+import Member from './screens/MemberHome'
 import EditMember from './screens/EditMember'
-import MemberHomeScreen from './screens/MemberHomeScreen'
+import MemberHome from './screens/MemberHome'
 
 const db = firebase.firestore()
 
@@ -113,7 +113,7 @@ const App = () => {
               path="/"
               render={() => <Home membersInfo={membersInfo} houseworkListInfo={houseworkListInfo} />}
             />
-            <Route exact path="/MemberHomeScreen" component={MemberHomeScreen} />
+            <Route exact path="/MemberHome" component={MemberHome} />
             <Route exact path="/profile" component={Profile} />
             <Route
               exact
