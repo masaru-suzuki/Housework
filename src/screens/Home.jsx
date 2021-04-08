@@ -12,7 +12,7 @@ const useStyles = makeStyles(() => ({
   },
 }))
 
-const Home = ({ membersInfo, houseworkListInfo }) => {
+const Home = ({ membersInfo, houseworkListInfo, finishHousework, addPoint, removePoint }) => {
   const classes = useStyles()
   const [isMemberScreen, setIsMemberScreen] = useState(false)
   const [memberIndex, setMemberIndex] = useState()
@@ -28,7 +28,16 @@ const Home = ({ membersInfo, houseworkListInfo }) => {
 
   const memberInfo = membersInfo[memberIndex]
   if (isMemberScreen) {
-    return <MemberHome memberInfo={memberInfo} houseworkListInfo={houseworkListInfo} handleBackHome={handleBackHome} />
+    return (
+      <MemberHome
+        memberInfo={memberInfo}
+        houseworkListInfo={houseworkListInfo}
+        handleBackHome={handleBackHome}
+        finishHousework={finishHousework}
+        addPoint={addPoint}
+        removePoint={removePoint}
+      />
+    )
   } else {
     return (
       <Container className={classes.root} maxWidth="sm">

@@ -15,6 +15,7 @@ import HouseworkListArea from '../components/HouseworkListArea'
 import ContentsArea from '../components/ContentsArea'
 import Cash from './Cash'
 import Exchange from './Exchange'
+import { boolean } from 'yup'
 
 const styles = () => {
   btnSelected: {
@@ -38,10 +39,11 @@ const useStyles = makeStyles({
     fontSize: 16,
   },
 })
-const MemberHome = ({ memberInfo, houseworkListInfo, handleBackHome }) => {
+const MemberHome = ({ memberInfo, houseworkListInfo, handleBackHome, finishHousework, addPoint, removePoint }) => {
   const classes = useStyles()
   const [flag, setFlag] = useState({ isExchange: false, isHome: true, isCash: false })
   const [isPage, setIsPage] = useState('isHome')
+  const [doneHousework, setDoneHousework] = useState([])
 
   //Bottom Nav
   const handleFlag = (text) => {
@@ -54,11 +56,25 @@ const MemberHome = ({ memberInfo, houseworkListInfo, handleBackHome }) => {
     }
   }
 
+  //finish btn action
+
+  const finishBtnEvent = (hosuework, currentIndex) => {
+    currentIndex ? addPoint(memberInfo, hosuework) : removePoint(memberInfo, hosuework)
+    // finishHousework(memberInfo)
+  }
+
   useState(() => {}, [])
   if (isPage === 'isHome') {
     return (
       <Container maxWidth="md" className={classes.container}>
-        <ContentsArea memberInfo={memberInfo} houseworkListInfo={houseworkListInfo} handleBackHome={handleBackHome} />
+        <ContentsArea
+          memberInfo={memberInfo}
+          houseworkListInfo={houseworkListInfo}
+          handleBackHome={handleBackHome}
+          finishBtnEvent={finishBtnEvent}
+          addPoint={addPoint}
+          removePoint={removePoint}
+        />
         <BottomNav isPage={isPage} flag={flag} handleFlag={handleFlag} />
       </Container>
     )

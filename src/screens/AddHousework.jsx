@@ -15,7 +15,7 @@ const AddHousework = ({ addFiestoreHousework, handleBackEditHouseworkList }) => 
     if (identificationName === 'name') {
       setHousework((prevState) => ({ ...prevState, name: value }))
     } else if (identificationName === 'earnedPoint') {
-      setHousework((prevState) => ({ ...prevState, earnedPoint: value }))
+      setHousework((prevState) => ({ ...prevState, earnedPoint: Number(value) }))
     } else if (identificationName === 'description') {
       setHousework((prevState) => ({ ...prevState, description: value }))
     }

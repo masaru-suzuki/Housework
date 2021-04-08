@@ -27,7 +27,7 @@ const EditMember = ({ editMemberIndex, membersInfo, updateFirestoreMember, handl
     if (identificationName === 'name') {
       setMemberData((prevState) => ({ ...prevState, name: value }))
     } else if (identificationName === 'birth') {
-      setMemberData((prevState) => ({ ...prevState, birth: value }))
+      setMemberData((prevState) => ({ ...prevState, birth: Number(value) }))
     }
   }
   //submitBtnで使うfunction

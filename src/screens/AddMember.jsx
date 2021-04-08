@@ -14,7 +14,7 @@ const AddMember = ({ addFiestoreMember, handleBackEditFamily }) => {
     if (identificationName === 'name') {
       setMemberData((prevState) => ({ ...prevState, name: value }))
     } else if (identificationName === 'birth') {
-      setMemberData((prevState) => ({ ...prevState, birth: value }))
+      setMemberData((prevState) => ({ ...prevState, birth: Number(value) }))
     }
   }
   //SubmitBtn

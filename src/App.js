@@ -90,6 +90,28 @@ const App = () => {
     deleteFirestore('housework', id)
   }
 
+  const finishHousework = (memberInfo) => {
+    // console.log({memberId}, {earnedPoint});
+    const memberId = memberInfo.id
+    const earnedPoint = 3
+    // console.log(`${memberId}が家事を完了しました`)
+  }
+  /**
+   *Task
+   *add earned point to member in firestore
+   *add experience point to member in firestore
+   *set'isDone' of housework in firestore
+   */
+  const addPoint = (memberInfo, housework) => {
+    const { experiencePoint, point } = memberInfo
+    const { earnedPoint } = housework
+    const memberGetExperiencePoint = experiencePoint + earnedPoint
+    console.log(memberGetExperiencePoint)
+  }
+  const removePoint = (memberInfo, housework) => {
+    console.log('remove point')
+  }
+
   useEffect(() => {
     if (!userId) return
 
@@ -111,7 +133,15 @@ const App = () => {
             <Route
               exact
               path="/"
-              render={() => <Home membersInfo={membersInfo} houseworkListInfo={houseworkListInfo} />}
+              render={() => (
+                <Home
+                  membersInfo={membersInfo}
+                  houseworkListInfo={houseworkListInfo}
+                  finishHousework={finishHousework}
+                  addPoint={addPoint}
+                  removePoint={removePoint}
+                />
+              )}
             />
             <Route exact path="/MemberHome" component={MemberHome} />
             <Route exact path="/profile" component={Profile} />

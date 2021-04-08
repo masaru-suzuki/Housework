@@ -31,7 +31,7 @@ const EditHousework = ({
     if (identificationName === 'name') {
       setHouseworkData((prevState) => ({ ...prevState, name: value }))
     } else if (identificationName === 'earnedPoint') {
-      setHouseworkData((prevState) => ({ ...prevState, earnedPoint: value }))
+      setHouseworkData((prevState) => ({ ...prevState, earnedPoint: Number(value) }))
     } else if (identificationName === 'description') {
       setHouseworkData((prevState) => ({ ...prevState, description: value }))
     }

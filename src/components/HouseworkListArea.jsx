@@ -29,23 +29,20 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const HouseworkListArea = ({ houseworkListInfo }) => {
+const HouseworkListArea = ({ houseworkListInfo, finishBtnEvent, addPoint, removePoint }) => {
   const classes = useStyles()
   //checkedに完了したカジノIDを入れる
   const [checked, setChecked] = React.useState([])
 
-  const handleToggle = (value) => () => {
+  const handleToggle = (value, housework) => () => {
     const currentIndex = checked.indexOf(value)
     const newChecked = [...checked]
-
-    console.log(currentIndex)
-
     if (currentIndex === -1) {
       newChecked.push(value)
     } else {
       newChecked.splice(currentIndex, 1)
     }
-
+    finishBtnEvent(housework, currentIndex)
     setChecked(newChecked)
   }
 
@@ -54,7 +51,7 @@ const HouseworkListArea = ({ houseworkListInfo }) => {
       {houseworkListInfo.map((housework, index) => {
         const labelId = `checkbox-list-secondary-label-${housework.id}`
         return (
-          <ListItem key={housework.id} role={undefined} dense button onClick={handleToggle(index)}>
+          <ListItem key={housework.id} role={undefined} dense button onClick={handleToggle(index, housework)}>
             {/* TODO grid */}
             <ListItemText id={labelId} primary={housework.name} />
             <ListItemText id={labelId} primary={`${housework.earnedPoint}point`} />
