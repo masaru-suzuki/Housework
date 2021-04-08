@@ -9,6 +9,8 @@ import Container from '@material-ui/core/Container'
 import MoneyIcon from '@material-ui/icons/Money'
 import { makeStyles } from '@material-ui/core/styles'
 import BackBtn from '../uikit/BackBtn'
+import InsertEmoticonIcon from '@material-ui/icons/InsertEmoticon'
+import HomeIcon from '@material-ui/icons/Home'
 
 const styles = () => {
   btnSelected: {
@@ -17,15 +19,13 @@ const styles = () => {
 }
 const useStyles = makeStyles({
   root: {
-    backgroundColor: 'unset',
+    backgroundColor: '#525edc',
   },
   selected: {
     color: '#ccc',
   },
   bottom_nav: {
     backgroundColor: '#525edc',
-    position: 'fixed',
-    bottom: 0,
     padding: 'unset',
   },
 })
@@ -48,8 +48,14 @@ const BottomNav = () => {
       <BottomNavigationAction
         classes={{ selected: classes.selected }}
         // className={classes.nav_action}
-        label="exchange money"
-        icon={<MoneyIcon />}
+        label="exchange"
+        icon={<InsertEmoticonIcon />}
+      />
+      <BottomNavigationAction
+        classes={{ selected: classes.selected }}
+        // className={classes.nav_action}
+        label="Home"
+        icon={<HomeIcon />}
       />
       <BottomNavigationAction classes={{ selected: classes.selected }} label="use point" icon={<AutorenewIcon />} />
     </BottomNavigation>

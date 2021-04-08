@@ -20,9 +20,6 @@ const MemberInfoArea = ({ memberInfo }) => {
         <Grid item xs={6}>
           <p className={classes.name}>{memberInfo.name}</p>
           <p>{memberInfo.level}Lv</p>
-          <p>
-            連続10日<span>換金率+10%up</span>
-          </p>
         </Grid>
         <Grid item xs={6}>
           <p>{memberInfo.point}Point</p>
@@ -30,6 +27,9 @@ const MemberInfoArea = ({ memberInfo }) => {
           <Button>熟練度</Button>
         </Grid>
       </Grid>
+      <p>
+        連続10日達成!!<span> 換金率+10%up</span>
+      </p>
       <StatusBar memberInfo={memberInfo} />
     </Container>
   )

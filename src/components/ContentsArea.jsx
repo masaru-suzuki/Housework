@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import BottomNavigation from '@material-ui/core/BottomNavigation'
-import { withStyles } from '@material-ui/core'
+import { Divider, withStyles } from '@material-ui/core'
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction'
 import AutorenewIcon from '@material-ui/icons/Autorenew'
 import Container from '@material-ui/core/Container'
@@ -12,24 +12,17 @@ import BackBtn from '../uikit/BackBtn'
 import BottomNav from '../components/BottomNav'
 import MemberInfoArea from '../components/MemberInfoArea'
 import HouseworkListArea from '../components/HouseworkListArea'
-import ContentsArea from '../components/ContentsArea'
 
-const styles = () => {
-  btnSelected: {
-    color: '#000'
-  }
-}
 const useStyles = makeStyles({
-  container: {
+  root: {
     display: 'grid',
-    height: '100vh',
-    gridTemplateRows: '1fr auto',
-    backgroundColor: 'unset',
-    width: '100%',
+    height: '100%',
+    gridTemplateRows: '0.5fr 1fr auto',
     overflow: 'hidden',
-    padding: 0,
   },
-
+  divider: {
+    marginTop: '16px',
+  },
   btn_back: {
     margin: '8px 16px',
     width: 30,
@@ -37,17 +30,19 @@ const useStyles = makeStyles({
   },
 })
 //TODO selected => color #fff
-const MemberHomeScreen = ({ memberInfo, houseworkListInfo, handleBackHome }) => {
+const ContentsArea = ({ memberInfo, houseworkListInfo, handleBackHome }) => {
   const [value, setValue] = useState(0)
   const classes = useStyles()
   const history = useHistory()
 
   return (
-    <Container maxWidth="md" className={classes.container}>
-      <ContentsArea memberInfo={memberInfo} houseworkListInfo={houseworkListInfo} handleBackHome={handleBackHome} />
-      <BottomNav />
-    </Container>
+    <div className={classes.root}>
+      <BackBtn className={classes.btn_back} handleBack={handleBackHome} />
+      <MemberInfoArea memberInfo={memberInfo} />
+      <Divider className={classes.divider} />
+      <HouseworkListArea houseworkListInfo={houseworkListInfo} />
+    </div>
   )
 }
 
-export default MemberHomeScreen
+export default ContentsArea
