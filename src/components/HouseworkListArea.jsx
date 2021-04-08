@@ -3,12 +3,13 @@ import { makeStyles } from '@material-ui/core/styles'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
-import ListSubheader from '@material-ui/core/ListSubheader'
+import IconButton from '@material-ui/core/IconButton'
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
-import ListItemAvatar from '@material-ui/core/ListItemAvatar'
+import ListItemIcon from '@material-ui/core/ListItemIcon'
 import Checkbox from '@material-ui/core/Checkbox'
-import Avatar from '@material-ui/core/Avatar'
-
+import CommentIcon from '@material-ui/icons/Comment'
+import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline'
+import CheckCircleIcon from '@material-ui/icons/CheckCircle'
 const useStyles = makeStyles((theme) => ({
   root: {
     //TODO remove scroll ber
@@ -28,8 +29,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const HouseworkListArea = () => {
+const HouseworkListArea = ({ houseworkListInfo }) => {
   const classes = useStyles()
+  //checkedに完了したカジノIDを入れる
   const [checked, setChecked] = React.useState([])
 
   const handleToggle = (value) => () => {
@@ -49,22 +51,25 @@ const HouseworkListArea = () => {
 
   return (
     <List className={classes.root} subheader={<li />}>
-      {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((value) => {
-        const labelId = `checkbox-list-secondary-label-${value}`
+      {houseworkListInfo.map((housework, index) => {
+        const labelId = `checkbox-list-secondary-label-${housework.id}`
         return (
-          <ListItem key={value} button>
-            <ListItemAvatar>
-              <Avatar alt={`Avatar n°${value + 1}`} src={`/static/images/avatar/${value + 1}.jpg`} />
-            </ListItemAvatar>
-            <ListItemText id={labelId} primary={`Line item ${value + 1}`} />
-            <ListItemSecondaryAction>
+          <ListItem key={housework.id} role={undefined} dense button onClick={handleToggle(index)}>
+            {/* TODO grid */}
+            <ListItemText id={labelId} primary={housework.name} />
+            <ListItemText id={labelId} primary={`${housework.earnedPoint}point`} />
+            <ListItemIcon>
               <Checkbox
-                edge="end"
-                onChange={handleToggle(value)}
-                checked={checked.indexOf(value) !== -1}
+                edge="start"
+                checked={checked.indexOf(index) !== -1}
+                tabIndex={-1}
+                icon={<CheckCircleOutlineIcon fontSize="large" />}
+                checkedIcon={<CheckCircleIcon fontSize="large" />}
+                disableRipple
+                color="primary"
                 inputProps={{ 'aria-labelledby': labelId }}
               />
-            </ListItemSecondaryAction>
+            </ListItemIcon>
           </ListItem>
         )
       })}

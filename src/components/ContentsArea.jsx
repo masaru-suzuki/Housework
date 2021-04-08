@@ -17,11 +17,8 @@ const useStyles = makeStyles({
   root: {
     display: 'grid',
     height: '100%',
-    gridTemplateRows: '0.5fr 1fr auto',
+    gridTemplateRows: '40px 10px 150px 10px 1fr',
     overflow: 'hidden',
-  },
-  divider: {
-    marginTop: '16px',
   },
   btn_back: {
     margin: '8px 16px',
@@ -38,6 +35,7 @@ const ContentsArea = ({ memberInfo, houseworkListInfo, handleBackHome }) => {
   return (
     <div className={classes.root}>
       <BackBtn className={classes.btn_back} handleBack={handleBackHome} />
+      <Divider className={classes.divider} />
       <MemberInfoArea memberInfo={memberInfo} />
       <Divider className={classes.divider} />
       <HouseworkListArea houseworkListInfo={houseworkListInfo} />
