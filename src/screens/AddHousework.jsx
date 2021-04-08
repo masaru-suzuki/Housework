@@ -13,11 +13,11 @@ const AddHousework = ({ addFiestoreHousework, handleBackEditHouseworkList }) => 
     const identificationName = event.target.name
     const value = event.target.value
     if (identificationName === 'name') {
-      setHousework((prevState) => ({ ...prevState, name: value }))
+      setHousework((prevState) => ({ ...prevState, name: String(value) }))
     } else if (identificationName === 'earnedPoint') {
       setHousework((prevState) => ({ ...prevState, earnedPoint: Number(value) }))
     } else if (identificationName === 'description') {
-      setHousework((prevState) => ({ ...prevState, description: value }))
+      setHousework((prevState) => ({ ...prevState, description: String(value) }))
     }
   }
 

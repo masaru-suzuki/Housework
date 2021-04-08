@@ -103,13 +103,21 @@ const App = () => {
    *set'isDone' of housework in firestore
    */
   const addPoint = (memberInfo, housework) => {
-    const { experiencePoint, point } = memberInfo
+    let { experiencePoint, point, id } = memberInfo //updateFirestoreMemberでidも必要なため、idも定義
     const { earnedPoint } = housework
-    const memberGetExperiencePoint = experiencePoint + earnedPoint
-    console.log(memberGetExperiencePoint)
+    experiencePoint += earnedPoint
+    point += earnedPoint
+    const data = { id, experiencePoint, point }
+    updateFirestoreMember(data)
   }
   const removePoint = (memberInfo, housework) => {
-    console.log('remove point')
+    let { experiencePoint, point, id } = memberInfo //updateFirestoreMemberでidも必要なため、idも定義
+    const { earnedPoint } = housework
+    experiencePoint -= earnedPoint
+    point -= earnedPoint
+    const data = { id, experiencePoint, point }
+    updateFirestoreMember(data)
+    console.log('remove')
   }
 
   useEffect(() => {
