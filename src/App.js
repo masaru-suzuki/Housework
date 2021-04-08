@@ -7,11 +7,12 @@ import Auth, { useAuth } from './auth/Auth'
 import Home from './screens/Home'
 import EditFamily from './screens/EditFamily'
 import EditHouseworkList from './screens/EditHouseworkList'
-import Profile from './screens/Member'
+import Profile from './screens/MemberHomeScreen'
 import SignInOrUp from './screens/SignInOrUp'
 import SignUp from './screens/SignUp'
-import Member from './screens/Member'
+import Member from './screens/MemberHomeScreen'
 import EditMember from './screens/EditMember'
+import MemberHomeScreen from './screens/MemberHomeScreen'
 
 const db = firebase.firestore()
 
@@ -50,7 +51,7 @@ const App = () => {
     setIsEdit(true) //isEditで再レンダリングを発火させる
   }
   const updateFirestoreMember = (data) => {
-    updateFirestore(data, 'family')
+    updateFirestore(data, 'member')
   }
   const updateFirestoreHousework = (data) => {
     updateFirestore(data, 'housework')
@@ -63,7 +64,7 @@ const App = () => {
     setIsEdit(true) //isEditで再レンダリングを発火させる
   }
   const addFiestoreMember = (data) => {
-    addFirestore(data, 'family')
+    addFirestore(data, 'member')
   }
   const addFiestoreHousework = (data) => {
     addFirestore(data, 'housework')
@@ -83,7 +84,7 @@ const App = () => {
       })
   }
   const deleteFirestoreMember = (id) => {
-    deleteFirestore('family', id)
+    deleteFirestore('member', id)
   }
   const deleteFirestoreHousework = (id) => {
     deleteFirestore('housework', id)
@@ -93,7 +94,7 @@ const App = () => {
     if (!userId) return
 
     //submitがclickされるたびにfirestoreのデータを引っ張ってきて更新する
-    getFirestoreMock('family', setMembersInfo)
+    getFirestoreMock('member', setMembersInfo)
     getFirestoreMock('housework', setHouseworkListInfo)
     //userIdが変わった時も情報を撮り直す
   }, [isEdit, userId])
@@ -112,6 +113,7 @@ const App = () => {
               path="/"
               render={() => <Home membersInfo={membersInfo} houseworkListInfo={houseworkListInfo} />}
             />
+            <Route exact path="/MemberHomeScreen" component={MemberHomeScreen} />
             <Route exact path="/profile" component={Profile} />
             <Route
               exact
