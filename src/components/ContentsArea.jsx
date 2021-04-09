@@ -27,7 +27,7 @@ const useStyles = makeStyles({
   },
 })
 //TODO selected => color #fff
-const ContentsArea = ({ memberInfo, houseworkListInfo, handleBackHome, finishBtnEvent, addPoint, removePoint }) => {
+const ContentsArea = ({ memberInfo, houseworkListInfo, handleBackHome, handleFinishBtn, addPoint, removePoint }) => {
   const [value, setValue] = useState(0)
   const classes = useStyles()
   const history = useHistory()
@@ -40,9 +40,10 @@ const ContentsArea = ({ memberInfo, houseworkListInfo, handleBackHome, finishBtn
       <Divider className={classes.divider} />
       <HouseworkListArea
         houseworkListInfo={houseworkListInfo}
-        finishBtnEvent={finishBtnEvent}
-        addPoint={addPoint}
-        removePoint={removePoint}
+        memberInfo={memberInfo}
+        handleFinishBtn={handleFinishBtn}
+        // addPoint={addPoint}
+        // removePoint={removePoint}
       />
     </div>
   )

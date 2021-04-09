@@ -39,7 +39,15 @@ const useStyles = makeStyles({
     fontSize: 16,
   },
 })
-const MemberHome = ({ memberInfo, houseworkListInfo, handleBackHome, finishHousework, addPoint, removePoint }) => {
+const MemberHome = ({
+  memberInfo,
+  houseworkListInfo,
+  handleBackHome,
+  finishBtnEvent,
+  resetFirestoreHousework,
+  addPoint,
+  removePoint,
+}) => {
   const classes = useStyles()
   const [flag, setFlag] = useState({ isExchange: false, isHome: true, isCash: false })
   const [isPage, setIsPage] = useState('isHome')
@@ -58,9 +66,8 @@ const MemberHome = ({ memberInfo, houseworkListInfo, handleBackHome, finishHouse
 
   //finish btn action
 
-  const finishBtnEvent = (hosuework, currentIndex) => {
-    currentIndex ? addPoint(memberInfo, hosuework) : removePoint(memberInfo, hosuework)
-    // finishHousework(memberInfo)
+  const handleFinishBtn = (housework) => {
+    finishBtnEvent(memberInfo, housework)
   }
 
   useState(() => {}, [])
@@ -71,11 +78,16 @@ const MemberHome = ({ memberInfo, houseworkListInfo, handleBackHome, finishHouse
           memberInfo={memberInfo}
           houseworkListInfo={houseworkListInfo}
           handleBackHome={handleBackHome}
-          finishBtnEvent={finishBtnEvent}
-          addPoint={addPoint}
-          removePoint={removePoint}
+          handleFinishBtn={handleFinishBtn}
+          // addPoint={addPoint}
+          // removePoint={removePoint}
         />
-        <BottomNav isPage={isPage} flag={flag} handleFlag={handleFlag} />
+        <BottomNav
+          isPage={isPage}
+          flag={flag}
+          handleFlag={handleFlag}
+          resetFirestoreHousework={resetFirestoreHousework}
+        />
       </Container>
     )
   } else if (isPage === 'isExchange') {

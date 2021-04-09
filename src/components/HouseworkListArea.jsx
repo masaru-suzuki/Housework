@@ -10,6 +10,7 @@ import Checkbox from '@material-ui/core/Checkbox'
 import CommentIcon from '@material-ui/icons/Comment'
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline'
 import CheckCircleIcon from '@material-ui/icons/CheckCircle'
+import { Button } from '@material-ui/core'
 const useStyles = makeStyles((theme) => ({
   root: {
     //TODO remove scroll ber
@@ -29,36 +30,55 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const HouseworkListArea = ({ houseworkListInfo, finishBtnEvent, addPoint, removePoint }) => {
+const HouseworkListArea = ({ houseworkListInfo, memberInfo, handleFinishBtn, addPoint, removePoint }) => {
   const classes = useStyles()
   //checkedに完了したカジノIDを入れる
   const [checked, setChecked] = React.useState([])
+  const { id } = memberInfo
 
-  const handleToggle = (value, housework) => () => {
-    const currentIndex = checked.indexOf(value)
+  const toggleCheck = (index) => {
+    console.log('toggle check')
+    const currentIndex = checked.indexOf(index)
     const newChecked = [...checked]
     if (currentIndex === -1) {
-      newChecked.push(value)
+      newChecked.push(index)
     } else {
       newChecked.splice(currentIndex, 1)
     }
-    finishBtnEvent(housework, currentIndex)
     setChecked(newChecked)
+  }
+
+  const handleToggle = (index, housework) => {
+    toggleCheck(index)
+    console.log('handeltoggle')
+    handleFinishBtn(housework)
   }
 
   return (
     <List className={classes.root} subheader={<li />}>
       {houseworkListInfo.map((housework, index) => {
         const labelId = `checkbox-list-secondary-label-${housework.id}`
+        const { doneMemberId, isDone } = housework
+        const isMatchDoneMember = isDone && id !== doneMemberId
+        // console.log(isMatchDoneMember)
         return (
-          <ListItem key={housework.id} role={undefined} dense button onClick={handleToggle(index, housework)}>
+          <ListItem
+            key={housework.id}
+            divider
+            role={undefined}
+            disabled={isMatchDoneMember}
+            dense
+            button
+            onClick={() => handleToggle(index, housework)}
+          >
             {/* TODO grid */}
             <ListItemText id={labelId} primary={housework.name} />
             <ListItemText id={labelId} primary={`${housework.earnedPoint}point`} />
             <ListItemIcon>
               <Checkbox
                 edge="start"
-                checked={checked.indexOf(index) !== -1}
+                // checked={checked.indexOf(index) !== -1}
+                checked={housework.isDone}
                 tabIndex={-1}
                 icon={<CheckCircleOutlineIcon fontSize="large" />}
                 checkedIcon={<CheckCircleIcon fontSize="large" />}
