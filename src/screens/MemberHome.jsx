@@ -1,27 +1,11 @@
 import React, { useState } from 'react'
-import { useHistory } from 'react-router-dom'
-import BottomNavigation from '@material-ui/core/BottomNavigation'
-import { withStyles } from '@material-ui/core'
-import BottomNavigationAction from '@material-ui/core/BottomNavigationAction'
-import AutorenewIcon from '@material-ui/icons/Autorenew'
 import Container from '@material-ui/core/Container'
-
-import MoneyIcon from '@material-ui/icons/Money'
 import { makeStyles } from '@material-ui/core/styles'
-import BackBtn from '../uikit/BackBtn'
 import BottomNav from '../components/BottomNav'
-import MemberInfoArea from '../components/MemberInfoArea'
-import HouseworkListArea from '../components/HouseworkListArea'
 import ContentsArea from '../components/ContentsArea'
 import Cash from './Cash'
 import Exchange from './Exchange'
-import { boolean } from 'yup'
 
-const styles = () => {
-  btnSelected: {
-    color: '#000'
-  }
-}
 const useStyles = makeStyles({
   container: {
     display: 'grid',
@@ -39,19 +23,10 @@ const useStyles = makeStyles({
     fontSize: 16,
   },
 })
-const MemberHome = ({
-  memberInfo,
-  houseworkListInfo,
-  handleBackHome,
-  finishBtnEvent,
-  resetFirestoreHousework,
-  addPoint,
-  removePoint,
-}) => {
+const MemberHome = ({ memberInfo, houseworkListInfo, handleBackHome, finishBtnEvent, resetFirestoreHousework }) => {
   const classes = useStyles()
   const [flag, setFlag] = useState({ isExchange: false, isHome: true, isCash: false })
   const [isPage, setIsPage] = useState('isHome')
-  const [doneHousework, setDoneHousework] = useState([])
 
   //Bottom Nav
   const handleFlag = (text) => {
@@ -79,8 +54,6 @@ const MemberHome = ({
           houseworkListInfo={houseworkListInfo}
           handleBackHome={handleBackHome}
           handleFinishBtn={handleFinishBtn}
-          // addPoint={addPoint}
-          // removePoint={removePoint}
         />
         <BottomNav
           isPage={isPage}

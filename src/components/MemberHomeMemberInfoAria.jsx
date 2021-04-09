@@ -1,7 +1,7 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import Container from '@material-ui/core/Container'
-import { Button, Grid, Paper } from '@material-ui/core'
+import { Button, Grid } from '@material-ui/core'
 import StatusBar from '../uikit/StatusBar'
 
 const useStyles = makeStyles(() => ({
@@ -11,9 +11,10 @@ const useStyles = makeStyles(() => ({
   },
 }))
 
-const MemberInfoArea = ({ memberInfo }) => {
+//TODO ポイントの加算時にコマ送りで表示
+//TODO ポイントの加算時に'+100p'が出てきて消えるモーション バッチ？
+const MemberHomeMemberInfoAria = ({ memberInfo }) => {
   const classes = useStyles()
-  // console.log(memberInfo)
   return (
     <Container>
       <Grid container spacing={3}>
@@ -35,4 +36,4 @@ const MemberInfoArea = ({ memberInfo }) => {
   )
 }
 
-export default MemberInfoArea
+export default MemberHomeMemberInfoAria

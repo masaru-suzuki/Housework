@@ -1,17 +1,10 @@
-import React, { useState } from 'react'
-import { useHistory } from 'react-router-dom'
-import BottomNavigation from '@material-ui/core/BottomNavigation'
-import { Divider, withStyles } from '@material-ui/core'
-import BottomNavigationAction from '@material-ui/core/BottomNavigationAction'
-import AutorenewIcon from '@material-ui/icons/Autorenew'
-import Container from '@material-ui/core/Container'
+import React from 'react'
+import { Divider } from '@material-ui/core'
 
-import MoneyIcon from '@material-ui/icons/Money'
 import { makeStyles } from '@material-ui/core/styles'
 import BackBtn from '../uikit/BackBtn'
-import BottomNav from '../components/BottomNav'
-import MemberInfoArea from '../components/MemberInfoArea'
-import HouseworkListArea from '../components/HouseworkListArea'
+import MemberHomeMemberInfoAria from './MemberHomeMemberInfoAria'
+import MemberHomeHouseworkAria from './MemberHomeHouseworkAria'
 
 const useStyles = makeStyles({
   root: {
@@ -26,24 +19,19 @@ const useStyles = makeStyles({
     fontSize: 16,
   },
 })
-//TODO selected => color #fff
-const ContentsArea = ({ memberInfo, houseworkListInfo, handleBackHome, handleFinishBtn, addPoint, removePoint }) => {
-  const [value, setValue] = useState(0)
+const ContentsArea = ({ memberInfo, houseworkListInfo, handleBackHome, handleFinishBtn }) => {
   const classes = useStyles()
-  const history = useHistory()
 
   return (
     <div className={classes.root}>
       <BackBtn className={classes.btn_back} handleBack={handleBackHome} />
       <Divider className={classes.divider} />
-      <MemberInfoArea memberInfo={memberInfo} />
+      <MemberHomeMemberInfoAria memberInfo={memberInfo} />
       <Divider className={classes.divider} />
-      <HouseworkListArea
+      <MemberHomeHouseworkAria
         houseworkListInfo={houseworkListInfo}
         memberInfo={memberInfo}
         handleFinishBtn={handleFinishBtn}
-        // addPoint={addPoint}
-        // removePoint={removePoint}
       />
     </div>
   )

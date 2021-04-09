@@ -90,48 +90,30 @@ const App = () => {
     deleteFirestore('housework', id)
   }
 
-  const finishHousework = (memberInfo) => {
-    // console.log({memberId}, {earnedPoint});
-    const memberId = memberInfo.id
-    const earnedPoint = 3
-    // console.log(`${memberId}が家事を完了しました`)
-  }
-  /**
-   *Task
-   *add earned point to member in firestore
-   *add experience point to member in firestore
-   *set'isDone' of housework in firestore
-   */
-  // const getUpdateData = (data) => ({ id: data.id, isDone: !data.isDone, doneMemberId: memberId })
   const finishBtnEvent = (memberInfo, housework) => {
-    //TODO isDoneで場合分け addPoint,removePoint
-    //TODO set doneMemberId
-    //TODO function make common (addPoint, removePoint)
     let { id, experiencePoint, point } = memberInfo //updateFirestoreMemberでidも必要なため、idも定義
     let { earnedPoint, isDone, doneMemberId } = housework
-    console.log({ isDone })
+    //家事の状態が isDoneかによって場合分け
     if (isDone) {
-      // console.log('remove point')
       experiencePoint -= earnedPoint
       point -= earnedPoint
       doneMemberId = ''
     } else {
-      // console.log('add point')
-      // console.log({ point })
       experiencePoint += earnedPoint
       point += earnedPoint
       doneMemberId = id
     }
     isDone = !isDone
-    // console.log({ isDone })
+    // 更新するデータ
     const memberData = { id, experiencePoint, point }
     const houseworkData = { id: housework.id, doneMemberId, isDone }
-    // console.log(memberData)
-    console.log({ houseworkData })
+
+    //更新を実行
     updateFirestoreMember(memberData)
     updateFirestoreHousework(houseworkData)
   }
 
+  //TODO 日付が変わった時に家事のデータをresetする
   const resetFirestoreHousework = () => {
     houseworkListInfo.forEach((housework) => {
       const resetHouseworkData = {
@@ -142,17 +124,6 @@ const App = () => {
       updateFirestoreHousework(resetHouseworkData)
     })
   }
-
-  // const removePoint = (memberInfo, housework) => {
-  //   // console.log('remove')
-  //   let { id, experiencePoint, point } = memberInfo //updateFirestoreMemberでidも必要なため、idも定義
-  //   let { earnedPoint } = housework
-  //   experiencePoint -= earnedPoint
-  //   point -= earnedPoint
-  //   const memberData = { id, experiencePoint, point }
-  //   updateFirestoreMember(memberData)
-  //   updateFirestoreHousework(toggleIsDone(housework))
-  // }
 
   useEffect(() => {
     if (!userId) return
