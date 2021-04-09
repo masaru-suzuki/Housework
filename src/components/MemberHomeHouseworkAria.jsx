@@ -58,7 +58,6 @@ const MemberHomeHouseworkAria = ({ houseworkListInfo, memberInfo, handleFinishBt
             className={isDone ? classes.list_item_finished : classes.list_item}
             onClick={() => handleToggle(housework)}
           >
-            {/* TODO grid */}
             <ListItemText id={labelId} primary={housework.name} />
             <ListItemText id={labelId} primary={`${housework.earnedPoint}point`} />
             <ListItemIcon>
