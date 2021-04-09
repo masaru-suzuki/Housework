@@ -59,6 +59,7 @@ const MemberHome = ({ memberInfo, houseworkListInfo, handleBackHome, finishHouse
   //finish btn action
 
   const finishBtnEvent = (hosuework, currentIndex) => {
+    console.log(currentIndex)
     currentIndex ? addPoint(memberInfo, hosuework) : removePoint(memberInfo, hosuework)
     // finishHousework(memberInfo)
   }

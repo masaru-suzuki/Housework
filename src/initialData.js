@@ -12,8 +12,9 @@ export const initMember = () => {
 export const initHousework = () => {
   return {
     name: '',
-    earnedPoint: 0,
-    // earnedSkillPoint: '',
+    earnedPoint: '',
+    earnedSkillPoint: '',
     description: '',
+    isDone: false,
   }
 }
