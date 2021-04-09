@@ -102,23 +102,57 @@ const App = () => {
    *add experience point to member in firestore
    *set'isDone' of housework in firestore
    */
-  const addPoint = (memberInfo, housework) => {
-    let { experiencePoint, point, id } = memberInfo //updateFirestoreMemberでidも必要なため、idも定義
-    const { earnedPoint } = housework
-    experiencePoint += earnedPoint
-    point += earnedPoint
-    const data = { id, experiencePoint, point }
-    updateFirestoreMember(data)
+  // const getUpdateData = (data) => ({ id: data.id, isDone: !data.isDone, doneMemberId: memberId })
+  const finishBtnEvent = (memberInfo, housework) => {
+    //TODO isDoneで場合分け addPoint,removePoint
+    //TODO set doneMemberId
+    //TODO function make common (addPoint, removePoint)
+    let { id, experiencePoint, point } = memberInfo //updateFirestoreMemberでidも必要なため、idも定義
+    let { earnedPoint, isDone, doneMemberId } = housework
+    console.log({ isDone })
+    if (isDone) {
+      // console.log('remove point')
+      experiencePoint -= earnedPoint
+      point -= earnedPoint
+      doneMemberId = ''
+    } else {
+      // console.log('add point')
+      // console.log({ point })
+      experiencePoint += earnedPoint
+      point += earnedPoint
+      doneMemberId = id
+    }
+    isDone = !isDone
+    // console.log({ isDone })
+    const memberData = { id, experiencePoint, point }
+    const houseworkData = { id: housework.id, doneMemberId, isDone }
+    // console.log(memberData)
+    console.log({ houseworkData })
+    updateFirestoreMember(memberData)
+    updateFirestoreHousework(houseworkData)
   }
-  const removePoint = (memberInfo, housework) => {
-    let { experiencePoint, point, id } = memberInfo //updateFirestoreMemberでidも必要なため、idも定義
-    const { earnedPoint } = housework
-    experiencePoint -= earnedPoint
-    point -= earnedPoint
-    const data = { id, experiencePoint, point }
-    updateFirestoreMember(data)
-    console.log('remove')
+
+  const resetFirestoreHousework = () => {
+    houseworkListInfo.forEach((housework) => {
+      const resetHouseworkData = {
+        id: housework.id,
+        doneMemberId: '',
+        isDone: false,
+      }
+      updateFirestoreHousework(resetHouseworkData)
+    })
   }
+
+  // const removePoint = (memberInfo, housework) => {
+  //   // console.log('remove')
+  //   let { id, experiencePoint, point } = memberInfo //updateFirestoreMemberでidも必要なため、idも定義
+  //   let { earnedPoint } = housework
+  //   experiencePoint -= earnedPoint
+  //   point -= earnedPoint
+  //   const memberData = { id, experiencePoint, point }
+  //   updateFirestoreMember(memberData)
+  //   updateFirestoreHousework(toggleIsDone(housework))
+  // }
 
   useEffect(() => {
     if (!userId) return
@@ -145,9 +179,11 @@ const App = () => {
                 <Home
                   membersInfo={membersInfo}
                   houseworkListInfo={houseworkListInfo}
-                  finishHousework={finishHousework}
-                  addPoint={addPoint}
-                  removePoint={removePoint}
+                  finishBtnEvent={finishBtnEvent}
+                  resetFirestoreHousework={resetFirestoreHousework}
+
+                  // addPoint={addPoint}
+                  // removePoint={removePoint}
                 />
               )}
             />

@@ -41,7 +41,7 @@ const theme = createMuiTheme({
     },
   },
 })
-const BottomNav = ({ isPage, flag, handleFlag }) => {
+const BottomNav = ({ isPage, flag, handleFlag, resetFirestoreHousework }) => {
   const [value, setValue] = useState() //初期値はisPageでisPageの初期値はisHome
   const classes = useStyles()
 
@@ -71,6 +71,12 @@ const BottomNav = ({ isPage, flag, handleFlag }) => {
           value="isExchange"
           onClick={() => handleFlag('isExchange')}
           icon={<AutorenewIcon color={flag.isExchange ? 'primary' : 'disabled'} />}
+        />
+        <BottomNavigationAction
+          classes={{ selected: classes.selected }}
+          label="reset"
+          value="reset"
+          onClick={() => resetFirestoreHousework()}
         />
       </BottomNavigation>
     </ThemeProvider>

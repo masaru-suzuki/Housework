@@ -16,5 +16,6 @@ export const initHousework = () => {
     earnedSkillPoint: '',
     description: '',
     isDone: false,
+    doneMemberId: '',
   }
 }

@@ -12,6 +12,8 @@ exchange item featuer comming soon ...
 - authenticate with firebase.
 - create, read, update and delete family member and houswork.
 - finish housework and click 'done' button so that your point add.
+- if member finished a housework , other member can't click this button.
+- if member finished a housework , this member can click this button for cancel the action.
 - exchange your point to monay or items.
 
 # point
