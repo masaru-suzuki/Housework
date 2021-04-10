@@ -107,6 +107,8 @@ const App = () => {
     // 更新するデータ
     const memberData = { id, experiencePoint, point }
     const houseworkData = { id: housework.id, doneMemberId, isDone }
+    console.log({ memberData })
+    console.log({ houseworkData })
 
     //更新を実行
     updateFirestoreMember(memberData)

@@ -38,9 +38,7 @@ const MemberHome = ({ memberInfo, houseworkListInfo, handleBackHome, finishBtnEv
       }
     }
   }
-
-  //finish btn action
-
+  //finish button
   const handleFinishBtn = (housework) => {
     finishBtnEvent(memberInfo, housework)
   }

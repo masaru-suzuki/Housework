@@ -21,34 +21,22 @@ const useStyles = makeStyles({
 })
 const ContentsArea = ({ memberInfo, houseworkListInfo, handleBackHome, handleFinishBtn }) => {
   const classes = useStyles()
-  const [earnedPoint, setEarnedPoint] = useState('')
-  const [isActiveBudge, setIsActiveBudge] = useState(false)
-  //TODO 他の要素をクリックしたときに、setEarndedPoinitを使えるようにする => isDoneでいいんじゃ？
-  //TODO 同じポイントのものもあるから、budgeのtoggleを別なものにする？
-  const toggleBudge = (point, isDone) => {
-    // setEarnedPoint(point)
-    if (isDone) {
-      //家事完了取り消し時
-      console.log('not isdone')
-      setEarnedPoint(null)
-      console.log({ earnedPoint })
-      setIsActiveBudge(false)
-      console.log({ isActiveBudge })
-    } else {
-      //完了時
-      console.log('is done')
-      setEarnedPoint(point)
-      console.log({ earnedPoint })
-      setIsActiveBudge(true)
-      console.log({ isActiveBudge })
-    }
+  const [clickedHousework, setClikedHousework] = useState({})
+
+  //TODO 同じポイントの家事もあるから、budgeのtoggleを別なものにする？ => id
+  const toggleBudge = (housework) => {
+    const { isDone, earnedPoint } = housework
+
+    handleFinishBtn(housework) //housework状態を登録
+    setClikedHousework(housework)
+    // console.log({ housework })
   }
 
   return (
     <div className={classes.root}>
       <BackBtn className={classes.btn_back} handleBack={handleBackHome} />
       <Divider className={classes.divider} />
-      <MemberHomeMemberInfoAria memberInfo={memberInfo} earnedPoint={earnedPoint} isActiveBudge={isActiveBudge} />
+      <MemberHomeMemberInfoAria memberInfo={memberInfo} clickedHousework={clickedHousework} />
       <Divider className={classes.divider} />
       <MemberHomeHouseworkAria
         houseworkListInfo={houseworkListInfo}

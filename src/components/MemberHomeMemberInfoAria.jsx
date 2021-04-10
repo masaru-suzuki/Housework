@@ -34,58 +34,37 @@ const useStyles = makeStyles(() => ({
   },
   earned_point: {
     position: 'absolute',
-    top: 10,
-    right: 10,
-    transition: '1s',
-    opacity: 0,
+    top: 0,
+    right: 40,
   },
-  // earned_point_isActive: {
-  //   position: 'absolute',
-  //   top: 10,
-  //   right: 10,
-  //   transition: '.5s',
-  //   opacity: 0,
-  // },
   btn: {
     height: 24,
     marginBottom: 0,
   },
 }))
-//TODO level calcuration
-//TODO ポイントの加算時にコマ送りで表示
-//TODO ポイントの加算時に'+100p'が出てきて消えるモーション バッチ？
-const MemberHomeMemberInfoAria = ({ memberInfo, earnedPoint, isActiveBudge }) => {
+const MemberHomeMemberInfoAria = ({ memberInfo, clickedHousework }) => {
   const classes = useStyles()
-  //pointを他の変数に代入して増やしていく
-  // const [prevPoint, setPrevPoint] = useState(0)
-  // const [isActive, setIsActive] = useState(false)
-  //isActiveを監視して、isActiveになったらアニメーションをスタート
   const ref = useRef(null)
+  const { id, earnedPoint, isDone } = clickedHousework
+  const plusEarnedPoint = earnedPoint ? `+ ${earnedPoint}` : '' //初回のレンダリングでundefinedを表示させない
 
-  // console.log({ isActiveBudge })
-  // useEffect(() => {
-  if (isActiveBudge) {
-    anime({
-      targets: ref.current,
-      translateY: [20],
-      opacity: [1, 1, 0],
-      duration: 200,
-      easing: 'cubicBezier(0.985, 0.020, 1.000, 0.945)',
-    })
-  }
-  // setIsActive(false)
-  // })
+  useEffect(() => {
+    // console.log({ clickedHousework })
+    // console.log({ isDone })
+    //isDoneはクリック時点のものだから、反転させる必要がある
+    if (!isDone) {
+      anime({
+        targets: ref.current,
+        translateY: [0, -10],
+        opacity: [1, 0],
+        duration: 400,
+        easing: 'easeInOutExpo',
+      })
+    }
+  }, [id, isDone])
 
   return (
     <Container className={classes.container}>
-      {/* <button
-        onClick={() => {
-          setIsActive(!isActive)
-          console.log(isActive)
-        }}
-      >
-        toggle
-      </button> */}
       <Grid className={classes.grid_box} container spacing={1}>
         <Grid item xs={7}>
           <p className={classes.name}>{memberInfo.name}</p>
@@ -94,7 +73,7 @@ const MemberHomeMemberInfoAria = ({ memberInfo, earnedPoint, isActiveBudge }) =>
         <Grid className={classes.right_box} item xs={5}>
           <p className={classes.point}>{memberInfo.point}Point</p>
           <span ref={ref} className={classes.earned_point}>
-            + {earnedPoint}
+            {plusEarnedPoint}
           </span>
           <Button className={classes.btn} variant="contained" color="primary" size="small">
             熟練度
