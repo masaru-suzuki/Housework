@@ -90,25 +90,64 @@ const App = () => {
     deleteFirestore('housework', id)
   }
 
+  const levelUp = (experiencePoint, requiredExpreriencePoint, level) => {
+    console.log({ experiencePoint })
+    console.log({ requiredExpreriencePoint })
+    const overExperiencePoint = experiencePoint - requiredExpreriencePoint
+    console.log({ overExperiencePoint })
+    if (requiredExpreriencePoint <= experiencePoint) {
+      level += 1
+      console.log(`level up ${level - 1} => ${level}`)
+      return level
+    } else {
+      console.log('not level up')
+      return level
+    }
+  }
   const finishBtnEvent = (memberInfo, housework) => {
-    let { id, experiencePoint, point } = memberInfo //updateFirestoreMemberでidも必要なため、idも定義
+    let { id, level, experiencePoint, point, requiredExpreriencePoint } = memberInfo //updateFirestoreMemberでidも必要なため、idも定義
     let { earnedPoint, isDone, doneMemberId } = housework
     //家事の状態が isDoneかによって場合分け
     if (isDone) {
       experiencePoint -= earnedPoint
       point -= earnedPoint
       doneMemberId = ''
+
+      //levelupを取り消す処理が必要な場合もある
     } else {
       experiencePoint += earnedPoint
       point += earnedPoint
       doneMemberId = id
+
+      //level判定
+      if (requiredExpreriencePoint <= experiencePoint) {
+        let overExperiencePoint = experiencePoint - requiredExpreriencePoint
+        while (overExperiencePoint >= 0) {
+          console.log('loop start')
+          console.log({ overExperiencePoint })
+          //level up
+          level += 1
+          console.log(`level up ${level - 1} => ${level}`)
+          //require experience pointの計算
+          requiredExpreriencePoint += level * level
+          console.log({ requiredExpreriencePoint })
+          //超えた部分の経験値を追加
+          experiencePoint = overExperiencePoint
+          console.log({ experiencePoint })
+          //levelが2以上上がる時
+          overExperiencePoint = experiencePoint - requiredExpreriencePoint
+          // console.log({ overExperiencePoint })
+        }
+      }
     }
+    //levelup判定
+    // level = levelUp(experiencePoint, requiredExpreriencePoint, level)
     isDone = !isDone
     // 更新するデータ
-    const memberData = { id, experiencePoint, point }
+    const memberData = { id, experiencePoint, point, level, requiredExpreriencePoint }
     const houseworkData = { id: housework.id, doneMemberId, isDone }
-    console.log({ memberData })
-    console.log({ houseworkData })
+    // console.log({ memberData })
+    // console.log({ houseworkData })
 
     //更新を実行
     updateFirestoreMember(memberData)
