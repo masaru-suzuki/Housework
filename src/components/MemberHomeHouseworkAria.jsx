@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
   },
   list_item_finished: {
     //TODO onFocusの時にline-throughが適用されなくなるから適用されるようにする
-    textDecoration: 'line-through', //逆にみづらい？
+    // textDecoration: 'line-through', //逆にみづらい？
     display: 'grid',
     gap: '8px',
     gridTemplateColumns: '4fr 1fr 50px',
@@ -32,13 +32,19 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const MemberHomeHouseworkAria = ({ houseworkListInfo, memberInfo, handleFinishBtn }) => {
+const MemberHomeHouseworkAria = ({ houseworkListInfo, memberInfo, handleFinishBtn, toggleBudge }) => {
   const classes = useStyles()
   const { id } = memberInfo
 
   const handleToggle = (housework) => {
-    console.log('handeltoggle')
+    // console.log('handeltoggle')
     handleFinishBtn(housework)
+    //budgeのエフェクト用
+    // if (housework.isDone) {
+    //   //家事完了をキャンセルしたときに、ポイントのbudge effectが発火しないように
+    //   return
+    // }
+    toggleBudge(housework.earnedPoint, housework.isDone)
   }
 
   return (
