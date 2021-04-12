@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 import Container from '@material-ui/core/Container'
 import { makeStyles } from '@material-ui/core/styles'
+import { Divider } from '@material-ui/core'
 import BottomNav from '../components/BottomNav'
-import ContentsArea from '../components/ContentsArea'
-import Cash from './Cash'
-import Exchange from './Exchange'
+import BackBtn from '../uikit/BackBtn'
+import ContentsArea from './ContentsArea'
 
 const useStyles = makeStyles({
   container: {
@@ -16,7 +16,12 @@ const useStyles = makeStyles({
     overflow: 'hidden',
     padding: 0,
   },
-
+  root: {
+    display: 'grid',
+    height: '100%',
+    gridTemplateRows: '40px 10px 150px 10px 1fr',
+    overflow: 'hidden',
+  },
   btn_back: {
     margin: '8px 16px',
     width: 30,
@@ -44,30 +49,29 @@ const MemberHome = ({ memberInfo, houseworkListInfo, handleBackHome, finishBtnEv
   }
 
   useState(() => {}, [])
-  if (isPage === 'isHome') {
-    return (
-      <Container maxWidth="md" className={classes.container}>
+  return (
+    <Container maxWidth="md" className={classes.container}>
+      <div className={classes.root}>
+        <BackBtn className={classes.btn_back} handleBack={handleBackHome} />
+        <Divider className={classes.divider} />
         <ContentsArea
           memberInfo={memberInfo}
           houseworkListInfo={houseworkListInfo}
           handleBackHome={handleBackHome}
           handleFinishBtn={handleFinishBtn}
-        />
-        <BottomNav
+          handleFlag={handleFlag}
           isPage={isPage}
           flag={flag}
-          handleFlag={handleFlag}
-          resetFirestoreHousework={resetFirestoreHousework}
         />
-      </Container>
-    )
-  } else if (isPage === 'isExchange') {
-    return <Exchange isPage={isPage} flag={flag} handleFlag={handleFlag} />
-  } else if (isPage === 'isCash') {
-    return <Cash isPage={isPage} flag={flag} handleFlag={handleFlag} />
-  } else {
-    return 'nothing page'
-  }
+      </div>
+      <BottomNav
+        isPage={isPage}
+        flag={flag}
+        handleFlag={handleFlag}
+        resetFirestoreHousework={resetFirestoreHousework}
+      />
+    </Container>
+  )
 }
 
 export default MemberHome

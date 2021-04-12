@@ -18,7 +18,6 @@ const Exshange = ({ isPage, flag, handleFlag }) => {
   return (
     <Container>
       <p>exchange</p>
-      <BottomNav isPage={isPage} flag={flag} handleFlag={handleFlag} />
     </Container>
   )
 }

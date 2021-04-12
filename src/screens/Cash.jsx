@@ -5,22 +5,15 @@ import { Button, Grid, Paper } from '@material-ui/core'
 import StatusBar from '../uikit/StatusBar'
 import BottomNav from '../components/BottomNav'
 
-const useStyles = makeStyles(() => ({
-  name: {
-    fontWeight: 'bold',
-    fontSize: 20,
-  },
-}))
+// const useStyles = makeStyles(() => ({
+//   name: {
+//     fontWeight: 'bold',
+//     fontSize: 20,
+//   },
+// }))
 
-const cash = ({ isPage, flag, handleFlag }) => {
-  const classes = useStyles()
-  // console.log(memberInfo)
-  return (
-    <Container>
-      <p>cash</p>
-      <BottomNav isPage={isPage} flag={flag} handleFlag={handleFlag} />
-    </Container>
-  )
+const Cash = () => {
+  return <p>cash</p>
 }
 
-export default cash
+export default Cash
