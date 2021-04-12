@@ -90,79 +90,41 @@ const App = () => {
     deleteFirestore('housework', id)
   }
 
-  const levelUp = (experiencePoint, requiredExpreriencePoint, level) => {
-    console.log({ experiencePoint })
-    console.log({ requiredExpreriencePoint })
-    const overExperiencePoint = experiencePoint - requiredExpreriencePoint
-    console.log({ overExperiencePoint })
-    if (requiredExpreriencePoint <= experiencePoint) {
-      level += 1
-      console.log(`level up ${level - 1} => ${level}`)
-      return level
-    } else {
-      console.log('not level up')
-      return level
-    }
-  }
   const finishBtnEvent = (memberInfo, housework) => {
     let { id, level, experiencePoint, point, requiredExpreriencePoint } = memberInfo //updateFirestoreMemberでidも必要なため、idも定義
     let { earnedPoint, isDone, doneMemberId } = housework
-    //家事の状態が isDoneかによって場合分け
+    //家事取り消し時
     if (isDone) {
-      //experiencePoint がマイナスになったらlevelを下げる
       console.log('level down')
       point -= earnedPoint
       doneMemberId = ''
       if (experiencePoint < earnedPoint) {
         let requiredLevelDownPoint = experiencePoint
-        console.log(`reqDown: ${requiredLevelDownPoint} , earnedP : ${earnedPoint}`)
-
         while (earnedPoint > requiredLevelDownPoint) {
-          console.log('loop start')
           earnedPoint -= requiredLevelDownPoint
-          console.log(`計算後P : ${earnedPoint}`)
-
-          //requiredPointの計算
           requiredExpreriencePoint -= level * level
           requiredLevelDownPoint = requiredExpreriencePoint
-          console.log(`requiredEXP: ${requiredExpreriencePoint}`)
-
-          // levelを下げる
-          console.log(`level down : level${level} => level ${level - 1}`)
           level -= 1
-          console.log(`P : ${earnedPoint}とreq: ${requiredLevelDownPoint}を比較`)
         }
-        console.log(`EXP ${experiencePoint}, req:${requiredLevelDownPoint}, P${earnedPoint}`)
         experiencePoint = requiredLevelDownPoint - earnedPoint
       } else {
-        // console.log('point down')
         experiencePoint -= earnedPoint
       }
     } else {
+      //家事完了時
       experiencePoint += earnedPoint
       point += earnedPoint
       doneMemberId = id
 
-      //level判定
       if (requiredExpreriencePoint <= experiencePoint) {
         while (requiredExpreriencePoint <= experiencePoint) {
-          console.log('loop start')
-
           experiencePoint -= requiredExpreriencePoint
-          console.log({ experiencePoint })
-          //level up
           level += 1
-          console.log(`level up ${level - 1} => ${level}`)
-          //require experience pointの計算
           requiredExpreriencePoint += level * level
-          console.log({ requiredExpreriencePoint })
         }
       }
     }
     console.log(`[result: level => ${level} , Exp: ${experiencePoint}, reqExp : ${requiredExpreriencePoint}]`)
-
-    //levelup判定
-    // level = levelUp(experiencePoint, requiredExpreriencePoint, level)
     isDone = !isDone
     // 更新するデータ
     const memberData = { id, experiencePoint, point, level, requiredExpreriencePoint }
