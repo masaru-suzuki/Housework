@@ -109,11 +109,44 @@ const App = () => {
     let { earnedPoint, isDone, doneMemberId } = housework
     //家事の状態が isDoneかによって場合分け
     if (isDone) {
-      experiencePoint -= earnedPoint
+      //experiencePoint がマイナスになったらlevelを下げる
+      if (experiencePoint <= earnedPoint) {
+        console.log(
+          `EXP = earnedPoint - EXP + requiredEXP [${earnedPoint}-${experiencePoint} + ${requiredExpreriencePoint}]`,
+        )
+        experiencePoint = earnedPoint - experiencePoint + requiredExpreriencePoint
+        console.log(`計算後EXP : ${experiencePoint}`)
+
+        while (experiencePoint >= requiredExpreriencePoint) {
+          console.log('loop start')
+          console.log(`exp-requiredPoint [${experiencePoint} - ${requiredExpreriencePoint}]`)
+          experiencePoint -= requiredExpreriencePoint
+          console.log(`EXP: [${experiencePoint}]`)
+          if (experiencePoint <= 0) {
+            //多分ここがおかしい
+            console.log(`EXPが0以下になったのでループを終了`)
+            break
+          }
+
+          //requiredPointの計算
+          console.log(`requiredEXP : [${requiredExpreriencePoint} - ${level} * ${level}]`)
+          requiredExpreriencePoint -= level * level
+          console.log(`requiredEXP: ${requiredExpreriencePoint}`)
+
+          // levelを下げる
+          console.log(`level down : level${level} => level ${level - 1}`)
+          level -= 1
+          console.log(`level: ${level}`)
+        }
+        console.log(
+          `EXP ${experiencePoint}と必要経験値${requiredExpreriencePoint}を比較してEXPの方が大きかったら、ループを回す`,
+        )
+      } else {
+        console.log('point down')
+        experiencePoint -= earnedPoint
+      }
       point -= earnedPoint
       doneMemberId = ''
-
-      //levelupを取り消す処理が必要な場合もある
     } else {
       experiencePoint += earnedPoint
       point += earnedPoint
@@ -121,25 +154,22 @@ const App = () => {
 
       //level判定
       if (requiredExpreriencePoint <= experiencePoint) {
-        let overExperiencePoint = experiencePoint - requiredExpreriencePoint
-        while (overExperiencePoint >= 0) {
+        while (requiredExpreriencePoint <= experiencePoint) {
           console.log('loop start')
-          console.log({ overExperiencePoint })
+
+          experiencePoint -= requiredExpreriencePoint
+          console.log({ experiencePoint })
           //level up
           level += 1
           console.log(`level up ${level - 1} => ${level}`)
           //require experience pointの計算
           requiredExpreriencePoint += level * level
           console.log({ requiredExpreriencePoint })
-          //超えた部分の経験値を追加
-          experiencePoint = overExperiencePoint
-          console.log({ experiencePoint })
-          //levelが2以上上がる時
-          overExperiencePoint = experiencePoint - requiredExpreriencePoint
-          // console.log({ overExperiencePoint })
         }
       }
     }
+    console.log(`resule: level => ${level} , Exp: ${experiencePoint}, reqExp : ${requiredExpreriencePoint}`)
+
     //levelup判定
     // level = levelUp(experiencePoint, requiredExpreriencePoint, level)
     isDone = !isDone
