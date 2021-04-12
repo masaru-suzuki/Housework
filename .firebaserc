@@ -1,5 +1,6 @@
 {
   "projects": {
-    "default": "housework-9e15e"
+    "default": "housework-9e15e",
+    "hosting": "housework-8ca77"
   }
 }
