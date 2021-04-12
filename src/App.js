@@ -184,6 +184,11 @@ const App = () => {
     updateFirestoreHousework(houseworkData)
   }
 
+  //Pointを金額に変更するfunction
+  const exchangeCash = (point) => {
+    console.log(`${point}を換金します`)
+  }
+
   //TODO 日付が変わった時に家事のデータをresetする
   const resetFirestoreHousework = () => {
     houseworkListInfo.forEach((housework) => {
@@ -223,6 +228,7 @@ const App = () => {
                   houseworkListInfo={houseworkListInfo}
                   finishBtnEvent={finishBtnEvent}
                   resetFirestoreHousework={resetFirestoreHousework}
+                  exchangeCash={exchangeCash}
 
                   // addPoint={addPoint}
                   // removePoint={removePoint}

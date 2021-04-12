@@ -5,6 +5,7 @@ import { Divider } from '@material-ui/core'
 import BottomNav from '../components/BottomNav'
 import BackBtn from '../uikit/BackBtn'
 import ContentsArea from './ContentsArea'
+import MemberHomeMemberInfoAria from '../components/MemberHomeMemberInfoAria'
 
 const useStyles = makeStyles({
   container: {
@@ -19,7 +20,7 @@ const useStyles = makeStyles({
   root: {
     display: 'grid',
     height: '100%',
-    gridTemplateRows: '40px 10px 150px 10px 1fr',
+    gridTemplateRows: '40px 10px 180px 10px auto',
     overflow: 'hidden',
   },
   btn_back: {
@@ -28,10 +29,23 @@ const useStyles = makeStyles({
     fontSize: 16,
   },
 })
-const MemberHome = ({ memberInfo, houseworkListInfo, handleBackHome, finishBtnEvent, resetFirestoreHousework }) => {
+const MemberHome = ({
+  memberInfo,
+  houseworkListInfo,
+  handleBackHome,
+  finishBtnEvent,
+  exchangeCash,
+  resetFirestoreHousework,
+}) => {
   const classes = useStyles()
   const [flag, setFlag] = useState({ isExchange: false, isHome: true, isCash: false })
   const [isPage, setIsPage] = useState('isHome')
+  const [clickedHousework, setClikedHousework] = useState({}) //housework listでクリックされた家事をセット
+
+  const toggleBudge = (housework) => {
+    finishBtnEvent(memberInfo, housework) //houseworkの状態をFirestoreに登録
+    setClikedHousework(housework)
+  }
 
   //Bottom Nav
   const handleFlag = (text) => {
@@ -43,10 +57,6 @@ const MemberHome = ({ memberInfo, houseworkListInfo, handleBackHome, finishBtnEv
       }
     }
   }
-  //finish button
-  const handleFinishBtn = (housework) => {
-    finishBtnEvent(memberInfo, housework)
-  }
 
   useState(() => {}, [])
   return (
@@ -54,12 +64,15 @@ const MemberHome = ({ memberInfo, houseworkListInfo, handleBackHome, finishBtnEv
       <div className={classes.root}>
         <BackBtn className={classes.btn_back} handleBack={handleBackHome} />
         <Divider className={classes.divider} />
+        <MemberHomeMemberInfoAria memberInfo={memberInfo} clickedHousework={clickedHousework} />
+        <Divider className={classes.divider} />
         <ContentsArea
           memberInfo={memberInfo}
           houseworkListInfo={houseworkListInfo}
           handleBackHome={handleBackHome}
-          handleFinishBtn={handleFinishBtn}
+          toggleBudge={toggleBudge}
           handleFlag={handleFlag}
+          exchangeCash={exchangeCash}
           isPage={isPage}
           flag={flag}
         />
