@@ -110,43 +110,34 @@ const App = () => {
     //家事の状態が isDoneかによって場合分け
     if (isDone) {
       //experiencePoint がマイナスになったらlevelを下げる
-      if (experiencePoint <= earnedPoint) {
-        console.log(
-          `EXP = earnedPoint - EXP + requiredEXP [${earnedPoint}-${experiencePoint} + ${requiredExpreriencePoint}]`,
-        )
-        experiencePoint = earnedPoint - experiencePoint + requiredExpreriencePoint
-        console.log(`計算後EXP : ${experiencePoint}`)
+      console.log('level down')
+      point -= earnedPoint
+      doneMemberId = ''
+      if (experiencePoint < earnedPoint) {
+        let requiredLevelDownPoint = experiencePoint
+        console.log(`reqDown: ${requiredLevelDownPoint} , earnedP : ${earnedPoint}`)
 
-        while (experiencePoint >= requiredExpreriencePoint) {
+        while (earnedPoint > requiredLevelDownPoint) {
           console.log('loop start')
-          console.log(`exp-requiredPoint [${experiencePoint} - ${requiredExpreriencePoint}]`)
-          experiencePoint -= requiredExpreriencePoint
-          console.log(`EXP: [${experiencePoint}]`)
-          if (experiencePoint <= 0) {
-            //多分ここがおかしい
-            console.log(`EXPが0以下になったのでループを終了`)
-            break
-          }
+          earnedPoint -= requiredLevelDownPoint
+          console.log(`計算後P : ${earnedPoint}`)
 
           //requiredPointの計算
-          console.log(`requiredEXP : [${requiredExpreriencePoint} - ${level} * ${level}]`)
           requiredExpreriencePoint -= level * level
+          requiredLevelDownPoint = requiredExpreriencePoint
           console.log(`requiredEXP: ${requiredExpreriencePoint}`)
 
           // levelを下げる
           console.log(`level down : level${level} => level ${level - 1}`)
           level -= 1
-          console.log(`level: ${level}`)
+          console.log(`P : ${earnedPoint}とreq: ${requiredLevelDownPoint}を比較`)
         }
-        console.log(
-          `EXP ${experiencePoint}と必要経験値${requiredExpreriencePoint}を比較してEXPの方が大きかったら、ループを回す`,
-        )
+        console.log(`EXP ${experiencePoint}, req:${requiredLevelDownPoint}, P${earnedPoint}`)
+        experiencePoint = requiredLevelDownPoint - earnedPoint
       } else {
-        console.log('point down')
+        // console.log('point down')
         experiencePoint -= earnedPoint
       }
-      point -= earnedPoint
-      doneMemberId = ''
     } else {
       experiencePoint += earnedPoint
       point += earnedPoint
@@ -168,7 +159,7 @@ const App = () => {
         }
       }
     }
-    console.log(`resule: level => ${level} , Exp: ${experiencePoint}, reqExp : ${requiredExpreriencePoint}`)
+    console.log(`[result: level => ${level} , Exp: ${experiencePoint}, reqExp : ${requiredExpreriencePoint}]`)
 
     //levelup判定
     // level = levelUp(experiencePoint, requiredExpreriencePoint, level)
