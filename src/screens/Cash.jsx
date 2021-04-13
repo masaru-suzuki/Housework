@@ -13,6 +13,7 @@ import FormHelperText from '@material-ui/core/FormHelperText'
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward'
 import TextField from '@material-ui/core/TextField'
 import SubmitBtn from '../uikit/SubmitBtn'
+import { RedoRounded } from '@material-ui/icons'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -37,29 +38,39 @@ const useStyles = makeStyles((theme) => ({
 
 const Cash = ({ memberInfo, exchangeCash }) => {
   const classes = useStyles()
-  const [exchangePoint, setExchangePoint] = useState('')
+  const [exchangePoint, setExchangePoint] = useState()
   const [isError, setIsError] = useState(false)
   const [helperText, setHelperText] = useState('交換するポイント')
   const point = memberInfo.point
   const level = memberInfo.level
   const levelBounus = level / 100 + 1
-  const money = exchangePoint * levelBounus
+  const money = Math.floor(exchangePoint * levelBounus)
 
   const handleOnChange = (event) => {
-    setExchangePoint(event.target.value)
+    const value = event.target.value
+    const error = value.slice(-1) === ' '
+    if (error) {
+      console.log('error')
+      return
+    } else {
+      // 0から始めない
+      // setExchangePoint(value.replace(/^0+/, ''))
+      setExchangePoint(value.replace(/[^0-9]/g, ''))
+    }
   }
 
   const onSubmitEvent = () => {
-    exchangeCash(exchangePoint)
+    exchangeCash(money)
   }
 
   const inputError = (event) => {
     const key = event.key
+    if (key === '+' || key === '-') return
     const error = isNaN(key) && key !== 'Backspace' && key !== 'Enter' && key !== 'Delete'
 
     if (error) {
       setIsError(true)
-      setHelperText('数字を入力してください')
+      setHelperText('数字を正しく入力してください')
     } else {
       setIsError(false)
       setHelperText('交換するポイント')
@@ -70,6 +81,9 @@ const Cash = ({ memberInfo, exchangeCash }) => {
     if (point < exchangePoint) {
       setIsError(true)
       setHelperText('持っているポイントを超えています')
+    } else {
+      setIsError(false)
+      setHelperText('交換するポイント')
     }
   }
   useEffect(() => {
@@ -86,9 +100,7 @@ const Cash = ({ memberInfo, exchangeCash }) => {
           value={exchangePoint}
           error={isError}
           onChange={handleOnChange}
-          onKeyDown={(e) => {
-            inputError(e)
-          }}
+          onKeyDown={inputError}
           autoFocus
           endAdornment={
             <InputAdornment className={classes.input_subtext} position="end">
@@ -102,9 +114,9 @@ const Cash = ({ memberInfo, exchangeCash }) => {
         </FormHelperText>
       </FormControl>
       <ArrowDownwardIcon />
-      <p>交換後のポイントは{money}</p>
       <p>レベルボーナス × {levelBounus}上乗せ</p>
-      <SubmitBtn text="ポイントを換金する" onSubmitEvent={onSubmitEvent} />
+      <p>{money}円</p>
+      <SubmitBtn disabled={isError} text="ポイントを換金する" onSubmitEvent={onSubmitEvent} />
     </>
   )
 }
