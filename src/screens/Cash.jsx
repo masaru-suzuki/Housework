@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import Container from '@material-ui/core/Container'
-import { Button, Grid, Paper } from '@material-ui/core'
+import { Button, Grid, Paper, Card, CardContent } from '@material-ui/core'
 import StatusBar from '../uikit/StatusBar'
 import BottomNav from '../components/BottomNav'
 import InputAdornment from '@material-ui/core/InputAdornment'
@@ -9,7 +9,7 @@ import FormControl from '@material-ui/core/FormControl'
 import clsx from 'clsx'
 import OutlinedInput from '@material-ui/core/OutlinedInput'
 import FormHelperText from '@material-ui/core/FormHelperText'
-
+import Arrow from '../img/arrow.jpg'
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward'
 import TextField from '@material-ui/core/TextField'
 import SubmitBtn from '../uikit/SubmitBtn'
@@ -23,26 +23,46 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   margin: {
-    margin: theme.spacing(1),
+    // margin: theme.spacing(1),
   },
   withoutLabel: {
-    marginTop: theme.spacing(3),
+    // marginTop: theme.spacing(3),
   },
   textField: {
+    margin: 'auto',
     width: '25ch',
   },
   input_subtext: {
     color: '#616161',
   },
+  arrow: {
+    width: 30,
+    height: 30,
+    margin: 'auto',
+  },
+  card: {
+    width: '25ch',
+    margin: 'auto',
+    // minHeight: 60,
+    padding: 0,
+    height: 'auto',
+    textAlign: 'center',
+    boxShadow: 'unset',
+    backgroundColor: '#eceeef',
+  },
+  card_content: {
+    padding: 8,
+  },
   btn: {
-    margin: '8px 24px',
+    margin: '16px auto 24px',
+    width: '25ch',
     height: 60,
   },
 }))
 
 const Cash = ({ memberInfo, exchangeCash }) => {
   const classes = useStyles()
-  const [exchangePoint, setExchangePoint] = useState()
+  const [exchangePoint, setExchangePoint] = useState('')
   const [isError, setIsError] = useState(false)
   const [helperText, setHelperText] = useState('交換するポイント')
   const point = memberInfo.point
@@ -116,9 +136,15 @@ const Cash = ({ memberInfo, exchangeCash }) => {
           {helperText}
         </FormHelperText>
       </FormControl>
-      <ArrowDownwardIcon />
-      <p>レベルボーナス × {levelBounus}上乗せ</p>
-      <p>{money}円</p>
+      <Card className={classes.card}>
+        <CardContent className={classes.card_content}>レベルボーナス × {levelBounus}</CardContent>
+        {/* <CardContent className={classes.card_content}>今日のボーナス × {levelBounus}</CardContent> */}
+      </Card>
+      <img className={classes.arrow} src={Arrow} alt="アイコン" />
+      {/* <ArrowDownwardIcon className={classes.arrow} /> */}
+      <Card className={classes.card}>
+        <CardContent className={classes.card_content}>{money}円</CardContent>
+      </Card>
       <Button
         className={classes.btn}
         variant="contained"
