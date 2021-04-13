@@ -34,6 +34,10 @@ const useStyles = makeStyles((theme) => ({
   input_subtext: {
     color: '#616161',
   },
+  btn: {
+    margin: '8px 24px',
+    height: 60,
+  },
 }))
 
 const Cash = ({ memberInfo, exchangeCash }) => {
@@ -101,7 +105,6 @@ const Cash = ({ memberInfo, exchangeCash }) => {
           error={isError}
           onChange={handleOnChange}
           onKeyDown={inputError}
-          autoFocus
           endAdornment={
             <InputAdornment className={classes.input_subtext} position="end">
               / {point} point
@@ -116,7 +119,16 @@ const Cash = ({ memberInfo, exchangeCash }) => {
       <ArrowDownwardIcon />
       <p>レベルボーナス × {levelBounus}上乗せ</p>
       <p>{money}円</p>
-      <SubmitBtn disabled={isError} text="ポイントを換金する" onSubmitEvent={onSubmitEvent} />
+      <Button
+        className={classes.btn}
+        variant="contained"
+        disabled={isError}
+        color="primary"
+        size="small"
+        onClick={() => onSubmitEvent()}
+      >
+        ポイントを交換する
+      </Button>
     </>
   )
 }

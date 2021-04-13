@@ -19,13 +19,14 @@ const useStyles = makeStyles({
   },
   root: {
     display: 'grid',
-    height: '100%',
+    height: '90vh',
     gridTemplateRows: '40px 10px 180px 10px auto',
     overflow: 'hidden',
   },
   btn_back: {
     margin: '8px 16px',
     width: 30,
+    // height: 20,
     fontSize: 16,
   },
 })
