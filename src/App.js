@@ -138,8 +138,10 @@ const App = () => {
   }
 
   //Pointを金額に変更するfunction
-  const exchangeCash = (point) => {
-    console.log(`${point}を換金します`)
+  const exchangeCash = (id, point) => {
+    console.log(`${id}の${point}を換金します`)
+    const updateMemberData = { id, point }
+    updateFirestoreMember(updateMemberData)
   }
 
   //TODO 日付が変わった時に家事のデータをresetする

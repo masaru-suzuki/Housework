@@ -67,8 +67,7 @@ const Cash = ({ memberInfo, exchangeCash }) => {
   const [isError, setIsError] = useState(false)
   const [open, setOpen] = useState(false)
   const [helperText, setHelperText] = useState('交換するポイント')
-  const point = memberInfo.point
-  const level = memberInfo.level
+  const { point, level, id } = memberInfo
   const levelBounus = level / 100 + 1
   const money = Math.floor(exchangePoint * levelBounus)
 
@@ -93,9 +92,10 @@ const Cash = ({ memberInfo, exchangeCash }) => {
   }
 
   const onSubmitEvent = () => {
+    const resultPoint = point - exchangePoint
     handleClose()
     clearInput()
-    exchangeCash(money)
+    exchangeCash(id, resultPoint)
   }
 
   const inputError = (event) => {
