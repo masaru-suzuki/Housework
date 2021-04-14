@@ -14,6 +14,7 @@ import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward'
 import TextField from '@material-ui/core/TextField'
 import SubmitBtn from '../uikit/SubmitBtn'
 import { RedoRounded } from '@material-ui/icons'
+import ConfigModal from '../components/ConfigModal'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -64,6 +65,7 @@ const Cash = ({ memberInfo, exchangeCash }) => {
   const classes = useStyles()
   const [exchangePoint, setExchangePoint] = useState('')
   const [isError, setIsError] = useState(false)
+  const [open, setOpen] = useState(false)
   const [helperText, setHelperText] = useState('交換するポイント')
   const point = memberInfo.point
   const level = memberInfo.level
@@ -82,8 +84,17 @@ const Cash = ({ memberInfo, exchangeCash }) => {
       setExchangePoint(value.replace(/[^0-9]/g, ''))
     }
   }
+  const handleOpen = () => {
+    setOpen(true)
+  }
+
+  const handleClose = () => {
+    setOpen(false)
+  }
 
   const onSubmitEvent = () => {
+    handleClose()
+    clearInput()
     exchangeCash(money)
   }
 
@@ -110,6 +121,9 @@ const Cash = ({ memberInfo, exchangeCash }) => {
       setHelperText('交換するポイント')
     }
   }
+  const clearInput = () => {
+    setExchangePoint('')
+  }
   useEffect(() => {
     overPointError()
   }, [exchangePoint])
@@ -122,6 +136,7 @@ const Cash = ({ memberInfo, exchangeCash }) => {
           id="outlined-adornment-weight"
           type="number"
           value={exchangePoint}
+          placeholder="0"
           error={isError}
           onChange={handleOnChange}
           onKeyDown={inputError}
@@ -151,10 +166,11 @@ const Cash = ({ memberInfo, exchangeCash }) => {
         disabled={isError}
         color="primary"
         size="small"
-        onClick={() => onSubmitEvent()}
+        onClick={() => handleOpen()}
       >
         ポイントを交換する
       </Button>
+      <ConfigModal onSubmitEvent={onSubmitEvent} money={money} handleClose={handleClose} open={open} />
     </>
   )
 }
