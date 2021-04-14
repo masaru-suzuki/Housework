@@ -1,8 +1,9 @@
-import React from 'react'
+import React, { useState } from 'react'
 import DrawerNav from '../components/DrawerNav'
 import { makeStyles } from '@material-ui/core/styles'
 import { Container, Grid } from '@material-ui/core'
 import MemberCard from '../components/MemberCard'
+import MemberHome from './MemberHome'
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -11,26 +12,58 @@ const useStyles = makeStyles(() => ({
   },
 }))
 
-const Home = ({ membersInfo, houseworkListInfo }) => {
-  console.log({ houseworkListInfo })
+const Home = ({
+  membersInfo,
+  houseworkListInfo,
+  finishBtnEvent,
+  resetFirestoreHousework,
+  exchangeCash,
+  addPoint,
+  removePoint,
+}) => {
   const classes = useStyles()
-  return (
-    <Container className={classes.root} maxWidth="sm">
-      <DrawerNav membersInfo={membersInfo} />
-      {/* <button onClick={() => handleHome()}>back</button> */}
-      <p>Home</p>
-      <Grid container spacing={3}>
-        {membersInfo.map((memberInfo) => {
-          // console.log(memberInfo)
-          return (
-            <Grid item xs={12} sm={6} key={memberInfo.memberId}>
-              <MemberCard memberInfo={memberInfo} key={memberInfo.id} />
-            </Grid>
-          )
-        })}
-      </Grid>
-    </Container>
-  )
+  const [isMemberScreen, setIsMemberScreen] = useState(false)
+  const [memberIndex, setMemberIndex] = useState()
+
+  const handleMemberScreen = (index) => {
+    setIsMemberScreen(true)
+    setMemberIndex(index)
+  }
+
+  const handleBackHome = () => {
+    setIsMemberScreen(false)
+  }
+
+  const memberInfo = membersInfo[memberIndex]
+  if (isMemberScreen) {
+    return (
+      <MemberHome
+        memberInfo={memberInfo}
+        houseworkListInfo={houseworkListInfo}
+        handleBackHome={handleBackHome}
+        finishBtnEvent={finishBtnEvent}
+        resetFirestoreHousework={resetFirestoreHousework}
+        exchangeCash={exchangeCash}
+        // addPoint={addPoint}
+        // removePoint={removePoint}
+      />
+    )
+  } else {
+    return (
+      <Container className={classes.root} maxWidth="sm">
+        <DrawerNav membersInfo={membersInfo} />
+        <Grid container spacing={3}>
+          {membersInfo.map((memberInfo, index) => {
+            return (
+              <Grid item xs={12} sm={6} key={memberInfo.id}>
+                <MemberCard memberInfo={memberInfo} handleMemberScreen={handleMemberScreen} index={index} />
+              </Grid>
+            )
+          })}
+        </Grid>
+      </Container>
+    )
+  }
 }
 
 export default Home

@@ -1,7 +1,6 @@
 import React from 'react'
-import {makeStyles} from '@material-ui/core/styles'
-import {useHistory} from 'react-router-dom'
-import {Card, Avatar, CardActionArea, CardContent, Typography} from '@material-ui/core'
+import { makeStyles } from '@material-ui/core/styles'
+import { Card, Avatar, CardActionArea, CardContent, Typography } from '@material-ui/core'
 
 const useStyles = makeStyles({
   root: {
@@ -29,13 +28,11 @@ const useStyles = makeStyles({
 // 	point: "memberPoint",
 // };
 
-const MemberCard = ({memberInfo}) => {
-  // console.log(memberInfo)
+const MemberCard = ({ memberInfo, handleMemberScreen, index }) => {
   const classes = useStyles()
-  const history = useHistory()
 
   return (
-    <Card className={classes.root} onClick={() => history.push('/Member')}>
+    <Card className={classes.root} onClick={() => handleMemberScreen(index)}>
       <CardActionArea>
         <Avatar className={classes.img} variant="square" />
         <CardContent className={classes.txtbox}>

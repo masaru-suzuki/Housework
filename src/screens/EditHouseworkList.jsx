@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useHistory } from 'react-router-dom'
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles, createMuiTheme } from '@material-ui/core/styles'
 import { ListSubheader, List, Container, Button } from '@material-ui/core'
 import AddIcon from '@material-ui/icons/Add'
 import EditHousework from './EditHousework'
@@ -37,7 +37,7 @@ const EditHouseworkList = ({
   const [isEdit, setIsEdit] = useState(false)
   const [isAdd, setIsAdd] = useState(false)
   const [editHouseworkIndex, setEditHouseworkIndex] = useState('')
-  // console.log({ houseworkListInfo })
+  console.log({ houseworkListInfo })
   const classes = useStyles()
   const history = useHistory()
 

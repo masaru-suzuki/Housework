@@ -7,11 +7,12 @@ import Auth, { useAuth } from './auth/Auth'
 import Home from './screens/Home'
 import EditFamily from './screens/EditFamily'
 import EditHouseworkList from './screens/EditHouseworkList'
-import Profile from './screens/Member'
+import Profile from './screens/MemberHome'
 import SignInOrUp from './screens/SignInOrUp'
 import SignUp from './screens/SignUp'
-import Member from './screens/Member'
+import Member from './screens/MemberHome'
 import EditMember from './screens/EditMember'
+import MemberHome from './screens/MemberHome'
 
 const db = firebase.firestore()
 
@@ -50,7 +51,7 @@ const App = () => {
     setIsEdit(true) //isEditで再レンダリングを発火させる
   }
   const updateFirestoreMember = (data) => {
-    updateFirestore(data, 'family')
+    updateFirestore(data, 'member')
   }
   const updateFirestoreHousework = (data) => {
     updateFirestore(data, 'housework')
@@ -63,7 +64,7 @@ const App = () => {
     setIsEdit(true) //isEditで再レンダリングを発火させる
   }
   const addFiestoreMember = (data) => {
-    addFirestore(data, 'family')
+    addFirestore(data, 'member')
   }
   const addFiestoreHousework = (data) => {
     addFirestore(data, 'housework')
@@ -83,17 +84,83 @@ const App = () => {
       })
   }
   const deleteFirestoreMember = (id) => {
-    deleteFirestore('family', id)
+    deleteFirestore('member', id)
   }
   const deleteFirestoreHousework = (id) => {
     deleteFirestore('housework', id)
+  }
+
+  const finishBtnEvent = (memberInfo, housework) => {
+    let { id, level, experiencePoint, point, requiredExpreriencePoint } = memberInfo //updateFirestoreMemberでidも必要なため、idも定義
+    let { earnedPoint, isDone, doneMemberId } = housework
+    //家事取り消し時
+    if (isDone) {
+      console.log('level down')
+      point -= earnedPoint
+      doneMemberId = ''
+      if (experiencePoint < earnedPoint) {
+        let requiredLevelDownPoint = experiencePoint
+        while (earnedPoint > requiredLevelDownPoint) {
+          earnedPoint -= requiredLevelDownPoint
+          requiredExpreriencePoint -= level * level
+          requiredLevelDownPoint = requiredExpreriencePoint
+          level -= 1
+        }
+        experiencePoint = requiredLevelDownPoint - earnedPoint
+      } else {
+        experiencePoint -= earnedPoint
+      }
+    } else {
+      //家事完了時
+      experiencePoint += earnedPoint
+      point += earnedPoint
+      doneMemberId = id
+
+      if (requiredExpreriencePoint <= experiencePoint) {
+        while (requiredExpreriencePoint <= experiencePoint) {
+          experiencePoint -= requiredExpreriencePoint
+          level += 1
+          requiredExpreriencePoint += level * level
+        }
+      }
+    }
+    console.log(`[result: level => ${level} , Exp: ${experiencePoint}, reqExp : ${requiredExpreriencePoint}]`)
+    isDone = !isDone
+    // 更新するデータ
+    const memberData = { id, experiencePoint, point, level, requiredExpreriencePoint }
+    const houseworkData = { id: housework.id, doneMemberId, isDone }
+    // console.log({ memberData })
+    // console.log({ houseworkData })
+
+    //更新を実行
+    updateFirestoreMember(memberData)
+    updateFirestoreHousework(houseworkData)
+  }
+
+  //Pointを金額に変更するfunction
+  const exchangeCash = (id, point) => {
+    console.log(`${id}の${point}を換金します`)
+    const updateMemberData = { id, point }
+    updateFirestoreMember(updateMemberData)
+  }
+
+  //TODO 日付が変わった時に家事のデータをresetする
+  const resetFirestoreHousework = () => {
+    houseworkListInfo.forEach((housework) => {
+      const resetHouseworkData = {
+        id: housework.id,
+        doneMemberId: '',
+        isDone: false,
+      }
+      updateFirestoreHousework(resetHouseworkData)
+    })
   }
 
   useEffect(() => {
     if (!userId) return
 
     //submitがclickされるたびにfirestoreのデータを引っ張ってきて更新する
-    getFirestoreMock('family', setMembersInfo)
+    getFirestoreMock('member', setMembersInfo)
     getFirestoreMock('housework', setHouseworkListInfo)
     //userIdが変わった時も情報を撮り直す
   }, [isEdit, userId])
@@ -110,8 +177,20 @@ const App = () => {
             <Route
               exact
               path="/"
-              render={() => <Home membersInfo={membersInfo} houseworkListInfo={houseworkListInfo} />}
+              render={() => (
+                <Home
+                  membersInfo={membersInfo}
+                  houseworkListInfo={houseworkListInfo}
+                  finishBtnEvent={finishBtnEvent}
+                  resetFirestoreHousework={resetFirestoreHousework}
+                  exchangeCash={exchangeCash}
+
+                  // addPoint={addPoint}
+                  // removePoint={removePoint}
+                />
+              )}
             />
+            <Route exact path="/MemberHome" component={MemberHome} />
             <Route exact path="/profile" component={Profile} />
             <Route
               exact

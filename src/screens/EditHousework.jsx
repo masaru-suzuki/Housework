@@ -29,11 +29,11 @@ const EditHousework = ({
     const identificationName = event.target.name
     const value = event.target.value
     if (identificationName === 'name') {
-      setHouseworkData((prevState) => ({ ...prevState, name: value }))
+      setHouseworkData((prevState) => ({ ...prevState, name: String(value) }))
     } else if (identificationName === 'earnedPoint') {
-      setHouseworkData((prevState) => ({ ...prevState, earnedPoint: value }))
+      setHouseworkData((prevState) => ({ ...prevState, earnedPoint: Number(value) }))
     } else if (identificationName === 'description') {
-      setHouseworkData((prevState) => ({ ...prevState, description: value }))
+      setHouseworkData((prevState) => ({ ...prevState, description: String(value) }))
     }
   }
   //SubmitBtn
