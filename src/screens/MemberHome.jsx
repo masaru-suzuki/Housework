@@ -7,15 +7,19 @@ import BackBtn from '../uikit/BackBtn'
 import ContentsArea from './ContentsArea'
 import MemberHomeMemberInfoAria from '../components/MemberHomeMemberInfoAria'
 
+const navHeight = 55
 const useStyles = makeStyles({
   container: {
-    display: 'grid',
-    height: '100vh',
-    gridTemplateRows: '1fr auto',
+    // display: 'grid',
+    minHeight: '100vh',
+    // gridTemplateRows: '1fr auto',
     backgroundColor: 'unset',
     width: '100%',
     overflow: 'hidden',
     padding: 0,
+    margin: 0,
+    paddingBottom: navHeight,
+    position: 'relative',
   },
   root: {
     display: 'grid',
@@ -28,6 +32,12 @@ const useStyles = makeStyles({
     width: 30,
     // height: 20,
     fontSize: 16,
+  },
+  navigation: {
+    width: '100%',
+    height: navHeight,
+    position: 'fixed',
+    bottom: 0,
   },
 })
 const MemberHome = ({
@@ -62,8 +72,17 @@ const MemberHome = ({
   useState(() => {}, [])
   return (
     <Container maxWidth="md" className={classes.container}>
-      <div className={classes.root}>
-        <BackBtn className={classes.btn_back} handleBack={handleBackHome} />
+      {/* <div className={classes.root}> */}
+      <div style={{ fontSize: '100px' }}>ashtaaast</div>
+      <div style={{ fontSize: '100px' }}>ashtahst</div>
+      <div style={{ fontSize: '100px' }}>ashtahst</div>
+      <div style={{ fontSize: '100px' }}>ashtahst</div>
+      <div style={{ fontSize: '100px' }}>ashtahst</div>
+      <div style={{ fontSize: '100px' }}>ashtahst</div>
+      <div style={{ fontSize: '100px' }}>ashtahst</div>
+      <div style={{ fontSize: '100px' }}>ashtahst</div>
+      <div style={{ fontSize: '100px' }}>last</div>
+      {/* <BackBtn className={classes.btn_back} handleBack={handleBackHome} />
         <Divider className={classes.divider} />
         <MemberHomeMemberInfoAria memberInfo={memberInfo} clickedHousework={clickedHousework} />
         <Divider className={classes.divider} />
@@ -76,14 +95,16 @@ const MemberHome = ({
           exchangeCash={exchangeCash}
           isPage={isPage}
           flag={flag}
+        /> */}
+      {/* </div> */}
+      <div className={classes.navigation}>
+        <BottomNav
+          isPage={isPage}
+          flag={flag}
+          handleFlag={handleFlag}
+          resetFirestoreHousework={resetFirestoreHousework}
         />
       </div>
-      <BottomNav
-        isPage={isPage}
-        flag={flag}
-        handleFlag={handleFlag}
-        resetFirestoreHousework={resetFirestoreHousework}
-      />
     </Container>
   )
 }
