@@ -21,7 +21,7 @@ const useStyles = makeStyles({
   },
   root: {
     display: 'grid',
-    height: 'calc(100vh-navHeight)',
+    height: `calc(100vh - ${navHeight}px)`,
     gridTemplateRows: '40px 10px 160px 10px auto',
     overflow: 'hidden',
   },
@@ -70,14 +70,10 @@ const MemberHome = ({
   return (
     <Container maxWidth="md" className={classes.container}>
       <div className={classes.root}>
-        <div>
-          <BackBtn className={classes.btn_back} handleBack={handleBackHome} />
-          <Divider className={classes.divider} />
-        </div>
-        <div>
-          <MemberHomeMemberInfoAria memberInfo={memberInfo} clickedHousework={clickedHousework} />
-          <Divider className={classes.divider} />
-        </div>
+        <BackBtn className={classes.btn_back} handleBack={handleBackHome} />
+        <Divider className={classes.divider} />
+        <MemberHomeMemberInfoAria memberInfo={memberInfo} clickedHousework={clickedHousework} />
+        <Divider className={classes.divider} />
         <ContentsArea
           memberInfo={memberInfo}
           houseworkListInfo={houseworkListInfo}
