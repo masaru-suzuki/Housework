@@ -7,45 +7,34 @@ import BackBtn from '../uikit/BackBtn'
 import ContentsArea from './ContentsArea'
 import MemberHomeMemberInfoAria from '../components/MemberHomeMemberInfoAria'
 
-let window_height = '100vh'
-document.addEventListener('DOMContentLoaded', () => {
-  // ;/iPhone|iPod|iPad|Android/i.test(navigator.userAgent) &&
-  if (/iPhone|iPod|iPad|Android/i.test(navigator.userAgent)) {
-    // console.log('smart phone')
-    // console.log(window.outerHeight)
-    window_height = window.outerHeight
-  } else {
-    window_height = '100vh'
-  }
-  //   document.documentElement.style.setProperty('--outer-height', `${window.outerHeight}px`)
-})
-
+const navHeight = 55
 const useStyles = makeStyles({
   container: {
-    display: 'grid',
-    height: window_height,
-    gridTemplateRows: '1fr auto',
+    minHeight: '100vh',
     backgroundColor: 'unset',
     width: '100%',
     overflow: 'hidden',
     padding: 0,
+    margin: 0,
+    paddingBottom: navHeight,
+    position: 'relative',
   },
   root: {
     display: 'grid',
-    height: '100%',
-    gridTemplateRows: '60px 180px auto',
+    height: 'calc(100vh-navHeight)',
+    gridTemplateRows: '40px 10px 160px 10px auto',
     overflow: 'hidden',
   },
   btn_back: {
     margin: '8px 16px',
     width: 30,
-    // height: 20,
     fontSize: 16,
   },
-  bottom_nav: {
+  navigation: {
+    width: '100%',
+    height: navHeight,
     position: 'fixed',
     bottom: 0,
-    left: 0,
   },
 })
 const MemberHome = ({
@@ -100,13 +89,14 @@ const MemberHome = ({
           flag={flag}
         />
       </div>
-      <BottomNav
-        className={classes.bottom_nav}
-        isPage={isPage}
-        flag={flag}
-        handleFlag={handleFlag}
-        resetFirestoreHousework={resetFirestoreHousework}
-      />
+      <div className={classes.navigation}>
+        <BottomNav
+          isPage={isPage}
+          flag={flag}
+          handleFlag={handleFlag}
+          resetFirestoreHousework={resetFirestoreHousework}
+        />
+      </div>
     </Container>
   )
 }
