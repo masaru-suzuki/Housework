@@ -10,9 +10,7 @@ import MemberHomeMemberInfoAria from '../components/MemberHomeMemberInfoAria'
 const navHeight = 55
 const useStyles = makeStyles({
   container: {
-    // display: 'grid',
     minHeight: '100vh',
-    // gridTemplateRows: '1fr auto',
     backgroundColor: 'unset',
     width: '100%',
     overflow: 'hidden',
@@ -23,14 +21,13 @@ const useStyles = makeStyles({
   },
   root: {
     display: 'grid',
-    height: '90vh',
-    gridTemplateRows: '40px 10px 180px 10px auto',
+    height: 'calc(100vh-navHeight)',
+    gridTemplateRows: '40px 10px 160px 10px auto',
     overflow: 'hidden',
   },
   btn_back: {
     margin: '8px 16px',
     width: 30,
-    // height: 20,
     fontSize: 16,
   },
   navigation: {
@@ -72,17 +69,8 @@ const MemberHome = ({
   useState(() => {}, [])
   return (
     <Container maxWidth="md" className={classes.container}>
-      {/* <div className={classes.root}> */}
-      <div style={{ fontSize: '100px' }}>ashtaaast</div>
-      <div style={{ fontSize: '100px' }}>ashtahst</div>
-      <div style={{ fontSize: '100px' }}>ashtahst</div>
-      <div style={{ fontSize: '100px' }}>ashtahst</div>
-      <div style={{ fontSize: '100px' }}>ashtahst</div>
-      <div style={{ fontSize: '100px' }}>ashtahst</div>
-      <div style={{ fontSize: '100px' }}>ashtahst</div>
-      <div style={{ fontSize: '100px' }}>ashtahst</div>
-      <div style={{ fontSize: '100px' }}>last</div>
-      {/* <BackBtn className={classes.btn_back} handleBack={handleBackHome} />
+      <div className={classes.root}>
+        <BackBtn className={classes.btn_back} handleBack={handleBackHome} />
         <Divider className={classes.divider} />
         <MemberHomeMemberInfoAria memberInfo={memberInfo} clickedHousework={clickedHousework} />
         <Divider className={classes.divider} />
@@ -95,8 +83,8 @@ const MemberHome = ({
           exchangeCash={exchangeCash}
           isPage={isPage}
           flag={flag}
-        /> */}
-      {/* </div> */}
+        />
+      </div>
       <div className={classes.navigation}>
         <BottomNav
           isPage={isPage}
