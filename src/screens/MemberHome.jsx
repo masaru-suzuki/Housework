@@ -7,10 +7,23 @@ import BackBtn from '../uikit/BackBtn'
 import ContentsArea from './ContentsArea'
 import MemberHomeMemberInfoAria from '../components/MemberHomeMemberInfoAria'
 
+let window_height = '100vh'
+document.addEventListener('DOMContentLoaded', () => {
+  // ;/iPhone|iPod|iPad|Android/i.test(navigator.userAgent) &&
+  if (/iPhone|iPod|iPad|Android/i.test(navigator.userAgent)) {
+    // console.log('smart phone')
+    // console.log(window.outerHeight)
+    window_height = window.outerHeight
+  } else {
+    window_height = '100vh'
+  }
+  //   document.documentElement.style.setProperty('--outer-height', `${window.outerHeight}px`)
+})
+
 const useStyles = makeStyles({
   container: {
     display: 'grid',
-    height: '100vh',
+    height: window_height,
     gridTemplateRows: '1fr auto',
     backgroundColor: 'unset',
     width: '100%',
@@ -19,8 +32,8 @@ const useStyles = makeStyles({
   },
   root: {
     display: 'grid',
-    height: '90vh',
-    gridTemplateRows: '40px 10px 180px 10px auto',
+    height: '100%',
+    gridTemplateRows: '60px 180px auto',
     overflow: 'hidden',
   },
   btn_back: {
@@ -28,6 +41,11 @@ const useStyles = makeStyles({
     width: 30,
     // height: 20,
     fontSize: 16,
+  },
+  bottom_nav: {
+    position: 'fixed',
+    bottom: 0,
+    left: 0,
   },
 })
 const MemberHome = ({
@@ -63,10 +81,14 @@ const MemberHome = ({
   return (
     <Container maxWidth="md" className={classes.container}>
       <div className={classes.root}>
-        <BackBtn className={classes.btn_back} handleBack={handleBackHome} />
-        <Divider className={classes.divider} />
-        <MemberHomeMemberInfoAria memberInfo={memberInfo} clickedHousework={clickedHousework} />
-        <Divider className={classes.divider} />
+        <div>
+          <BackBtn className={classes.btn_back} handleBack={handleBackHome} />
+          <Divider className={classes.divider} />
+        </div>
+        <div>
+          <MemberHomeMemberInfoAria memberInfo={memberInfo} clickedHousework={clickedHousework} />
+          <Divider className={classes.divider} />
+        </div>
         <ContentsArea
           memberInfo={memberInfo}
           houseworkListInfo={houseworkListInfo}
@@ -79,6 +101,7 @@ const MemberHome = ({
         />
       </div>
       <BottomNav
+        className={classes.bottom_nav}
         isPage={isPage}
         flag={flag}
         handleFlag={handleFlag}

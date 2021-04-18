@@ -53,6 +53,9 @@ const useStyles = makeStyles((theme) => ({
   },
   card_content: {
     padding: 8,
+    '&:last-child': {
+      paddingBottom: 8,
+    },
   },
   btn: {
     margin: '16px auto 24px',
@@ -75,7 +78,7 @@ const Cash = ({ memberInfo, exchangeCash }) => {
     const value = event.target.value
     const error = value.slice(-1) === ' '
     if (error) {
-      console.log('error')
+      // console.log('error')
       return
     } else {
       // 0から始めない
@@ -101,7 +104,7 @@ const Cash = ({ memberInfo, exchangeCash }) => {
   const inputError = (event) => {
     const key = event.key
     if (key === '+' || key === '-') return
-    const error = isNaN(key) && key !== 'Backspace' && key !== 'Enter' && key !== 'Delete'
+    const error = isNaN(key) && key !== 'Backspace' && key !== 'Delete'
 
     if (error) {
       setIsError(true)

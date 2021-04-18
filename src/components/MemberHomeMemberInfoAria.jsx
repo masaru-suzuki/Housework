@@ -7,7 +7,7 @@ import anime from 'animejs'
 
 const useStyles = makeStyles(() => ({
   container: {
-    padding: '0 16px',
+    padding: '16px 16px 24px',
   },
   name: {
     fontWeight: 'bold',
@@ -49,7 +49,7 @@ const MemberHomeMemberInfoAria = ({ memberInfo, clickedHousework }) => {
   const plusEarnedPoint = earnedPoint ? `+ ${earnedPoint}` : '' //初回のレンダリングでundefinedを表示させない
 
   useEffect(() => {
-    console.log({ clickedHousework })
+    // console.log({ clickedHousework })
     // console.log({ isDone })
     //isDoneはクリック時点のものだから、反転させる必要がある
     if (!isDone) {
