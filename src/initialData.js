@@ -6,6 +6,8 @@ export const initMember = () => {
     experiencePoint: 0,
     requiredExpreriencePoint: 20,
     point: 0,
+    doneDate: [],
+    runningDay: 0,
   }
 }
 
@@ -17,5 +19,6 @@ export const initHousework = () => {
     description: '',
     isDone: false,
     doneMemberId: '',
+    finishedDate: '',
   }
 }

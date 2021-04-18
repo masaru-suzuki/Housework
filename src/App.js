@@ -36,7 +36,7 @@ const App = () => {
     return db.collection('family').doc(userId).collection(refName)
   }
   const getFirestoreMock = async (refName, stateSetter) => {
-    const Ref = await getRef(refName)
+    const Ref = getRef(await refName)
     const data = makeListFromCollection(await Ref.get())
     stateSetter(data.filter((v) => typeof v.name === 'string'))
     //firebaseが更新された時に、再レンダリングするように、isEditをセット
@@ -91,13 +91,17 @@ const App = () => {
   }
 
   const finishBtnEvent = (memberInfo, housework) => {
-    let { id, level, experiencePoint, point, requiredExpreriencePoint } = memberInfo //updateFirestoreMemberでidも必要なため、idも定義
-    let { earnedPoint, isDone, doneMemberId } = housework
-    //家事取り消し時
+    let { id, level, experiencePoint, point, requiredExpreriencePoint, doneDate, runningDay } = memberInfo //updateFirestoreMemberでidも必要なため、idも定義
+    let { earnedPoint, isDone, doneMemberId, finishedDate } = housework
     if (isDone) {
-      console.log('level down')
+      //家事取り消し時
       point -= earnedPoint
       doneMemberId = ''
+      //完了日の削除
+      doneDate = doneDate.filter((timestamp) => !timestamp.isEqual(finishedDate))
+      //連続家事日数の計算
+      runningDay = getRunningDay(doneDate)
+      //経験値の計算
       if (experiencePoint < earnedPoint) {
         let requiredLevelDownPoint = experiencePoint
         while (earnedPoint > requiredLevelDownPoint) {
@@ -115,7 +119,13 @@ const App = () => {
       experiencePoint += earnedPoint
       point += earnedPoint
       doneMemberId = id
-
+      //完了日の登録
+      const date = new Date()
+      doneDate.unshift(date)
+      finishedDate = date
+      //連続家事日数の計算
+      runningDay = getRunningDay(doneDate)
+      //経験値の計算
       if (requiredExpreriencePoint <= experiencePoint) {
         while (requiredExpreriencePoint <= experiencePoint) {
           experiencePoint -= requiredExpreriencePoint
@@ -124,11 +134,12 @@ const App = () => {
         }
       }
     }
-    console.log(`[result: level => ${level} , Exp: ${experiencePoint}, reqExp : ${requiredExpreriencePoint}]`)
+    //完了・未完了のトグル
     isDone = !isDone
+
     // 更新するデータ
-    const memberData = { id, experiencePoint, point, level, requiredExpreriencePoint }
-    const houseworkData = { id: housework.id, doneMemberId, isDone }
+    const memberData = { id, experiencePoint, point, level, requiredExpreriencePoint, doneDate, runningDay }
+    const houseworkData = { id: housework.id, doneMemberId, isDone, finishedDate }
     // console.log({ memberData })
     // console.log({ houseworkData })
 
@@ -155,10 +166,57 @@ const App = () => {
       updateFirestoreHousework(resetHouseworkData)
     })
   }
+  //連続家事日数の取得
+  const getRunningDay = (date) => {
+    if (date.length < 1) {
+      return 0
+    } else {
+      let runningDay = 0
+      for (let i = 0; i < date.length - 1; i++) {
+        //新しく追加したdoneDateはfirebaseに登録されることでfirebaseのタイムスタンプ型になるけど、この時点ではなっていないので、
+        //toDate()が使えない
+        //新しくdoneDateを追加した場合はdoneDate[0].getDate()でいけるけど、そうじゃない場合doneDate[0].toDate()にする必要がある
+        //新しく追加した場合はこれでおkだけど、同じにひやっていて、doneDateに追加しない場合は、成功しない=>try catchでやってみる
+        let newDate = ''
+
+        try {
+          newDate = date[i].toDate()
+        } catch (error) {
+          newDate = date[0]
+        }
+        const prevDate = date[i + 1].toDate()
+        const newDay = newDate.getDate()
+        const prevDay = prevDate.getDate()
+
+        // console.log({ newDate })
+        // console.log({ prevDate })
+
+        if (newDay === 1) {
+          // 月を跨いだときはどうする?
+          // console.log('first day in this month')
+          const lastMonthLastDay = new Date(newDate.getFullYear(), newDate.getMonth(), 0).getDate()
+          //前月の最終日と同じなら連続していることとする
+          if (lastMonthLastDay === prevDay) {
+            // console.log('constant done work')
+            runningDay += 1
+          }
+        }
+        if (newDay - prevDay === 1) {
+          runningDay += 1
+          // console.log('constant done housework!')
+        } else if (newDay === prevDay) {
+          // console.log('in a day')
+        } else {
+          break
+        }
+        // console.log({runningDay})
+      }
+      return runningDay
+    }
+  }
 
   useEffect(() => {
     if (!userId) return
-
     //submitがclickされるたびにfirestoreのデータを引っ張ってきて更新する
     getFirestoreMock('member', setMembersInfo)
     getFirestoreMock('housework', setHouseworkListInfo)
@@ -184,9 +242,6 @@ const App = () => {
                   finishBtnEvent={finishBtnEvent}
                   resetFirestoreHousework={resetFirestoreHousework}
                   exchangeCash={exchangeCash}
-
-                  // addPoint={addPoint}
-                  // removePoint={removePoint}
                 />
               )}
             />
@@ -218,7 +273,6 @@ const App = () => {
             />
             <Route exact path="/Member" component={Member} />
             <Route exact path="/EditMember" render={() => <EditMember membersInfo={membersInfo} />} />
-            {/* AddMemberは必要？ */}
             <Route render={() => <p>not found.</p>} />
           </Switch>
         </Auth>
