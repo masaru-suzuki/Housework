@@ -70,9 +70,11 @@ const Cash = ({ memberInfo, exchangeCash }) => {
   const [isError, setIsError] = useState(false)
   const [open, setOpen] = useState(false)
   const [helperText, setHelperText] = useState('交換するポイント')
-  const { point, level, id } = memberInfo
-  const levelBounus = level / 100 + 1
-  const money = Math.floor(exchangePoint * levelBounus)
+  const { point, level, id, runningDay } = memberInfo
+  //ボーナスの値は変更する必要がある
+  const levelBonus = level / 100 + 1
+  const runningDayBonus = runningDay / 100 + 1
+  const money = Math.floor(exchangePoint * levelBonus * runningDayBonus)
 
   const handleOnChange = (event) => {
     const value = event.target.value
@@ -155,8 +157,8 @@ const Cash = ({ memberInfo, exchangeCash }) => {
         </FormHelperText>
       </FormControl>
       <Card className={classes.card}>
-        <CardContent className={classes.card_content}>レベルボーナス × {levelBounus}</CardContent>
-        {/* <CardContent className={classes.card_content}>今日のボーナス × {levelBounus}</CardContent> */}
+        <CardContent className={classes.card_content}>レベルボーナス × {levelBonus}</CardContent>
+        <CardContent className={classes.card_content}>連続家事ボーナス × {runningDayBonus}</CardContent>
       </Card>
       <img className={classes.arrow} src={Arrow} alt="アイコン" />
       {/* <ArrowDownwardIcon className={classes.arrow} /> */}
