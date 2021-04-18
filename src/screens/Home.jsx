@@ -12,15 +12,7 @@ const useStyles = makeStyles(() => ({
   },
 }))
 
-const Home = ({
-  membersInfo,
-  houseworkListInfo,
-  finishBtnEvent,
-  resetFirestoreHousework,
-  exchangeCash,
-  addPoint,
-  removePoint,
-}) => {
+const Home = ({ membersInfo, houseworkListInfo, finishBtnEvent, resetFirestoreHousework, exchangeCash }) => {
   const classes = useStyles()
   const [isMemberScreen, setIsMemberScreen] = useState(false)
   const [memberIndex, setMemberIndex] = useState()
@@ -44,8 +36,6 @@ const Home = ({
         finishBtnEvent={finishBtnEvent}
         resetFirestoreHousework={resetFirestoreHousework}
         exchangeCash={exchangeCash}
-        // addPoint={addPoint}
-        // removePoint={removePoint}
       />
     )
   } else {

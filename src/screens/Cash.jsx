@@ -53,6 +53,9 @@ const useStyles = makeStyles((theme) => ({
   },
   card_content: {
     padding: 8,
+    '&:last-child': {
+      paddingBottom: 8,
+    },
   },
   btn: {
     margin: '16px auto 24px',
@@ -67,15 +70,17 @@ const Cash = ({ memberInfo, exchangeCash }) => {
   const [isError, setIsError] = useState(false)
   const [open, setOpen] = useState(false)
   const [helperText, setHelperText] = useState('交換するポイント')
-  const { point, level, id } = memberInfo
-  const levelBounus = level / 100 + 1
-  const money = Math.floor(exchangePoint * levelBounus)
+  const { point, level, id, runningDay } = memberInfo
+  //ボーナスの値は変更する必要がある
+  const levelBonus = level / 100 + 1
+  const runningDayBonus = runningDay / 100 + 1
+  const money = Math.floor(exchangePoint * levelBonus * runningDayBonus)
 
   const handleOnChange = (event) => {
     const value = event.target.value
     const error = value.slice(-1) === ' '
     if (error) {
-      console.log('error')
+      // console.log('error')
       return
     } else {
       // 0から始めない
@@ -101,7 +106,7 @@ const Cash = ({ memberInfo, exchangeCash }) => {
   const inputError = (event) => {
     const key = event.key
     if (key === '+' || key === '-') return
-    const error = isNaN(key) && key !== 'Backspace' && key !== 'Enter' && key !== 'Delete'
+    const error = isNaN(key) && key !== 'Backspace' && key !== 'Delete'
 
     if (error) {
       setIsError(true)
@@ -152,8 +157,8 @@ const Cash = ({ memberInfo, exchangeCash }) => {
         </FormHelperText>
       </FormControl>
       <Card className={classes.card}>
-        <CardContent className={classes.card_content}>レベルボーナス × {levelBounus}</CardContent>
-        {/* <CardContent className={classes.card_content}>今日のボーナス × {levelBounus}</CardContent> */}
+        <CardContent className={classes.card_content}>レベルボーナス × {levelBonus}</CardContent>
+        <CardContent className={classes.card_content}>連続家事ボーナス × {runningDayBonus}</CardContent>
       </Card>
       <img className={classes.arrow} src={Arrow} alt="アイコン" />
       {/* <ArrowDownwardIcon className={classes.arrow} /> */}

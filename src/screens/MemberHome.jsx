@@ -70,10 +70,14 @@ const MemberHome = ({
   return (
     <Container maxWidth="md" className={classes.container}>
       <div className={classes.root}>
-        <BackBtn className={classes.btn_back} handleBack={handleBackHome} />
-        <Divider className={classes.divider} />
-        <MemberHomeMemberInfoAria memberInfo={memberInfo} clickedHousework={clickedHousework} />
-        <Divider className={classes.divider} />
+        <div>
+          <BackBtn className={classes.btn_back} handleBack={handleBackHome} />
+          <Divider className={classes.divider} />
+        </div>
+        <div>
+          <MemberHomeMemberInfoAria memberInfo={memberInfo} clickedHousework={clickedHousework} />
+          <Divider className={classes.divider} />
+        </div>
         <ContentsArea
           memberInfo={memberInfo}
           houseworkListInfo={houseworkListInfo}

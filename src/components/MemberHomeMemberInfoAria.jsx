@@ -7,7 +7,7 @@ import anime from 'animejs'
 
 const useStyles = makeStyles(() => ({
   container: {
-    padding: '0 16px',
+    padding: '16px 16px 24px',
   },
   name: {
     fontWeight: 'bold',
@@ -46,10 +46,11 @@ const MemberHomeMemberInfoAria = ({ memberInfo, clickedHousework }) => {
   const classes = useStyles()
   const ref = useRef(null)
   const { id, earnedPoint, isDone } = clickedHousework
+  const { name, point, level, runningDay } = memberInfo
   const plusEarnedPoint = earnedPoint ? `+ ${earnedPoint}` : '' //初回のレンダリングでundefinedを表示させない
 
   useEffect(() => {
-    console.log({ clickedHousework })
+    // console.log({ clickedHousework })
     // console.log({ isDone })
     //isDoneはクリック時点のものだから、反転させる必要がある
     if (!isDone) {
@@ -67,11 +68,11 @@ const MemberHomeMemberInfoAria = ({ memberInfo, clickedHousework }) => {
     <Container className={classes.container}>
       <Grid className={classes.grid_box} container spacing={1}>
         <Grid item xs={7}>
-          <p className={classes.name}>{memberInfo.name}</p>
-          <p className={classes.level}>{memberInfo.level}Lv</p>
+          <p className={classes.name}>{name}</p>
+          <p className={classes.level}>{level}Lv</p>
         </Grid>
         <Grid className={classes.right_box} item xs={5}>
-          <p className={classes.point}>{memberInfo.point}Point</p>
+          <p className={classes.point}>{point}Point</p>
           <span ref={ref} className={classes.earned_point}>
             {plusEarnedPoint}
           </span>
@@ -81,7 +82,7 @@ const MemberHomeMemberInfoAria = ({ memberInfo, clickedHousework }) => {
         </Grid>
       </Grid>
       <p>
-        連続10日達成!!<span> 換金率+10%up</span>
+        連続{runningDay}日達成!!<span> 換金率+{runningDay}%up</span>
       </p>
       <StatusBar memberInfo={memberInfo} />
     </Container>
