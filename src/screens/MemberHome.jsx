@@ -9,21 +9,27 @@ import MemberHomeMemberInfoAria from '../components/MemberHomeMemberInfoAria'
 import ErrorModal from '../components/ErrorModal'
 
 const navHeight = 55
+const navBar = 44
+const rootPaddingBottom = navHeight
+const innerHeight = window.innerHeight
 const useStyles = makeStyles({
   container: {
-    minHeight: '100vh',
+    minHeight: innerHeight,
     backgroundColor: 'unset',
     width: '100%',
     overflow: 'hidden',
     padding: 0,
     margin: 0,
-    paddingBottom: navHeight,
+    // paddingBottom: navHeight,
+    // height of app bar
     position: 'relative',
   },
   root: {
     display: 'grid',
-    height: `calc(100vh - ${navHeight}px)`,
-    gridTemplateRows: '40px 10px 160px 10px auto',
+    height: `calc(${innerHeight}px - ${navHeight}px)`,
+    gridTemplateRows: '4fr 1fr 16fr 1fr auto',
+    // gridTemplateRows: '40px 10px 160px 10px auto',
+    // paddingBottom: rootPaddingBottom,
     overflow: 'hidden',
   },
   btn_back: {
