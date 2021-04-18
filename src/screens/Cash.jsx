@@ -106,7 +106,7 @@ const Cash = ({ memberInfo, exchangeCash }) => {
   const inputError = (event) => {
     const key = event.key
     if (key === '+' || key === '-') return
-    const error = isNaN(key) && key !== 'Backspace' && key !== 'Delete'
+    const error = isNaN(key) && key !== 'Backspace' && key !== 'Delete' && key !== 'Tab'
 
     if (error) {
       setIsError(true)
@@ -131,7 +131,7 @@ const Cash = ({ memberInfo, exchangeCash }) => {
   }
   useEffect(() => {
     overPointError()
-  }, [exchangePoint])
+  }, [exchangePoint, isError])
 
   return (
     <>
