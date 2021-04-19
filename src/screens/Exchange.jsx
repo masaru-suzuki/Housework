@@ -18,6 +18,7 @@ const Exshange = ({ isPage, flag, handleFlag }) => {
   return (
     <Container>
       <p>exchange</p>
+      {/* <button onClick={()=> }>exchange</button> */}
     </Container>
   )
 }

@@ -29,17 +29,31 @@ const App = () => {
   const { userId } = useAuth()
   const [membersInfo, setMembersInfo] = useState([])
   const [houseworkListInfo, setHouseworkListInfo] = useState([])
+  const [items, setItems] = useState([])
   const [isEdit, setIsEdit] = useState(false)
 
-  //どういうふうに非同期処理にしたらいいのか分からない・・・！
   const getRef = (refName) => {
     return db.collection('family').doc(userId).collection(refName)
   }
+  const getItemRef = (memberId) => {
+    return db.collection('family').doc(userId).collection('member').doc(memberId).collection('items')
+  }
+
   const getFirestoreMock = async (refName, stateSetter) => {
     const Ref = getRef(await refName)
+    console.log(Ref)
     const data = makeListFromCollection(await Ref.get())
     stateSetter(data.filter((v) => typeof v.name === 'string'))
     //firebaseが更新された時に、再レンダリングするように、isEditをセット
+    setIsEdit(false)
+  }
+  //get items from firestore
+  const getItems = async (memberId) => {
+    const itemRef = getItemRef(await memberId)
+    console.log(itemRef)
+    const data = makeListFromCollection(await itemRef.get())
+    console.log({ data })
+    setItems(data.filter((v) => typeof v.name === 'string'))
     setIsEdit(false)
   }
 
@@ -220,6 +234,8 @@ const App = () => {
     //submitがclickされるたびにfirestoreのデータを引っ張ってきて更新する
     getFirestoreMock('member', setMembersInfo)
     getFirestoreMock('housework', setHouseworkListInfo)
+    getItems('4FkQWl5Ey1C3wEMnspWg')
+
     //userIdが変わった時も情報を撮り直す
   }, [isEdit, userId])
 

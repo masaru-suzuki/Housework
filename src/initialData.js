@@ -8,6 +8,7 @@ export const initMember = () => {
     point: 0,
     doneDate: [],
     runningDay: 0,
+    items: [],
   }
 }
 

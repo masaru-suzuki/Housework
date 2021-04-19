@@ -8,19 +8,20 @@ family:
     experiencePoint: Number
     requiredExpreriencePoint: Number
     point: Number
+    doneDate: Array
+    runningDay: Number
+
     # skilLevel:
     #   documentID: ID
     #   name: String
     #   level: Number  #skillレベルの計算方法を考える
 
-    # password: Number
-    # isAdmin: bool
-    # isEdit: bool
-    # item:
-    #   documentID: ID
-    #   name: String
-    #   requiredPoint: String
-    #   isSeacret: bool
+    password: Number
+    item:
+      documentID: ID
+      name: String
+      requiredPoint: String
+      isSeacret: bool
 
   housework:
     documentID: houseworkID
@@ -28,7 +29,9 @@ family:
     earnedPoint: Number
     # earnedSkillPoint: Number
     description: String
-    isEdit: bool
+    isDone: bool
+    doneMemberId: String
+    finishedDate: Timestamp
 
   # skill:
   #   documentID: ID
