@@ -6,7 +6,7 @@ import SubmitBtn from '../uikit/SubmitBtn'
 import InputField from '../uikit/InputField'
 
 const useStyles = makeStyles(() => ({
-  text_field: {
+  input_field: {
     marginBottom: 16,
   },
   btn_back: {
@@ -49,6 +49,7 @@ const EditMember = ({ editMemberIndex, membersInfo, updateFirestoreMember, handl
         className={classes.root}
       >
         <InputField
+          className={classes.input_field}
           required={true}
           identificationName="name"
           label="名前"
@@ -56,6 +57,7 @@ const EditMember = ({ editMemberIndex, membersInfo, updateFirestoreMember, handl
           handleChange={handleChange}
         />
         <InputField
+          className={classes.input_field}
           required={true}
           identificationName="birth"
           label="生年月日"

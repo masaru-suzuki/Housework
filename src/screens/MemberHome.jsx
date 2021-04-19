@@ -27,8 +27,8 @@ const useStyles = makeStyles({
   root: {
     display: 'grid',
     height: `calc(${innerHeight}px - ${navHeight}px)`,
-    gridTemplateRows: '4fr 1fr 16fr 1fr auto',
-    // gridTemplateRows: '40px 10px 160px 10px auto',
+    // gridTemplateRows: '4fr 1fr 16fr 1fr auto',
+    gridTemplateRows: '40px 10px 160px 10px auto',
     // paddingBottom: rootPaddingBottom,
     overflow: 'hidden',
   },
