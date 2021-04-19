@@ -16,8 +16,10 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.background.paper,
     // border: '2px solid #000',
     padding: 50,
-    boxShadow: theme.shadows[5],
+    // boxShadow: theme.shadows[5],
+    boxShadow: '0 3px 7px rgba(0, 0, 0, 0.3)',
     padding: theme.spacing(4, 6, 5),
+    maxWidth: '30ch',
   },
   btn: {
     margin: '16px auto 24px',

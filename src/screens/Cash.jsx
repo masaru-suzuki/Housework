@@ -135,7 +135,6 @@ const Cash = ({ memberInfo, exchangeCash }) => {
 
   return (
     <>
-      {/* <p>現在のポイントは{point}POINT</p> */}
       <FormControl className={clsx(classes.margin, classes.textField)} variant="outlined">
         <OutlinedInput
           id="outlined-adornment-weight"
@@ -161,7 +160,6 @@ const Cash = ({ memberInfo, exchangeCash }) => {
         <CardContent className={classes.card_content}>連続家事ボーナス × {runningDayBonus}</CardContent>
       </Card>
       <img className={classes.arrow} src={Arrow} alt="アイコン" />
-      {/* <ArrowDownwardIcon className={classes.arrow} /> */}
       <Card className={classes.card}>
         <CardContent className={classes.card_content}>{money}円</CardContent>
       </Card>

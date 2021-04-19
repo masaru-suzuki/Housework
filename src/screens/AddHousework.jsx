@@ -1,11 +1,18 @@
 import React, { useState } from 'react'
-import { ListSubheader, List, Container } from '@material-ui/core'
+import { ListSubheader, List, Container, makeStyles, TextField } from '@material-ui/core'
 import BackBtn from '../uikit/BackBtn'
 import SubmitBtn from '../uikit/SubmitBtn'
 import InputField from '../uikit/InputField'
+import InputFieldMultiline from '../uikit/InputFieldMultiline'
 import { initHousework } from '../initialData'
 
+const useStyles = makeStyles({
+  input_field: {
+    marginBottom: 16,
+  },
+})
 const AddHousework = ({ addFiestoreHousework, handleBackEditHouseworkList }) => {
+  const classes = useStyles()
   const [housework, setHousework] = useState(initHousework())
 
   //textare への入力をする
@@ -39,6 +46,7 @@ const AddHousework = ({ addFiestoreHousework, handleBackEditHouseworkList }) => 
         }
       >
         <InputField
+          className={classes.input_field}
           required={true}
           identificationName="name"
           label="家事の名前"
@@ -46,15 +54,19 @@ const AddHousework = ({ addFiestoreHousework, handleBackEditHouseworkList }) => 
           handleChange={handleChange}
         />
         <InputField
+          className={classes.input_field}
           required={true}
           identificationName="earnedPoint"
           label="獲得ポイント"
           value={housework.earnedPoint}
           handleChange={handleChange}
         />
-        <InputField
+        <InputFieldMultiline
+          className={classes.input_field}
           required={false}
           identificationName="description"
+          multiline
+          rows={4}
           label="説明"
           value={housework.description}
           handleChange={handleChange}

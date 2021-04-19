@@ -4,6 +4,7 @@ import { ListSubheader, List, Container } from '@material-ui/core'
 import BackBtn from '../uikit/BackBtn'
 import SubmitBtn from '../uikit/SubmitBtn'
 import InputField from '../uikit/InputField'
+import InputFieldMultiline from '../uikit/InputFieldMultiline'
 
 const useStyles = makeStyles(() => ({
   input_field: {
@@ -70,10 +71,11 @@ const EditHousework = ({
           value={houseworkData.earnedPoint}
           handleChange={handleChange}
         />
-        <InputField
+        <InputFieldMultiline
           className={classes.input_field}
           identificationName="description"
           label="説明"
+          rows={4}
           value={houseworkData.description}
           handleChange={handleChange}
         />

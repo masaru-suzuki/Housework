@@ -1,11 +1,17 @@
 import React, { useEffect, useState } from 'react'
-import { ListSubheader, List, Container } from '@material-ui/core'
+import { ListSubheader, List, Container, makeStyles } from '@material-ui/core'
 import BackBtn from '../uikit/BackBtn'
 import SubmitBtn from '../uikit/SubmitBtn'
 import InputField from '../uikit/InputField'
 import { initMember } from '../initialData'
 
+const useStyles = makeStyles({
+  input_field: {
+    marginBottom: 16,
+  },
+})
 const AddMember = ({ addFiestoreMember, handleBackEditFamily }) => {
+  const classes = useStyles()
   const [memberData, setMemberData] = useState({})
 
   const handleChange = (event) => {
@@ -39,6 +45,7 @@ const AddMember = ({ addFiestoreMember, handleBackEditFamily }) => {
         }
       >
         <InputField
+          className={classes.input_field}
           required={true}
           identificationName="name"
           label="名前"
@@ -46,6 +53,7 @@ const AddMember = ({ addFiestoreMember, handleBackEditFamily }) => {
           handleChange={handleChange}
         />
         <InputField
+          className={classes.input_field}
           required={true}
           identificationName="birth"
           label="生年月日"

@@ -76,9 +76,9 @@ const MemberHomeMemberInfoAria = ({ memberInfo, clickedHousework }) => {
           <span ref={ref} className={classes.earned_point}>
             {plusEarnedPoint}
           </span>
-          <Button className={classes.btn} variant="contained" color="primary" size="small">
+          {/* <Button className={classes.btn} variant="contained" color="primary" size="small">
             熟練度
-          </Button>
+          </Button> */}
         </Grid>
       </Grid>
       <p>

@@ -4,7 +4,6 @@ import { makeStyles, createMuiTheme } from '@material-ui/core/styles'
 import { ListSubheader, List, Container, Button } from '@material-ui/core'
 import AddIcon from '@material-ui/icons/Add'
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos'
-import { ThemeProvider } from '@material-ui/styles'
 
 import EditMember from './EditMember'
 import AddMember from './AddMember'
@@ -32,14 +31,6 @@ const useStyles = makeStyles(() => ({
     fontSize: 16,
   },
 }))
-//theme color change
-const theme = createMuiTheme({
-  palette: {
-    primary: {
-      main: '#6587ae',
-    },
-  },
-})
 
 const EditFamily = ({ membersInfo, updateFirestoreMember, addFiestoreMember, deleteFirestoreMember }) => {
   const [isEdit, setIsEdit] = useState(false)
@@ -137,17 +128,15 @@ const EditFamily = ({ membersInfo, updateFirestoreMember, addFiestoreMember, del
             )
           })}
         </List>
-        <ThemeProvider theme={theme}>
-          <Button
-            variant="contained"
-            onClick={() => setIsAdd(true)}
-            color="primary"
-            className={classes.btn}
-            startIcon={<AddIcon />}
-          >
-            家族を追加する
-          </Button>
-        </ThemeProvider>
+        <Button
+          variant="contained"
+          onClick={() => setIsAdd(true)}
+          color="primary"
+          className={classes.btn}
+          startIcon={<AddIcon />}
+        >
+          家族を追加する
+        </Button>
       </Container>
     )
   }
