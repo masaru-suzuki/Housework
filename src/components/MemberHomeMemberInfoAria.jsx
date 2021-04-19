@@ -42,6 +42,7 @@ const useStyles = makeStyles(() => ({
     marginBottom: 0,
   },
 }))
+
 const MemberHomeMemberInfoAria = ({ memberInfo, clickedHousework }) => {
   const classes = useStyles()
   const ref = useRef(null)
@@ -82,7 +83,7 @@ const MemberHomeMemberInfoAria = ({ memberInfo, clickedHousework }) => {
         </Grid>
       </Grid>
       <p>
-        連続{runningDay}日達成!!<span> 換金率+{runningDay}%up</span>
+        家事連続{runningDay}日目<span> 換金率+{runningDay}%up</span>
       </p>
       <StatusBar memberInfo={memberInfo} />
     </Container>

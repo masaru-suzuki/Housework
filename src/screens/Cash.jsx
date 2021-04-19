@@ -68,6 +68,7 @@ const Cash = ({ memberInfo, exchangeCash }) => {
   const classes = useStyles()
   const [exchangePoint, setExchangePoint] = useState('')
   const [isError, setIsError] = useState(false)
+  const [isDisabled, setIsDisabled] = useState(true)
   const [open, setOpen] = useState(false)
   const [helperText, setHelperText] = useState('交換するポイント')
   const { point, level, id, runningDay } = memberInfo
@@ -110,9 +111,11 @@ const Cash = ({ memberInfo, exchangeCash }) => {
 
     if (error) {
       setIsError(true)
+      setIsDisabled(true)
       setHelperText('数字を正しく入力してください')
     } else {
       setIsError(false)
+      setIsDisabled(false)
       setHelperText('交換するポイント')
     }
   }
@@ -120,18 +123,24 @@ const Cash = ({ memberInfo, exchangeCash }) => {
   const overPointError = () => {
     if (point < exchangePoint) {
       setIsError(true)
+      setIsDisabled(true)
       setHelperText('持っているポイントを超えています')
     } else {
       setIsError(false)
+      setIsDisabled(false)
       setHelperText('交換するポイント')
     }
+  }
+  const blankTextField = () => {
+    if (exchangePoint === '') setIsDisabled(true)
   }
   const clearInput = () => {
     setExchangePoint('')
   }
   useEffect(() => {
     overPointError()
-  }, [exchangePoint, isError])
+    blankTextField()
+  }, [exchangePoint, isError, isDisabled])
 
   return (
     <>
@@ -166,7 +175,7 @@ const Cash = ({ memberInfo, exchangeCash }) => {
       <Button
         className={classes.btn}
         variant="contained"
-        disabled={isError}
+        disabled={isDisabled}
         color="primary"
         size="small"
         onClick={() => handleOpen()}
