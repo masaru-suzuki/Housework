@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import Container from '@material-ui/core/Container'
 import { Button, Grid, Paper } from '@material-ui/core'
@@ -12,15 +12,22 @@ const useStyles = makeStyles(() => ({
   },
 }))
 
-const Exshange = ({ isPage, flag, handleFlag }) => {
+const Exchange = ({ memberInfo, getMemberId, items, isPage, flag, handleFlag }) => {
   const classes = useStyles()
+  const { id } = memberInfo
   // console.log(memberInfo)
+  useEffect(() => {
+    getMemberId(id)
+  }, [])
   return (
     <Container>
       <p>exchange</p>
+      {items.map((item) => {
+        return <p>{item.name}</p>
+      })}
       {/* <button onClick={()=> }>exchange</button> */}
     </Container>
   )
 }
 
-export default Exshange
+export default Exchange

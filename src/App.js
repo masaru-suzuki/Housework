@@ -31,6 +31,7 @@ const App = () => {
   const [houseworkListInfo, setHouseworkListInfo] = useState([])
   const [items, setItems] = useState([])
   const [isEdit, setIsEdit] = useState(false)
+  const [memberId, setMemberId] = useState('')
 
   const getRef = (refName) => {
     return db.collection('family').doc(userId).collection(refName)
@@ -41,18 +42,18 @@ const App = () => {
 
   const getFirestoreMock = async (refName, stateSetter) => {
     const Ref = getRef(await refName)
-    console.log(Ref)
     const data = makeListFromCollection(await Ref.get())
     stateSetter(data.filter((v) => typeof v.name === 'string'))
     //firebaseが更新された時に、再レンダリングするように、isEditをセット
     setIsEdit(false)
   }
   //get items from firestore
-  const getItems = async (memberId) => {
+  const getMemberId = (memberId) => {
+    setMemberId(memberId)
+  }
+  const getItems = async () => {
     const itemRef = getItemRef(await memberId)
-    console.log(itemRef)
     const data = makeListFromCollection(await itemRef.get())
-    console.log({ data })
     setItems(data.filter((v) => typeof v.name === 'string'))
     setIsEdit(false)
   }
@@ -82,6 +83,11 @@ const App = () => {
   }
   const addFiestoreHousework = (data) => {
     addFirestore(data, 'housework')
+  }
+  const addItems = (data, memberId) => {
+    const firestoreRef = getItemRef(memberId)
+    firestoreRef.add(data)
+    setIsEdit(true)
   }
 
   //firestoreのメンバーの削除
@@ -234,10 +240,13 @@ const App = () => {
     //submitがclickされるたびにfirestoreのデータを引っ張ってきて更新する
     getFirestoreMock('member', setMembersInfo)
     getFirestoreMock('housework', setHouseworkListInfo)
-    getItems('4FkQWl5Ey1C3wEMnspWg')
-
     //userIdが変わった時も情報を撮り直す
   }, [isEdit, userId])
+  //memberが変わったら、itemListを更新する
+  useEffect(() => {
+    if (!userId) return
+    getItems()
+  }, [memberId])
 
   //今度はrecomposeのlibraryを使ってpropsを渡すのに挑戦してみる
   return (
@@ -258,6 +267,8 @@ const App = () => {
                   finishBtnEvent={finishBtnEvent}
                   resetFirestoreHousework={resetFirestoreHousework}
                   exchangeCash={exchangeCash}
+                  getMemberId={getMemberId}
+                  items={items}
                 />
               )}
             />

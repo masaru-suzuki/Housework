@@ -12,6 +12,8 @@ const ContentsArea = ({
   exchangeCash,
   isPage,
   flag,
+  getMemberId,
+  items,
 }) => {
   if (isPage === 'isHome') {
     return (
@@ -29,6 +31,8 @@ const ContentsArea = ({
         handleFlag={handleFlag}
         memberInfo={memberInfo}
         clickedHousework={clickedHousework}
+        getMemberId={getMemberId}
+        items={items}
       />
     )
   } else if (isPage === 'isCash') {

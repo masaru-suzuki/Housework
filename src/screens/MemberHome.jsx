@@ -44,6 +44,7 @@ const useStyles = makeStyles({
     bottom: 0,
   },
 })
+
 const MemberHome = ({
   memberInfo,
   houseworkListInfo,
@@ -51,6 +52,8 @@ const MemberHome = ({
   finishBtnEvent,
   exchangeCash,
   resetFirestoreHousework,
+  getMemberId,
+  items,
 }) => {
   const classes = useStyles()
   const [flag, setFlag] = useState({ isExchange: false, isHome: true, isCash: false })
@@ -123,6 +126,8 @@ const MemberHome = ({
           exchangeCash={exchangeCash}
           isPage={isPage}
           flag={flag}
+          getMemberId={getMemberId}
+          items={items}
         />
       </div>
       <div className={classes.navigation}>
