@@ -1,9 +1,10 @@
 import React from 'react'
 import { TextField } from '@material-ui/core'
 
-const InputField = ({ className, required, identificationName, label, value, handleChange }) => {
+const InputField = ({ className, required, identificationName, label, value, handleChange, type }) => {
   return (
     <TextField
+      type={type}
       className={className}
       fullWidth
       size="small"

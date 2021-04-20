@@ -53,6 +53,7 @@ const AddMember = ({ addFiestoreMember, handleBackEditFamily }) => {
           handleChange={handleChange}
         />
         <InputField
+          type="number"
           className={classes.input_field}
           required={true}
           identificationName="birth"

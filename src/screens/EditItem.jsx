@@ -24,25 +24,26 @@ const useStyles = makeStyles(() => ({
 
 const EditItem = ({ member, items, editItemIndex, updateFirestoreItem }) => {
   const classes = useStyles()
-
-  const item = items[editItemIndex]
-  // const handleChange = (event) => {
-  //   const identificationName = event.target.name
-  //   const value = event.target.value
-  //   if (identificationName === 'name') {
-  //     setMemberData((prevState) => ({ ...prevState, name: String(value) }))
-  //   } else if (identificationName === 'requiredPoint') {
-  //     setMemberData((prevState) => ({ ...prevState, requiredPoint: Number(value) }))
-  //   }
-  // }
+  const targetItem = items[editItemIndex]
+  const [item, setItem] = useState(targetItem)
+  console.log(item)
+  const handleChange = (event) => {
+    const identificationName = event.target.name
+    const value = event.target.value
+    if (identificationName === 'name') {
+      setItem((prevState) => ({ ...prevState, name: String(value) }))
+    } else if (identificationName === 'requiredPoint') {
+      setItem((prevState) => ({ ...prevState, requiredPoint: Number(value) }))
+    }
+  }
   // //submitBtnで使うfunction
-  // const onSubmitEvent = () => {
-  //   updateFirestoreMember(memberData)
-  //   handleBackEditFamily()
-  // }
-  // const handelEditItems = () => {
-  //   setFlag('editItems')
-  // }
+  const onSubmitEvent = () => {
+    updateFirestoreMember(memberData)
+    handleBackEditFamily()
+  }
+  const handelEditItems = () => {
+    setFlag('editItems')
+  }
   const handleBackEditFamily = () => console.log('handle')
   return (
     <Container>
@@ -63,22 +64,19 @@ const EditItem = ({ member, items, editItemIndex, updateFirestoreItem }) => {
           identificationName="name"
           label="名前"
           value={item.name}
-          // handleChange={handleChange}
+          handleChange={handleChange}
         />
         <InputField
+          type="number"
           className={classes.input_field}
           required={true}
           identificationName="requiredPoint"
           label="必要ポイント"
           value={item.requiredPoint}
-          // handleChange={handleChange}
+          handleChange={handleChange}
         />
       </List>
-      <SubmitBtn
-        className={classes.submit_btn}
-        text="変更する"
-        // onSubmitEvent={onSubmitEvent}
-      />
+      <SubmitBtn className={classes.submit_btn} text="変更する" onSubmitEvent={onSubmitEvent} />
     </Container>
   )
 }
