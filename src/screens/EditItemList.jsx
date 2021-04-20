@@ -38,6 +38,7 @@ const EditItemList = ({ member, items, addFirestoreItems, deleteFirestoreItem, u
   const [isEdit, setIsEdit] = useState(false)
   const [isAdd, setIsAdd] = useState(false)
   const [editItemIndex, setEditItemIndex] = useState('')
+  const { id } = member
   const classes = useStyles()
   const history = useHistory()
 
@@ -78,6 +79,7 @@ const EditItemList = ({ member, items, addFirestoreItems, deleteFirestoreItem, u
   } else if (!isAdd && isEdit) {
     return (
       <EditItem
+        memberId={id}
         items={items}
         editItemIndex={editItemIndex}
         updateFirestoreItem={updateFirestoreItem}

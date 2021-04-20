@@ -22,7 +22,7 @@ const useStyles = makeStyles(() => ({
   },
 }))
 
-const EditItem = ({ member, items, editItemIndex, updateFirestoreItem, handleBackEditItemList }) => {
+const EditItem = ({ memberId, items, editItemIndex, updateFirestoreItem, handleBackEditItemList }) => {
   const classes = useStyles()
   const targetItem = items[editItemIndex]
   const [item, setItem] = useState(targetItem)
@@ -30,16 +30,18 @@ const EditItem = ({ member, items, editItemIndex, updateFirestoreItem, handleBac
   //テキストの編集
   const handleChange = (event) => {
     const identificationName = event.target.name
-    const value = event.target.value
+    const value = event.target.value.replace(/^0+/, '')
     if (identificationName === 'name') {
       setItem((prevState) => ({ ...prevState, name: String(value) }))
     } else if (identificationName === 'requiredPoint') {
-      setItem((prevState) => ({ ...prevState, requiredPoint: Number(value) }))
+      //型指定をすると,先頭に0がついてしまうから、MaterialUi
+      setItem((prevState) => ({ ...prevState, requiredPoint: value }))
     }
   }
+  console.log(item)
   // //submitBtnで使うfunction
   const onSubmitEvent = () => {
-    updateFirestoreItem(item)
+    updateFirestoreItem(item, memberId)
     handleBackEditItemList()
   }
 

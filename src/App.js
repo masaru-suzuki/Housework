@@ -72,8 +72,13 @@ const App = () => {
   const updateFirestoreHousework = (data) => {
     updateFirestore(data, 'housework')
   }
-  const updateFirestoreItem = (data) => {
+  const updateFirestoreItem = (data, memberId) => {
     console.log('update')
+    const firestoreRef = getRef('member').doc(memberId).collection('items')
+    const targetId = data.id
+    console.log({ targetId })
+    firestoreRef.doc(targetId).set(data, { merge: true })
+    setIsEdit(true) //isEditで再レンダリングを発火させる
   }
 
   //add data to firestore
@@ -250,11 +255,12 @@ const App = () => {
     getFirestoreMock('housework', setHouseworkListInfo)
     //userIdが変わった時も情報を撮り直す
   }, [isEdit, userId])
+
   //memberが変わったら、itemListを更新する
   useEffect(() => {
     if (!userId) return
     getItems()
-  }, [memberId])
+  }, [memberId, isEdit])
 
   //今度はrecomposeのlibraryを使ってpropsを渡すのに挑戦してみる
   return (
