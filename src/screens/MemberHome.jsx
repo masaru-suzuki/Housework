@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Container from '@material-ui/core/Container'
 import { makeStyles } from '@material-ui/core/styles'
 import { Divider } from '@material-ui/core'
@@ -60,7 +60,7 @@ const MemberHome = ({
   const [isPage, setIsPage] = useState('isHome')
   const [clickedHousework, setClikedHousework] = useState({}) //housework listでクリックされた家事をセット
   const [open, setOpen] = useState(false)
-  const { point } = memberInfo
+  const { point, id } = memberInfo
 
   //家事取り消し時に所持ポイントよりも家事の獲得ポイントが大きかった時に取り消しをできなくする
   const toggleErrorModal = (point, earnedPoint, isDone) => {
@@ -109,7 +109,9 @@ const MemberHome = ({
     }
   }
 
-  useState(() => {}, [])
+  useEffect(() => {
+    getMemberId(id)
+  }, [])
   return (
     <Container maxWidth="md" className={classes.container}>
       <div className={classes.root}>

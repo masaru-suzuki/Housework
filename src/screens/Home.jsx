@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import DrawerNav from '../components/DrawerNav'
 import { makeStyles } from '@material-ui/core/styles'
 import { Container, Grid } from '@material-ui/core'
@@ -35,6 +35,7 @@ const Home = ({
   }
 
   const memberInfo = membersInfo[memberIndex]
+
   if (isMemberScreen) {
     return (
       <MemberHome

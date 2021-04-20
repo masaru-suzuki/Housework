@@ -48,7 +48,6 @@ const EditFamily = ({
   const [editMemberIndex, setEditMemberIndex] = useState('')
   const classes = useStyles()
   const history = useHistory()
-
   const handleBackHome = () => {
     console.log({ history })
     history.push({ pathname: '/' })

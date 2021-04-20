@@ -15,6 +15,7 @@ const ContentsArea = ({
   getMemberId,
   items,
 }) => {
+  console.log({ items })
   if (isPage === 'isHome') {
     return (
       <MemberHomeHouseworkAria

@@ -15,16 +15,16 @@ const useStyles = makeStyles(() => ({
 const Exchange = ({ memberInfo, getMemberId, items, isPage, flag, handleFlag }) => {
   const classes = useStyles()
   const { id } = memberInfo
-  // console.log(memberInfo)
+  console.log({ items })
   useEffect(() => {
     getMemberId(id)
   }, [])
   return (
     <Container>
       <p>exchange</p>
-      {/* {items.map((item) => {
+      {items.map((item) => {
         return <p>{item.name}</p>
-      })} */}
+      })}
       {/* <button onClick={()=> }>exchange</button> */}
     </Container>
   )

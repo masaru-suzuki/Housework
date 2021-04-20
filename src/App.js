@@ -49,12 +49,14 @@ const App = () => {
   }
   //get items from firestore
   const getMemberId = (memberId) => {
-    console.log(memberId)
     setMemberId(memberId)
   }
-  const getItems = async () => {
-    const ItemRef = getItemRef(await memberId)
+  const getItems = async (id) => {
+    console.log({ id })
+    const ItemRef = getItemRef(await id)
+    // console.log(itemRef)
     const data = makeListFromCollection(await ItemRef.get())
+    // console.log(data)
     setItems(data.filter((v) => typeof v.name === 'string'))
     setIsEdit(false)
   }
@@ -259,9 +261,9 @@ const App = () => {
   //memberが変わったら、itemListを更新する
   useEffect(() => {
     if (!userId) return
-    getItems()
+    getItems(memberId)
   }, [memberId, isEdit])
-
+  console.log({ items })
   //今度はrecomposeのlibraryを使ってpropsを渡すのに挑戦してみる
   return (
     <Router>
@@ -282,6 +284,7 @@ const App = () => {
                   resetFirestoreHousework={resetFirestoreHousework}
                   exchangeCash={exchangeCash}
                   getMemberId={getMemberId}
+                  items={items}
                 />
               )}
             />
