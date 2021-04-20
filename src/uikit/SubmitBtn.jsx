@@ -1,9 +1,16 @@
 import React from 'react'
 import { Button } from '@material-ui/core'
 
-const SubmitBtn = ({ text, onSubmitEvent, disabled }) => {
+const SubmitBtn = ({ text, onSubmitEvent, disabled, className }) => {
   return (
-    <Button fullWidth disabled={disabled} variant="contained" color="primary" onClick={() => onSubmitEvent()}>
+    <Button
+      className={className}
+      fullWidth
+      disabled={disabled}
+      variant="contained"
+      color="primary"
+      onClick={() => onSubmitEvent()}
+    >
       {text}
     </Button>
   )

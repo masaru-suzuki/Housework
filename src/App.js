@@ -49,6 +49,7 @@ const App = () => {
   }
   //get items from firestore
   const getMemberId = (memberId) => {
+    console.log(memberId)
     setMemberId(memberId)
   }
   const getItems = async () => {
@@ -71,6 +72,9 @@ const App = () => {
   const updateFirestoreHousework = (data) => {
     updateFirestore(data, 'housework')
   }
+  const updateFirestoreItem = (data) => {
+    console.log('update')
+  }
 
   //add data to firestore
   const addFirestore = (data, refName) => {
@@ -84,10 +88,11 @@ const App = () => {
   const addFiestoreHousework = (data) => {
     addFirestore(data, 'housework')
   }
-  const addItems = (data, memberId) => {
-    const firestoreRef = getItemRef(memberId)
-    firestoreRef.add(data)
-    setIsEdit(true)
+  const addFirestoreItems = (data) => {
+    console.log('add items')
+    // const firestoreRef = getItemRef(memberId)
+    // firestoreRef.add(data)
+    // setIsEdit(true)
   }
 
   //firestoreのメンバーの削除
@@ -108,6 +113,9 @@ const App = () => {
   }
   const deleteFirestoreHousework = (id) => {
     deleteFirestore('housework', id)
+  }
+  const deleteFirestoreItem = (id) => {
+    console.log('delete')
   }
 
   const finishBtnEvent = (memberInfo, housework) => {
@@ -268,7 +276,6 @@ const App = () => {
                   resetFirestoreHousework={resetFirestoreHousework}
                   exchangeCash={exchangeCash}
                   getMemberId={getMemberId}
-                  items={items}
                 />
               )}
             />
@@ -283,6 +290,11 @@ const App = () => {
                   updateFirestoreMember={updateFirestoreMember}
                   addFiestoreMember={addFiestoreMember}
                   deleteFirestoreMember={deleteFirestoreMember}
+                  getMemberId={getMemberId}
+                  items={items}
+                  addFirestoreItems={addFirestoreItems}
+                  deleteFirestoreItem={deleteFirestoreItem}
+                  updateFirestoreItem={updateFirestoreItem}
                 />
               )}
             />
