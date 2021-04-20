@@ -53,32 +53,31 @@ const App = () => {
     setMemberId(memberId)
   }
   const getItems = async () => {
-    const itemRef = getItemRef(await memberId)
-    const data = makeListFromCollection(await itemRef.get())
+    const ItemRef = getItemRef(await memberId)
+    const data = makeListFromCollection(await ItemRef.get())
     setItems(data.filter((v) => typeof v.name === 'string'))
     setIsEdit(false)
   }
+  //Ref
+  const memberRef = getRef('member')
+  const houseworkRef = getRef('housework')
 
   //update firestore
-  const updateFirestore = (data, refName) => {
-    const firestoreRef = getRef(refName)
+  const updateFirestore = (data, firestoreRef) => {
     const targetId = data.id
     firestoreRef.doc(targetId).set(data, { merge: true })
     setIsEdit(true) //isEditで再レンダリングを発火させる
   }
   const updateFirestoreMember = (data) => {
-    updateFirestore(data, 'member')
+    updateFirestore(data, memberRef)
   }
   const updateFirestoreHousework = (data) => {
-    updateFirestore(data, 'housework')
+    updateFirestore(data, houseworkRef)
   }
   const updateFirestoreItem = (data, memberId) => {
     console.log('update')
-    const firestoreRef = getRef('member').doc(memberId).collection('items')
-    const targetId = data.id
-    console.log({ targetId })
-    firestoreRef.doc(targetId).set(data, { merge: true })
-    setIsEdit(true) //isEditで再レンダリングを発火させる
+    const ItemRef = getItemRef(memberId)
+    updateFirestore(data, ItemRef)
   }
 
   //add data to firestore
@@ -100,9 +99,8 @@ const App = () => {
     // setIsEdit(true)
   }
 
-  //firestoreのメンバーの削除
-  const deleteFirestore = (refName, id) => {
-    const firestoreRef = getRef(refName)
+  //delete data to firestore
+  const deleteFirestore = (id, firestoreRef) => {
     firestoreRef
       .doc(id)
       .delete()
@@ -114,13 +112,14 @@ const App = () => {
       })
   }
   const deleteFirestoreMember = (id) => {
-    deleteFirestore('member', id)
+    deleteFirestore(id, memberRef)
   }
   const deleteFirestoreHousework = (id) => {
-    deleteFirestore('housework', id)
+    deleteFirestore(id, houseworkRef)
   }
-  const deleteFirestoreItem = (id) => {
-    console.log('delete')
+  const deleteFirestoreItem = (id, memberId) => {
+    const ItemRef = getItemRef(memberId)
+    deleteFirestore(id, ItemRef)
   }
 
   const finishBtnEvent = (memberInfo, housework) => {

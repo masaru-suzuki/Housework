@@ -105,6 +105,7 @@ const EditItemList = ({ member, items, addFirestoreItems, deleteFirestoreItem, u
               <EditItemListCardInner
                 key={item.id}
                 data={item}
+                memberId={id}
                 i={i}
                 handleEdit={handleEditHousework}
                 handleDelete={deleteFirestoreItem}

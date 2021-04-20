@@ -45,7 +45,7 @@ const theme = createMuiTheme({
   },
 })
 
-const EditItemListCardInner = ({ data, i, handleEdit, handleDelete }) => {
+const EditItemListCardInner = ({ data, i, handleEdit, handleDelete, memberId }) => {
   const classes = useStyles()
   const id = data.id
   return (
@@ -70,7 +70,7 @@ const EditItemListCardInner = ({ data, i, handleEdit, handleDelete }) => {
       </CardActionArea>
       <ThemeProvider theme={theme}>
         <Divider className={classes.divider} orientation="vertical" flexItem />
-        <IconButton color="secondary" onClick={() => handleDelete(data.id)} aria-label="delete">
+        <IconButton color="secondary" onClick={() => handleDelete(id, memberId)} aria-label="delete">
           <DeleteIcon />
         </IconButton>
       </ThemeProvider>
