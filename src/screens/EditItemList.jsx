@@ -32,9 +32,6 @@ const useStyles = makeStyles(() => ({
 }))
 
 const EditItemList = ({ member, items, addFirestoreItems, deleteFirestoreItem, updateFirestoreItem }) => {
-  console.log({ items })
-  console.log({ member })
-
   const [isEdit, setIsEdit] = useState(false)
   const [isAdd, setIsAdd] = useState(false)
   const [editItemIndex, setEditItemIndex] = useState('')
@@ -69,6 +66,7 @@ const EditItemList = ({ member, items, addFirestoreItems, deleteFirestoreItem, u
   if (isAdd && !isEdit) {
     return (
       <AddItems
+        memberId={id}
         addFirestoreItems={addFirestoreItems}
         items={items}
         flag="isAdd"

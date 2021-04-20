@@ -23,3 +23,11 @@ export const initHousework = () => {
     finishedDate: '',
   }
 }
+
+export const initItem = () => {
+  return {
+    name: '',
+    requiredPoint: 0,
+    isSecret: true,
+  }
+}

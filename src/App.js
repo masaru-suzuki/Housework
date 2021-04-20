@@ -76,24 +76,25 @@ const App = () => {
   }
   const updateFirestoreItem = (data, memberId) => {
     console.log('update')
-    const ItemRef = getItemRef(memberId)
-    updateFirestore(data, ItemRef)
+    const itemRef = getItemRef(memberId)
+    updateFirestore(data, itemRef)
   }
 
   //add data to firestore
-  const addFirestore = (data, refName) => {
-    const firestoreRef = getRef(refName)
+  const addFirestore = (data, firestoreRef) => {
     firestoreRef.add(data)
     setIsEdit(true) //isEditで再レンダリングを発火させる
   }
   const addFiestoreMember = (data) => {
-    addFirestore(data, 'member')
+    addFirestore(data, memberRef)
   }
   const addFiestoreHousework = (data) => {
-    addFirestore(data, 'housework')
+    addFirestore(data, houseworkRef)
   }
-  const addFirestoreItems = (data) => {
+  const addFirestoreItems = (data, memberId) => {
     console.log('add items')
+    const itemRef = getItemRef(memberId)
+    addFirestore(data, itemRef)
     // const firestoreRef = getItemRef(memberId)
     // firestoreRef.add(data)
     // setIsEdit(true)
@@ -118,8 +119,8 @@ const App = () => {
     deleteFirestore(id, houseworkRef)
   }
   const deleteFirestoreItem = (id, memberId) => {
-    const ItemRef = getItemRef(memberId)
-    deleteFirestore(id, ItemRef)
+    const itemRef = getItemRef(memberId)
+    deleteFirestore(id, itemRef)
   }
 
   const finishBtnEvent = (memberInfo, housework) => {
