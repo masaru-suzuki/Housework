@@ -22,11 +22,12 @@ const useStyles = makeStyles(() => ({
   },
 }))
 
-const EditItem = ({ member, items, editItemIndex, updateFirestoreItem }) => {
+const EditItem = ({ member, items, editItemIndex, updateFirestoreItem, handleBackEditItemList }) => {
   const classes = useStyles()
   const targetItem = items[editItemIndex]
   const [item, setItem] = useState(targetItem)
-  console.log(item)
+
+  //テキストの編集
   const handleChange = (event) => {
     const identificationName = event.target.name
     const value = event.target.value
@@ -38,16 +39,13 @@ const EditItem = ({ member, items, editItemIndex, updateFirestoreItem }) => {
   }
   // //submitBtnで使うfunction
   const onSubmitEvent = () => {
-    updateFirestoreMember(memberData)
-    handleBackEditFamily()
+    updateFirestoreItem(item)
+    handleBackEditItemList()
   }
-  const handelEditItems = () => {
-    setFlag('editItems')
-  }
-  const handleBackEditFamily = () => console.log('handle')
+
   return (
     <Container>
-      <BackBtn handleBack={handleBackEditFamily} className={classes.btn_back} />
+      <BackBtn handleBack={handleBackEditItemList} className={classes.btn_back} />
       <List
         component="nav"
         aria-labelledby="nested-list-subheader"
