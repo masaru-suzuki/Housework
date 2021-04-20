@@ -31,7 +31,7 @@ const App = () => {
   const [houseworkListInfo, setHouseworkListInfo] = useState([])
   const [items, setItems] = useState([])
   const [isEdit, setIsEdit] = useState(false)
-  const [memberId, setMemberId] = useState('')
+  const [memberId, setMemberId] = useState()
 
   const getRef = (refName) => {
     return db.collection('family').doc(userId).collection(refName)
@@ -52,7 +52,7 @@ const App = () => {
     setMemberId(memberId)
   }
   const getItems = async (id) => {
-    console.log({ id })
+    // console.log({ id })
     const ItemRef = getItemRef(await id)
     // console.log(itemRef)
     const data = makeListFromCollection(await ItemRef.get())
@@ -97,9 +97,6 @@ const App = () => {
     console.log('add items')
     const itemRef = getItemRef(memberId)
     addFirestore(data, itemRef)
-    // const firestoreRef = getItemRef(memberId)
-    // firestoreRef.add(data)
-    // setIsEdit(true)
   }
 
   //delete data to firestore
@@ -134,6 +131,7 @@ const App = () => {
       doneMemberId = ''
       //完了日の削除
       doneDate = doneDate.filter((timestamp) => !timestamp.isEqual(finishedDate))
+      // console.log({ doneDate })
       //連続家事日数の計算
       runningDay = getRunningDay(doneDate)
       //経験値の計算
@@ -190,8 +188,57 @@ const App = () => {
     updateFirestoreMember(updateMemberData)
   }
 
-  //TODO 日付が変わった時に家事のデータをresetする
+  //日付が今日と同じか判定
+  const getIsEquortoDay = (date) => {
+    console.log(date)
+    const today = new Date()
+    const y = date?.getFullYear()
+    const m = date?.getMonth() + 1
+    const d = date?.getDate()
+    const Y = today.getFullYear()
+    const M = today.getMonth() + 1
+    const D = today.getDate()
+    return y === Y && m === M && d === D
+  }
+  // 日付の配列から、最新の日付を取得
+  const getLatestDate = (dateArr) => {
+    let latestDate = ''
+    dateArr.forEach((e) => {
+      if (e > latestDate) latestDate = e
+    })
+    console.log({ latestDate })
+    return latestDate
+  }
+
+  //日付が変わった時に家事のデータをresetする
+  const getIsNewDate = () => {
+    // console.log({ membersInfo })
+    if (membersInfo === []) return
+    // メンバーごとのdoneDateから最新日付を取得して、配列にする
+    const latestDateMemberDoneHousework = membersInfo?.map((member) => {
+      console.log(member)
+      let date = ''
+      try {
+        date = member.doneDate[0]?.toDate()
+      } catch {
+        date = member.doneDate[0]
+      }
+      return date
+    })
+    // console.log({ latestDateMemberDoneHousework })
+    //誰も家事をやっていない状態なら終了
+    if (latestDateMemberDoneHousework.length === 0) return
+    const latestDate = getLatestDate(latestDateMemberDoneHousework)
+    // console.log(latestDate)
+    //日付が変わったか判定
+    console.log(getIsEquortoDay(latestDate))
+    //FIXME resetされない！
+    if (!getIsEquortoDay(latestDate)) resetFirestoreHousework()
+  }
+  //最も新しい日付とアプリケーションをレンダリングした時に日付を比較して、レンダリングした時の日付が新しかったら、restFirestoreHoueworkする
+
   const resetFirestoreHousework = () => {
+    console.log('reset')
     houseworkListInfo.forEach((housework) => {
       const resetHouseworkData = {
         id: housework.id,
@@ -263,8 +310,13 @@ const App = () => {
     if (!userId) return
     getItems(memberId)
   }, [memberId, isEdit])
-  console.log({ items })
+  // console.log({ items })
   //今度はrecomposeのlibraryを使ってpropsを渡すのに挑戦してみる
+  //初回のレンダリングのみ
+  useEffect(() => {
+    getIsNewDate()
+    //userIdでもmembersInfoでもうまくいかなかった
+  }, [memberId])
   return (
     <Router>
       <Switch>
