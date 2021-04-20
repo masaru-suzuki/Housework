@@ -34,7 +34,7 @@ const EditItem = ({ memberId, items, editItemIndex, updateFirestoreItem, handleB
     if (identificationName === 'name') {
       setItem((prevState) => ({ ...prevState, name: String(value) }))
     } else if (identificationName === 'requiredPoint') {
-      //型指定をすると,先頭に0がついてしまうから、MaterialUi
+      //型指定をすると,先頭に0がついてしまうから、MaterialUiのTextFieldにtype='number'を指定して、バリデーションを行った
       setItem((prevState) => ({ ...prevState, requiredPoint: value }))
     }
   }
