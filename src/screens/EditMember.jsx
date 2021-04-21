@@ -42,7 +42,7 @@ const EditMember = ({
     if (identificationName === 'name') {
       setMemberData((prevState) => ({ ...prevState, name: String(value) }))
     } else if (identificationName === 'birth') {
-      setMemberData((prevState) => ({ ...prevState, birth: Number(value) }))
+      setMemberData((prevState) => ({ ...prevState, birth: value }))
     }
   }
   //submitBtnで使うfunction
@@ -79,6 +79,7 @@ const EditMember = ({
             handleChange={handleChange}
           />
           <InputField
+            type="number"
             className={classes.input_field}
             required={true}
             identificationName="birth"

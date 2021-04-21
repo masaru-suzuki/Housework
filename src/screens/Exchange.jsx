@@ -68,6 +68,9 @@ const Exchange = ({ memberInfo, items }) => {
   const [checked, setChecked] = useState([])
   const [paidPoint, setPaidPoint] = useState(0)
   // const checkedItemArr = []
+  const [isError, setIsError] = useState(false)
+  const [isDisabled, setIsDisabled] = useState(true)
+  const { point } = memberInfo
 
   //isSecretで名前を表示するかトグルする
   const toggleInvisualName = (item) => (item.isSecret ? '???????' : item.name)
@@ -86,9 +89,15 @@ const Exchange = ({ memberInfo, items }) => {
     }
     setChecked(checkedItemArr)
   }
-  const getRequiredPoint = () => {}
-  console.log(checked)
-  console.log(paidPoint)
+  const toggleDisabled = () => {
+    paidPoint > point || paidPoint === 0 ? setIsDisabled(true) : setIsDisabled(false)
+  }
+  useEffect(() => {
+    console.log(isDisabled)
+    toggleDisabled()
+  }, [paidPoint])
+  console.log(isDisabled)
+
   return (
     <>
       <List className={classes.root} subheader={<li />}>
@@ -131,7 +140,7 @@ const Exchange = ({ memberInfo, items }) => {
       <Button
         className={classes.btn}
         variant="contained"
-        // disabled={isDisabled}
+        disabled={isDisabled}
         color="primary"
         size="small"
         // onClick={() => handleOpen()}
