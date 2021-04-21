@@ -10,7 +10,7 @@ const useStyles = makeStyles({
     marginBottom: 16,
   },
 })
-const AddItems = ({ memberId, item, addFirestoreItems, handleBackEditItemList }) => {
+const AddItems = ({ memberId, addFirestoreItems, handleBackEditItemList }) => {
   const classes = useStyles()
   const [itemData, setItemData] = useState({})
 

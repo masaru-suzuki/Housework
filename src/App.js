@@ -190,7 +190,8 @@ const App = () => {
 
   //日付が今日と同じか判定
   const getIsEquortoDay = (date) => {
-    // console.log(date)
+    console.log(date.length)
+    if (!data) return
     const today = new Date()
     const y = date?.getFullYear()
     const m = date?.getMonth() + 1
@@ -211,28 +212,33 @@ const App = () => {
   }
 
   //日付が変わった時に家事のデータをresetする
+  //初期状態の時にデータがないからエラー対策が必要
   const getIsNewDate = () => {
     // console.log({ membersInfo })
     if (membersInfo === []) return
     // メンバーごとのdoneDateから最新日付を取得して、配列にする
     const latestDateMemberDoneHousework = membersInfo?.map((member) => {
-      // console.log(member)
+      // console.log(member.doneDate.length === 0)
+      if (member.doneDate.length === 0) return
       let date = ''
       try {
         date = member.doneDate[0]?.toDate()
       } catch {
         date = member.doneDate[0]
       }
+      // console.log(data)
       return date
     })
     // console.log({ latestDateMemberDoneHousework })
+    // console.log(latestDateMemberDoneHousework === undefined)
     //誰も家事をやっていない状態なら終了
-    if (latestDateMemberDoneHousework.length === 0) return
+    // console.log(latestDateMemberDoneHousework[0])
+    if (latestDateMemberDoneHousework[0] === undefined) return
     const latestDate = getLatestDate(latestDateMemberDoneHousework)
-    // console.log(latestDate)
+    // console.log({ latestDate })
     //日付が変わったか判定
     // console.log(getIsEquortoDay(latestDate))
-    if (!getIsEquortoDay(latestDate)) resetFirestoreHousework()
+    if (!getIsEquortoDay(latestDate) === '') resetFirestoreHousework()
   }
   //最も新しい日付とアプリケーションをレンダリングした時に日付を比較して、レンダリングした時の日付が新しかったら、restFirestoreHoueworkする
 
@@ -273,12 +279,9 @@ const App = () => {
         // console.log({ prevDate })
 
         if (newDay === 1) {
-          // 月を跨いだときはどうする?
-          // console.log('first day in this month')
           const lastMonthLastDay = new Date(newDate.getFullYear(), newDate.getMonth(), 0).getDate()
           //前月の最終日と同じなら連続していることとする
           if (lastMonthLastDay === prevDay) {
-            // console.log('constant done work')
             runningDay += 1
           }
         }
@@ -319,7 +322,6 @@ const App = () => {
     if (!userId) return
     getItems(memberId)
   }, [memberId, isEdit])
-  // console.log({ items })
   //今度はrecomposeのlibraryを使ってpropsを渡すのに挑戦してみる
   //初回のレンダリングのみ
   useEffect(() => {

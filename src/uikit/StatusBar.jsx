@@ -31,18 +31,11 @@ const useStyles = makeStyles({
     width: '100%',
   },
 })
-//TODO reset experiencePoint when you level up
-//TODO add surplus point to experiencePoint when you level up
-//TODO save experiencePoint to Firestore
-//TODO calculate requiredExperiencePoint when level up
-//TODO save requiredExperiencePoint when level up
-//TODO set next level required point
-//TODO Add points that exceed the required experience points
 
 const StatusBar = ({ memberInfo }) => {
   const classes = useStyles()
   const [progress, setProgress] = React.useState(60)
-  const { level, experiencePoint, requiredExpreriencePoint } = memberInfo
+  const { experiencePoint, requiredExpreriencePoint } = memberInfo
   const calcProgress = () => {
     const result = Math.round((experiencePoint / requiredExpreriencePoint) * 1000) / 10
     return experiencePoint === 0 ? 0 : result

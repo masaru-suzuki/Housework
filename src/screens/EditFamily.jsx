@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useHistory } from 'react-router-dom'
-import { makeStyles, createMuiTheme } from '@material-ui/core/styles'
+import { makeStyles } from '@material-ui/core/styles'
 import { ListSubheader, List, Container, Button } from '@material-ui/core'
 import AddIcon from '@material-ui/icons/Add'
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos'
@@ -49,7 +49,7 @@ const EditFamily = ({
   const classes = useStyles()
   const history = useHistory()
   const handleBackHome = () => {
-    console.log({ history })
+    // console.log({ history })
     history.push({ pathname: '/' })
   }
 
