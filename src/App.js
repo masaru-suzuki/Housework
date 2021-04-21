@@ -55,7 +55,7 @@ const App = () => {
     // console.log({ id })
     const ItemRef = getItemRef(await id)
     // console.log(itemRef)
-    const data = makeListFromCollection(await ItemRef.get())
+    const data = makeListFromCollection(await ItemRef.orderBy('requiredPoint').get())
     // console.log(data)
     setItems(data.filter((v) => typeof v.name === 'string'))
     setIsEdit(false)
