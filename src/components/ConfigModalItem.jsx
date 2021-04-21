@@ -59,9 +59,10 @@ const ConfigModalItem = ({ open, exchangeItems, onSubmitEvent, handleClose }) =>
           <div className={classes.paper}>
             <List className={classes.inner}>
               {exchangeItems.map((item, index) => {
+                const { name } = item
                 return (
                   <ListItem key={index}>
-                    <ListItemText primary={item + 'と交換しましたか？'} />
+                    <ListItemText primary={name + 'と交換しましたか？'} />
                   </ListItem>
                 )
               })}

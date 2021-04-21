@@ -18,6 +18,7 @@ const Home = ({
   finishBtnEvent,
   resetFirestoreHousework,
   exchangeCash,
+  exhangeItems,
   getMemberId,
   items,
 }) => {
@@ -45,6 +46,7 @@ const Home = ({
         finishBtnEvent={finishBtnEvent}
         resetFirestoreHousework={resetFirestoreHousework}
         exchangeCash={exchangeCash}
+        exhangeItems={exhangeItems}
         getMemberId={getMemberId}
         items={items}
       />

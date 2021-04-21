@@ -51,6 +51,7 @@ const MemberHome = ({
   handleBackHome,
   finishBtnEvent,
   exchangeCash,
+  exhangeItems,
   resetFirestoreHousework,
   getMemberId,
   items,
@@ -126,6 +127,7 @@ const MemberHome = ({
           toggleBudge={toggleBudge}
           handleFlag={handleFlag}
           exchangeCash={exchangeCash}
+          exhangeItems={exhangeItems}
           isPage={isPage}
           flag={flag}
           items={items}

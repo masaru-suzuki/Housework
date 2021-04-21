@@ -17,7 +17,7 @@ import ConfigModalItem from '../components/ConfigModalItem'
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'grid',
-    gridTemplateRows: 'auto 60px 100px',
+    gridTemplateRows: 'auto 80px 90px',
     // paddingBottom: rootPaddingBottom,
     overflow: 'hidden',
   },
@@ -72,7 +72,7 @@ const useStyles = makeStyles((theme) => ({
   },
   error: {
     position: 'absolute',
-    top: 48,
+    top: 60,
     left: '50%',
     transform: 'translateX(-50%)',
     width: '100%',
@@ -86,7 +86,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const Exchange = ({ memberInfo, items }) => {
+const Exchange = ({ memberInfo, items, exhangeItems }) => {
   const classes = useStyles()
   const [checked, setChecked] = useState([])
   const [paidPoint, setPaidPoint] = useState(0)
@@ -95,7 +95,7 @@ const Exchange = ({ memberInfo, items }) => {
   const [isDisabled, setIsDisabled] = useState(true)
   const [open, setOpen] = useState(false)
   const [exchangeItems, setExchangeItems] = useState([])
-  const { point } = memberInfo
+  let { id, point } = memberInfo
 
   //isSecretで名前を表示するかトグルする
   const toggleInvisualName = (item) => (item.isSecret ? '???????' : item.name)
@@ -106,10 +106,9 @@ const Exchange = ({ memberInfo, items }) => {
     const checkedItemArr = [...checked]
     const checkedItemName = [...exchangeItems]
     const currentIndex = checked.indexOf(id)
-    console.log({ checkedItemArr })
     if (currentIndex === -1) {
       checkedItemArr.push(id)
-      checkedItemName.push(name)
+      checkedItemName.push(item)
       setPaidPoint(paidPoint + requiredPoint)
     } else {
       checkedItemArr.splice(currentIndex, 1)
@@ -119,7 +118,6 @@ const Exchange = ({ memberInfo, items }) => {
     setChecked(checkedItemArr)
     setExchangeItems(checkedItemName)
   }
-  console.log(exchangeItems)
   const toggleDisabled = () => {
     paidPoint > point || paidPoint === 0 ? setIsDisabled(true) : setIsDisabled(false)
   }
@@ -140,12 +138,23 @@ const Exchange = ({ memberInfo, items }) => {
     setChecked([])
     setExchangeItems([])
   }
+
+  const changeIsSecret = (data) => {
+    data.isSecret = false
+    return data
+  }
   const onSubmitEvent = () => {
-    // const resultPoint = point - exchangePoint
+    point -= paidPoint
     handleClose()
     clearChecked()
-    // exchangeCash(id, resultPoint)
+    //交換するitem listのisSecretを反転させる
+    const updateItemData = exchangeItems.map((item) => {
+      console.log({ item })
+      return changeIsSecret(item)
+    })
+    exhangeItems(id, point, updateItemData)
   }
+  console.log(exchangeItems)
 
   useEffect(() => {
     toggleDisabled()
@@ -158,7 +167,6 @@ const Exchange = ({ memberInfo, items }) => {
         {items.map((item) => {
           const labelId = `checkbox-list-secondary-label-${item.id}`
           const { id, isSecret } = item
-          // const isMatchDoneMember = isSecret && id !== doneMemberId
           return (
             <ListItem
               key={item.id}

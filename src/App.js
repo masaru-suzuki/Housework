@@ -296,6 +296,16 @@ const App = () => {
     }
   }
 
+  //アイテム交換の時にpointを減算する
+  const exhangeItems = (id, point, itemList) => {
+    console.log('exchange item')
+    console.log(itemList)
+    console.log(point)
+    const updateMemberData = { id, point }
+    updateFirestoreMember(updateMemberData)
+    // updateFirestoreItem(item, memberId)
+    itemList.forEach((item) => updateFirestoreItem(item, id))
+  }
   useEffect(() => {
     if (!userId) return
     //submitがclickされるたびにfirestoreのデータを引っ張ってきて更新する
@@ -334,6 +344,7 @@ const App = () => {
                   finishBtnEvent={finishBtnEvent}
                   resetFirestoreHousework={resetFirestoreHousework}
                   exchangeCash={exchangeCash}
+                  exhangeItems={exhangeItems}
                   getMemberId={getMemberId}
                   items={items}
                 />
