@@ -11,6 +11,16 @@ const useStyles = makeStyles((theme) => ({
     // paddingBottom: rootPaddingBottom,
     overflow: 'hidden',
   },
+  no_data: {
+    width: '100%',
+    padding: '24px 16px',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'column',
+    backgroundColor: '#efefef',
+    margin: 'auto',
+  },
   list: {
     width: '100%',
     backgroundColor: theme.palette.background.paper,
@@ -144,72 +154,81 @@ const Exchange = ({ memberInfo, items, exhangeItems }) => {
     })
     exhangeItems(id, point, updateItemData)
   }
-  console.log(exchangeItems)
+  console.log(items)
 
   useEffect(() => {
     toggleDisabled()
     toggleError()
   }, [paidPoint])
-
-  return (
-    <div className={classes.root}>
-      <List className={classes.list} subheader={<li />}>
-        {items.map((item) => {
-          const labelId = `checkbox-list-secondary-label-${item.id}`
-          const { id, isSecret } = item
-          return (
-            <ListItem
-              key={item.id}
-              divider
-              role={undefined}
-              dense
-              button
-              className={isSecret ? classes.list_item_finished : classes.list_item}
-              onClick={() => toggleCheckItem(item)}
-            >
-              <ListItemText id={labelId} primary={toggleInvisualName(item)} />
-              <ListItemText id={labelId} primary={`${item.requiredPoint}point`} />
-              <ListItemIcon>
-                <Checkbox
-                  edge="start"
-                  checked={checked.indexOf(id) !== -1}
-                  tabIndex={-1}
-                  icon={<CheckCircleOutlineIcon fontSize="large" />}
-                  checkedIcon={<CheckCircleIcon fontSize="large" />}
-                  disableRipple
-                  color="primary"
-                  inputProps={{ 'aria-labelledby': labelId }}
-                />
-              </ListItemIcon>
-            </ListItem>
-          )
-        })}
-      </List>
-      <div className={classes.card_container}>
-        {/* <Divider /> */}
-        <Card className={classes.card}>
-          <CardContent className={classes.card_content}>{paidPoint}point</CardContent>
-        </Card>
-        <span className={isError ? classes.error : classes.invisual}>所持ポイントを超えないでください</span>
+  console.log(items.length === 0)
+  if (items.length === 0) {
+    return (
+      <div className={classes.no_data}>
+        <p>アイテムが登録されていません。</p>
+        <p>設定画面でアイテムを登録してください。</p>
       </div>
-      <Button
-        className={classes.btn}
-        variant="contained"
-        disabled={isDisabled}
-        color="primary"
-        size="small"
-        onClick={() => handleOpen()}
-      >
-        アイテムを交換する
-      </Button>
-      <ConfigModalItem
-        onSubmitEvent={onSubmitEvent}
-        exchangeItems={exchangeItems}
-        handleClose={handleClose}
-        open={open}
-      />
-    </div>
-  )
+    )
+  } else {
+    return (
+      <div className={classes.root}>
+        <List className={classes.list} subheader={<li />}>
+          {items.map((item) => {
+            const labelId = `checkbox-list-secondary-label-${item.id}`
+            const { id, isSecret } = item
+            return (
+              <ListItem
+                key={item.id}
+                divider
+                role={undefined}
+                dense
+                button
+                className={isSecret ? classes.list_item_finished : classes.list_item}
+                onClick={() => toggleCheckItem(item)}
+              >
+                <ListItemText id={labelId} primary={toggleInvisualName(item)} />
+                <ListItemText id={labelId} primary={`${item.requiredPoint}point`} />
+                <ListItemIcon>
+                  <Checkbox
+                    edge="start"
+                    checked={checked.indexOf(id) !== -1}
+                    tabIndex={-1}
+                    icon={<CheckCircleOutlineIcon fontSize="large" />}
+                    checkedIcon={<CheckCircleIcon fontSize="large" />}
+                    disableRipple
+                    color="primary"
+                    inputProps={{ 'aria-labelledby': labelId }}
+                  />
+                </ListItemIcon>
+              </ListItem>
+            )
+          })}
+        </List>
+        <div className={classes.card_container}>
+          {/* <Divider /> */}
+          <Card className={classes.card}>
+            <CardContent className={classes.card_content}>{paidPoint}point</CardContent>
+          </Card>
+          <span className={isError ? classes.error : classes.invisual}>所持ポイントを超えないでください</span>
+        </div>
+        <Button
+          className={classes.btn}
+          variant="contained"
+          disabled={isDisabled}
+          color="primary"
+          size="small"
+          onClick={() => handleOpen()}
+        >
+          アイテムを交換する
+        </Button>
+        <ConfigModalItem
+          onSubmitEvent={onSubmitEvent}
+          exchangeItems={exchangeItems}
+          handleClose={handleClose}
+          open={open}
+        />
+      </div>
+    )
+  }
 }
 
 export default Exchange

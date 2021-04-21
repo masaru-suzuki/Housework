@@ -60,6 +60,8 @@ const App = () => {
     setItems(data.filter((v) => typeof v.name === 'string'))
     setIsEdit(false)
   }
+
+  console.log({ items })
   //Ref
   const memberRef = getRef('member')
   const houseworkRef = getRef('housework')
@@ -190,8 +192,8 @@ const App = () => {
 
   //日付が今日と同じか判定
   const getIsEquortoDay = (date) => {
-    console.log(date.length)
-    if (!data) return
+    // console.log(date.length)
+    if (!date || date === undefined) return
     const today = new Date()
     const y = date?.getFullYear()
     const m = date?.getMonth() + 1
@@ -215,6 +217,7 @@ const App = () => {
   //初期状態の時にデータがないからエラー対策が必要
   const getIsNewDate = () => {
     // console.log({ membersInfo })
+    // console.log(membersInfo === [])
     if (membersInfo === []) return
     // メンバーごとのdoneDateから最新日付を取得して、配列にする
     const latestDateMemberDoneHousework = membersInfo?.map((member) => {

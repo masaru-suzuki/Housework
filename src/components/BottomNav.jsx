@@ -67,12 +67,12 @@ const BottomNav = ({ isPage, flag, handleFlag, resetFirestoreHousework }) => {
           onClick={() => handleFlag('isExchange')}
           icon={<AutorenewIcon color={flag.isExchange ? 'primary' : 'disabled'} />}
         />
-        <BottomNavigationAction
+        {/* <BottomNavigationAction
           classes={{ selected: classes.selected }}
           label="reset"
           value="reset"
           onClick={() => resetFirestoreHousework()}
-        />
+        /> */}
       </BottomNavigation>
     </ThemeProvider>
   )

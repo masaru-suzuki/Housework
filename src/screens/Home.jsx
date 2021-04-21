@@ -1,14 +1,30 @@
 import React, { useState } from 'react'
 import DrawerNav from '../components/DrawerNav'
 import { makeStyles } from '@material-ui/core/styles'
-import { Container, Grid } from '@material-ui/core'
+import { Container, Grid, Paper } from '@material-ui/core'
 import MemberCard from '../components/MemberCard'
 import MemberHome from './MemberHome'
 
 const useStyles = makeStyles(() => ({
   root: {
     flexGrow: 1,
+    // backgroundColor: '#efefef',
+  },
+  root_no_data: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: '100vh',
+  },
+  no_data: {
+    width: '100%',
+    height: 300,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'column',
     backgroundColor: '#efefef',
+    margin: 'auto',
   },
 }))
 
@@ -36,7 +52,6 @@ const Home = ({
   }
 
   const memberInfo = membersInfo[memberIndex]
-
   if (isMemberScreen) {
     return (
       <MemberHome
@@ -50,6 +65,17 @@ const Home = ({
         getMemberId={getMemberId}
         items={items}
       />
+    )
+  } else if (!isMemberScreen && membersInfo.length === 0) {
+    return (
+      <Container className={classes.root_no_data} maxWidth="sm">
+        <DrawerNav membersInfo={membersInfo} />
+        <Paper className={classes.no_data}>
+          <p>家族データがありません。</p>
+          <p>右上のボタンを押して</p>
+          <p>データを追加してください。</p>
+        </Paper>
+      </Container>
     )
   } else {
     return (
