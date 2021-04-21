@@ -40,6 +40,10 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: 'inherit',
     padding: 0,
   },
+  card_container: {
+    //error message用
+    position: 'relative',
+  },
   card: {
     width: '25ch',
     margin: 'auto',
@@ -60,6 +64,20 @@ const useStyles = makeStyles((theme) => ({
     margin: '16px auto 24px',
     width: '25ch',
     height: 60,
+  },
+  error: {
+    position: 'absolute',
+    top: 48,
+    left: '50%',
+    transform: 'translateX(-50%)',
+    width: '100%',
+    fontSize: 12,
+    zIndex: 1,
+    textAlign: 'center',
+    color: 'red',
+  },
+  invisual: {
+    display: 'none',
   },
 }))
 
@@ -92,11 +110,14 @@ const Exchange = ({ memberInfo, items }) => {
   const toggleDisabled = () => {
     paidPoint > point || paidPoint === 0 ? setIsDisabled(true) : setIsDisabled(false)
   }
+  const toggleError = () => {
+    paidPoint > point ? setIsError(true) : setIsError(false)
+  }
+
   useEffect(() => {
-    console.log(isDisabled)
     toggleDisabled()
+    toggleError()
   }, [paidPoint])
-  console.log(isDisabled)
 
   return (
     <>
@@ -134,9 +155,12 @@ const Exchange = ({ memberInfo, items }) => {
           )
         })}
       </List>
-      <Card className={classes.card}>
-        <CardContent className={classes.card_content}>{paidPoint}point</CardContent>
-      </Card>
+      <div className={classes.card_container}>
+        <Card className={classes.card}>
+          <CardContent className={classes.card_content}>{paidPoint}point</CardContent>
+        </Card>
+        <span className={isError ? classes.error : classes.invisual}>所持ポイントを超えないでください</span>
+      </div>
       <Button
         className={classes.btn}
         variant="contained"
