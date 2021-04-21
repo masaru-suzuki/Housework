@@ -15,7 +15,6 @@ import {
   ListItemIcon,
   Modal,
 } from '@material-ui/core'
-import { FixedSizeList } from 'react-window'
 
 const useStyles = makeStyles((theme) => ({
   modal: {
@@ -26,12 +25,27 @@ const useStyles = makeStyles((theme) => ({
   },
   paper: {
     backgroundColor: theme.palette.background.paper,
-    // border: '2px solid #000',
     padding: 50,
-    // boxShadow: theme.shadows[5],
     boxShadow: '0 3px 7px rgba(0, 0, 0, 0.3)',
-    padding: theme.spacing(4, 6, 5),
+    padding: theme.spacing(4, 4, 5),
     maxWidth: '30ch',
+    width: '100%',
+    height: 400,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'column',
+  },
+  inner: {
+    width: '100%',
+    maxWidth: 360,
+    backgroundColor: theme.palette.background.paper,
+    position: 'relative',
+    overflow: 'auto',
+    maxHeight: 300,
+  },
+  listSection: {
+    backgroundColor: 'inherit',
   },
   btn: {
     margin: '16px auto 24px',
@@ -58,35 +72,15 @@ const ConfigModalItem = ({ open, exchangeItems, onSubmitEvent, handleClose }) =>
       >
         <Fade in={open}>
           <div className={classes.paper}>
-            {exchangeItems.map((item, index) => {
-              // return <p id="transition-modal-description">{item}をもらいましたか？</p>
-              return (
-                <ListItem key={index}>
-                  <ListItemText primary={item + 'をもらいましたか？'} />
-                </ListItem>
-              )
-            })}
-            {/* <p id="transition-modal-description">をもらいましたか？</p>
-            <p id="transition-modal-description">をもらいましたか？</p>
-            <p id="transition-modal-description">をもらいましたか？</p>
-            <p id="transition-modal-description">をもらいましたか？</p>
-            <p id="transition-modal-description">をもらいましたか？</p>
-            <p id="transition-modal-description">をもらいましたか？</p>
-            <p id="transition-modal-description">をもらいましたか？</p>
-            <p id="transition-modal-description">をもらいましたか？</p>
-            <p id="transition-modal-description">をもらいましたか？</p>
-            <p id="transition-modal-description">をもらいましたか？</p>
-            <p id="transition-modal-description">をもらいましたか？</p>
-            <p id="transition-modal-description">をもらいましたか？</p>
-            <p id="transition-modal-description">をもらいましたか？</p>
-            <p id="transition-modal-description">をもらいましたか？</p>
-            <p id="transition-modal-description">をもらいましたか？</p>
-            <p id="transition-modal-description">をもらいましたか？</p>
-            <p id="transition-modal-description">をもらいましたか？</p>
-            <p id="transition-modal-description">をもらいましたか？</p>
-            <p id="transition-modal-description">をもらいましたか？</p>
-            <p id="transition-modal-description">をもらいましたか？</p>
-            <p id="transition-modal-description">をもらいましたか？</p> */}
+            <List className={classes.inner}>
+              {exchangeItems.map((item, index) => {
+                return (
+                  <ListItem key={index}>
+                    <ListItemText primary={item + 'と交換しましたか？'} />
+                  </ListItem>
+                )
+              })}
+            </List>
             <Button
               className={classes.btn}
               variant="contained"
@@ -96,7 +90,7 @@ const ConfigModalItem = ({ open, exchangeItems, onSubmitEvent, handleClose }) =>
                 onSubmitEvent()
               }}
             >
-              もらった！
+              交換した！
             </Button>
           </div>
         </Fade>

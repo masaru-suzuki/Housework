@@ -102,6 +102,7 @@ const Exchange = ({ memberInfo, items }) => {
     const checkedItemArr = [...checked]
     const checkedItemName = [...exchangeItems]
     const currentIndex = checked.indexOf(id)
+    console.log({ checkedItemArr })
     if (currentIndex === -1) {
       checkedItemArr.push(id)
       checkedItemName.push(name)
@@ -133,6 +134,7 @@ const Exchange = ({ memberInfo, items }) => {
   const clearChecked = () => {
     setPaidPoint(0)
     setChecked([])
+    setExchangeItems([])
   }
   const onSubmitEvent = () => {
     // const resultPoint = point - exchangePoint
