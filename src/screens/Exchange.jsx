@@ -17,6 +17,7 @@ import StatusBar from '../uikit/StatusBar'
 import BottomNav from '../components/BottomNav'
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline'
 import CheckCircleIcon from '@material-ui/icons/CheckCircle'
+import ConfigModal from '../components/ConfigModal'
 const useStyles = makeStyles((theme) => ({
   root: {
     width: '100%',
@@ -88,6 +89,8 @@ const Exchange = ({ memberInfo, items }) => {
   // const checkedItemArr = []
   const [isError, setIsError] = useState(false)
   const [isDisabled, setIsDisabled] = useState(true)
+  const [open, setOpen] = useState(false)
+  const [exchangeItems, setExchangeItems] = useState([])
   const { point } = memberInfo
 
   //isSecretで名前を表示するかトグルする
@@ -95,23 +98,47 @@ const Exchange = ({ memberInfo, items }) => {
 
   //checkされたら項目を保存
   const toggleCheckItem = (item) => {
-    const { id, requiredPoint } = item
+    const { id, requiredPoint, name } = item
     const checkedItemArr = [...checked]
+    const checkedItemName = [...exchangeItems]
     const currentIndex = checked.indexOf(id)
     if (currentIndex === -1) {
       checkedItemArr.push(id)
+      checkedItemName.push(name)
       setPaidPoint(paidPoint + requiredPoint)
     } else {
       checkedItemArr.splice(currentIndex, 1)
+      checkedItemName.splice(currentIndex, 1)
       setPaidPoint(paidPoint - requiredPoint)
     }
     setChecked(checkedItemArr)
+    setExchangeItems(checkedItemName)
   }
+  console.log(exchangeItems)
   const toggleDisabled = () => {
     paidPoint > point || paidPoint === 0 ? setIsDisabled(true) : setIsDisabled(false)
   }
   const toggleError = () => {
     paidPoint > point ? setIsError(true) : setIsError(false)
+  }
+
+  const handleOpen = () => {
+    setOpen(true)
+  }
+
+  const handleClose = () => {
+    setOpen(false)
+  }
+
+  const clearChecked = () => {
+    setPaidPoint(0)
+    setChecked([])
+  }
+  const onSubmitEvent = () => {
+    // const resultPoint = point - exchangePoint
+    handleClose()
+    clearChecked()
+    // exchangeCash(id, resultPoint)
   }
 
   useEffect(() => {
@@ -131,7 +158,6 @@ const Exchange = ({ memberInfo, items }) => {
               key={item.id}
               divider
               role={undefined}
-              // disabled={isMatchDoneMember}
               dense
               button
               className={isSecret ? classes.list_item_finished : classes.list_item}
@@ -167,10 +193,16 @@ const Exchange = ({ memberInfo, items }) => {
         disabled={isDisabled}
         color="primary"
         size="small"
-        // onClick={() => handleOpen()}
+        onClick={() => handleOpen()}
       >
-        ポイントを交換する
+        アイテムを交換する
       </Button>
+      <ConfigModal
+        onSubmitEvent={onSubmitEvent}
+        // text={text}
+        handleClose={handleClose}
+        open={open}
+      />
     </>
   )
 }

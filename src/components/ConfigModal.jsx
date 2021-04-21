@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const ConfigModal = ({ open, money, onSubmitEvent, handleClose }) => {
+const ConfigModal = ({ open, text, onSubmitEvent, handleClose }) => {
   const classes = useStyles()
 
   return (
@@ -47,7 +47,7 @@ const ConfigModal = ({ open, money, onSubmitEvent, handleClose }) => {
       >
         <Fade in={open}>
           <div className={classes.paper}>
-            <p id="transition-modal-description">{money}円をもらいましたか？</p>
+            <p id="transition-modal-description">{text}をもらいましたか？</p>
             <Button
               className={classes.btn}
               variant="contained"
