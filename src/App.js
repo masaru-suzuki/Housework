@@ -61,7 +61,6 @@ const App = () => {
     setIsEdit(false)
   }
 
-  console.log({ items })
   //Ref
   const memberRef = getRef('member')
   const houseworkRef = getRef('housework')

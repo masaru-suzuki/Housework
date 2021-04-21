@@ -7,8 +7,15 @@ import MemberHome from './MemberHome'
 
 const useStyles = makeStyles(() => ({
   root: {
-    flexGrow: 1,
+    // flexGrow: 1,
     // backgroundColor: '#efefef',
+    width: '100%',
+    height: '100%',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'column',
+    marginTop: 24,
   },
   root_no_data: {
     display: 'flex',

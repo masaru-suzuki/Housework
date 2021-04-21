@@ -154,13 +154,13 @@ const Exchange = ({ memberInfo, items, exhangeItems }) => {
     })
     exhangeItems(id, point, updateItemData)
   }
-  console.log(items)
+  // console.log(items)
 
   useEffect(() => {
     toggleDisabled()
     toggleError()
   }, [paidPoint])
-  console.log(items.length === 0)
+  // console.log(items.length === 0)
   if (items.length === 0) {
     return (
       <div className={classes.no_data}>
