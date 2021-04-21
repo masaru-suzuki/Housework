@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
 
 const Exchange = ({ memberInfo, items }) => {
   const classes = useStyles()
-  const [checkedItemList, setCheckedItemList] = useState([])
+  const [checked, setChecked] = useState([])
   // const checkedItemArr = []
 
   //isSecretで名前を表示するかトグルする
@@ -41,19 +41,19 @@ const Exchange = ({ memberInfo, items }) => {
 
   //checkされたら項目を保存
   const toggleCheckItem = (item) => {
-    const checkedItemArr = [...checkedItemList]
+    const checkedItemArr = [...checked]
     const { id } = item
-    const currentIndex = checkedItemList.indexOf(id)
+    const currentIndex = checked.indexOf(id)
     currentIndex === -1 ? checkedItemArr.push(id) : checkedItemArr.splice(currentIndex, 1)
-    setCheckedItemList(checkedItemArr)
+    setChecked(checkedItemArr)
   }
-  console.log(checkedItemList)
+  console.log(checked)
   return (
     <>
       <List className={classes.root} subheader={<li />}>
         {items.map((item) => {
           const labelId = `checkbox-list-secondary-label-${item.id}`
-          const { doneMemberId, isSecret } = item
+          const { id, isSecret } = item
           // const isMatchDoneMember = isSecret && id !== doneMemberId
           return (
             <ListItem
@@ -71,7 +71,7 @@ const Exchange = ({ memberInfo, items }) => {
               <ListItemIcon>
                 <Checkbox
                   edge="start"
-                  checked={item.isSecret}
+                  checked={checked.indexOf(id) !== -1}
                   tabIndex={-1}
                   icon={<CheckCircleOutlineIcon fontSize="large" />}
                   checkedIcon={<CheckCircleIcon fontSize="large" />}
