@@ -1,20 +1,6 @@
 import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'
-import {
-  Backdrop,
-  Button,
-  Card,
-  CardContent,
-  Checkbox,
-  Fade,
-  Grid,
-  Paper,
-  List,
-  ListItem,
-  ListItemText,
-  ListItemIcon,
-  Modal,
-} from '@material-ui/core'
+import { Backdrop, Button, Fade, List, ListItem, ListItemText, Modal } from '@material-ui/core'
 
 const useStyles = makeStyles((theme) => ({
   modal: {
@@ -50,7 +36,6 @@ const useStyles = makeStyles((theme) => ({
   btn: {
     margin: '16px auto 24px',
     width: '20ch',
-    // height: 60,
   },
 }))
 

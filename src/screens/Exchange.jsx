@@ -1,25 +1,27 @@
 import React, { useEffect, useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
-import Container from '@material-ui/core/Container'
 import {
   Button,
   Card,
   CardContent,
   Checkbox,
-  Grid,
-  Paper,
   List,
   ListItem,
   ListItemText,
   ListItemIcon,
+  Divider,
 } from '@material-ui/core'
-import StatusBar from '../uikit/StatusBar'
-import BottomNav from '../components/BottomNav'
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline'
 import CheckCircleIcon from '@material-ui/icons/CheckCircle'
 import ConfigModalItem from '../components/ConfigModalItem'
 const useStyles = makeStyles((theme) => ({
   root: {
+    display: 'grid',
+    gridTemplateRows: 'auto 60px 100px',
+    // paddingBottom: rootPaddingBottom,
+    overflow: 'hidden',
+  },
+  list: {
     width: '100%',
     backgroundColor: theme.palette.background.paper,
     position: 'relative',
@@ -43,6 +45,7 @@ const useStyles = makeStyles((theme) => ({
   },
   card_container: {
     //error message用
+    marginTop: 12,
     position: 'relative',
   },
   card: {
@@ -54,6 +57,7 @@ const useStyles = makeStyles((theme) => ({
     textAlign: 'center',
     boxShadow: 'unset',
     backgroundColor: '#eceeef',
+    marginTop: 12,
   },
   card_content: {
     padding: 8,
@@ -149,8 +153,8 @@ const Exchange = ({ memberInfo, items }) => {
   }, [paidPoint])
 
   return (
-    <>
-      <List className={classes.root} subheader={<li />}>
+    <div className={classes.root}>
+      <List className={classes.list} subheader={<li />}>
         {items.map((item) => {
           const labelId = `checkbox-list-secondary-label-${item.id}`
           const { id, isSecret } = item
@@ -184,6 +188,7 @@ const Exchange = ({ memberInfo, items }) => {
         })}
       </List>
       <div className={classes.card_container}>
+        {/* <Divider /> */}
         <Card className={classes.card}>
           <CardContent className={classes.card_content}>{paidPoint}point</CardContent>
         </Card>
@@ -205,7 +210,7 @@ const Exchange = ({ memberInfo, items }) => {
         handleClose={handleClose}
         open={open}
       />
-    </>
+    </div>
   )
 }
 
