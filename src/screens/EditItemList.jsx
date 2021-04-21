@@ -40,7 +40,7 @@ const EditItemList = ({ member, items, addFirestoreItems, deleteFirestoreItem, u
   const history = useHistory()
 
   const handleBackHome = () => {
-    console.log({ history })
+    // console.log({ history })
     history.push({ pathname: '/' })
   }
 

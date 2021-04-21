@@ -38,7 +38,7 @@ const EditItem = ({ memberId, items, editItemIndex, updateFirestoreItem, handleB
       setItem((prevState) => ({ ...prevState, requiredPoint: value }))
     }
   }
-  console.log(item)
+  // console.log(item)
   // //submitBtnで使うfunction
   const onSubmitEvent = () => {
     updateFirestoreItem(item, memberId)

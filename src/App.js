@@ -190,7 +190,7 @@ const App = () => {
 
   //日付が今日と同じか判定
   const getIsEquortoDay = (date) => {
-    console.log(date)
+    // console.log(date)
     const today = new Date()
     const y = date?.getFullYear()
     const m = date?.getMonth() + 1
@@ -206,7 +206,7 @@ const App = () => {
     dateArr.forEach((e) => {
       if (e > latestDate) latestDate = e
     })
-    console.log({ latestDate })
+    // console.log({ latestDate })
     return latestDate
   }
 
@@ -216,7 +216,7 @@ const App = () => {
     if (membersInfo === []) return
     // メンバーごとのdoneDateから最新日付を取得して、配列にする
     const latestDateMemberDoneHousework = membersInfo?.map((member) => {
-      console.log(member)
+      // console.log(member)
       let date = ''
       try {
         date = member.doneDate[0]?.toDate()
@@ -231,14 +231,13 @@ const App = () => {
     const latestDate = getLatestDate(latestDateMemberDoneHousework)
     // console.log(latestDate)
     //日付が変わったか判定
-    console.log(getIsEquortoDay(latestDate))
-    //FIXME resetされない！
+    // console.log(getIsEquortoDay(latestDate))
     if (!getIsEquortoDay(latestDate)) resetFirestoreHousework()
   }
   //最も新しい日付とアプリケーションをレンダリングした時に日付を比較して、レンダリングした時の日付が新しかったら、restFirestoreHoueworkする
 
   const resetFirestoreHousework = () => {
-    console.log('reset')
+    // console.log('reset')
     houseworkListInfo.forEach((housework) => {
       const resetHouseworkData = {
         id: housework.id,

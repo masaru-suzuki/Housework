@@ -6,13 +6,13 @@ import Exchange from './Exchange'
 const ContentsArea = ({
   memberInfo,
   houseworkListInfo,
-  handleFlag,
-  clickedHousework,
+  // handleFlag,
+  // clickedHousework,
   toggleBudge,
   exchangeCash,
   isPage,
-  flag,
-  getMemberId,
+  // flag,
+  // getMemberId,
   items,
 }) => {
   // console.log({ items })
@@ -27,12 +27,10 @@ const ContentsArea = ({
   } else if (isPage === 'isExchange') {
     return (
       <Exchange
-        isPage={isPage}
-        flag={flag}
-        handleFlag={handleFlag}
+        // isPage={isPage}
+        // flag={flag}
+        // handleFlag={handleFlag}
         memberInfo={memberInfo}
-        clickedHousework={clickedHousework}
-        getMemberId={getMemberId}
         items={items}
       />
     )

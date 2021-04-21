@@ -9,8 +9,8 @@ import MemberHomeMemberInfoAria from '../components/MemberHomeMemberInfoAria'
 import ErrorModal from '../components/ErrorModal'
 
 const navHeight = 55
-const navBar = 44
-const rootPaddingBottom = navHeight
+// const navBar = 44
+// const rootPaddingBottom = navHeight
 const innerHeight = window.innerHeight
 const useStyles = makeStyles({
   container: {
@@ -100,7 +100,7 @@ const MemberHome = ({
 
   //Bottom Nav
   const handleFlag = (text) => {
-    console.log({ text })
+    // console.log({ text })
     for (let key in flag) {
       if (flag[key]) {
         setFlag((prevState) => ({ ...prevState, [key]: false, [text]: true }))
@@ -128,7 +128,6 @@ const MemberHome = ({
           exchangeCash={exchangeCash}
           isPage={isPage}
           flag={flag}
-          getMemberId={getMemberId}
           items={items}
         />
       </div>
