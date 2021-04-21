@@ -3,44 +3,46 @@ import { ListSubheader, List, Container, makeStyles } from '@material-ui/core'
 import BackBtn from '../uikit/BackBtn'
 import SubmitBtn from '../uikit/SubmitBtn'
 import InputField from '../uikit/InputField'
-import { initMember } from '../initialData'
-
+import { initItem } from '../initialData'
+console.log({ initItem })
 const useStyles = makeStyles({
   input_field: {
     marginBottom: 16,
   },
 })
-const AddMember = ({ addFiestoreMember, handleBackEditFamily }) => {
+const AddItems = ({ memberId, item, addFirestoreItems, handleBackEditItemList }) => {
   const classes = useStyles()
-  const [memberData, setMemberData] = useState({})
+  const [itemData, setItemData] = useState({})
 
   const handleChange = (event) => {
     const identificationName = event.target.name
-    const value = event.target.value
+    const value = event.target.value.replace(/^0+/, '')
     if (identificationName === 'name') {
-      setMemberData((prevState) => ({ ...prevState, name: String(value) }))
-    } else if (identificationName === 'birth') {
-      setMemberData((prevState) => ({ ...prevState, birth: Number(value) }))
+      setItemData((prevState) => ({ ...prevState, name: String(value) }))
+    } else if (identificationName === 'requiredPoint') {
+      //型指定をすると,先頭に0がついてしまうから、MaterialUiのTextFieldにtype='number
+      setItemData((prevState) => ({ ...prevState, requiredPoint: parseInt(value, 10) }))
     }
   }
   //SubmitBtn
   const onSubmitEvent = () => {
-    addFiestoreMember(memberData)
-    handleBackEditFamily()
+    addFirestoreItems(itemData, memberId)
+    handleBackEditItemList()
   }
   useEffect(() => {
-    setMemberData(initMember())
+    setItemData(initItem())
   }, [])
+  console.log({ itemData })
 
   return (
     <Container>
-      <BackBtn handleBack={handleBackEditFamily} />
+      <BackBtn handleBack={handleBackEditItemList} />
       <List
         component="nav"
         aria-labelledby="nested-list-subheader"
         subheader={
           <ListSubheader disableSticky component="div">
-            家族追加
+            アイテム追加
           </ListSubheader>
         }
       >
@@ -49,16 +51,16 @@ const AddMember = ({ addFiestoreMember, handleBackEditFamily }) => {
           required={true}
           identificationName="name"
           label="名前"
-          value={memberData.name}
+          value={itemData.name}
           handleChange={handleChange}
         />
         <InputField
           type="number"
           className={classes.input_field}
           required={true}
-          identificationName="birth"
-          label="生年月日"
-          value={memberData.birth}
+          identificationName="requiredPoint"
+          label="必要ポイント"
+          value={itemData.requiredPoint}
           handleChange={handleChange}
         />
         <SubmitBtn text="登録する" onSubmitEvent={onSubmitEvent} />
@@ -67,4 +69,4 @@ const AddMember = ({ addFiestoreMember, handleBackEditFamily }) => {
   )
 }
 
-export default AddMember
+export default AddItems

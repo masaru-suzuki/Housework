@@ -1,9 +1,6 @@
 import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'
-import Modal from '@material-ui/core/Modal'
-import Backdrop from '@material-ui/core/Backdrop'
-import Fade from '@material-ui/core/Fade'
-import { Button } from '@material-ui/core'
+import { Backdrop, Button, Fade, List, ListItem, ListItemText, Modal } from '@material-ui/core'
 
 const useStyles = makeStyles((theme) => ({
   modal: {
@@ -14,23 +11,36 @@ const useStyles = makeStyles((theme) => ({
   },
   paper: {
     backgroundColor: theme.palette.background.paper,
-    // border: '2px solid #000',
     padding: 50,
-    // boxShadow: theme.shadows[5],
     boxShadow: '0 3px 7px rgba(0, 0, 0, 0.3)',
-    padding: theme.spacing(4, 6, 5),
+    padding: theme.spacing(4, 4, 5),
     maxWidth: '30ch',
+    width: '100%',
+    height: 400,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'column',
+  },
+  inner: {
+    width: '100%',
+    maxWidth: 360,
+    backgroundColor: theme.palette.background.paper,
+    position: 'relative',
+    overflow: 'auto',
+    maxHeight: 300,
+  },
+  listSection: {
+    backgroundColor: 'inherit',
   },
   btn: {
     margin: '16px auto 24px',
     width: '20ch',
-    // height: 60,
   },
 }))
 
-const ConfigModal = ({ open, text, onSubmitEvent, handleClose }) => {
+const ConfigModalItem = ({ open, exchangeItems, onSubmitEvent, handleClose }) => {
   const classes = useStyles()
-
   return (
     <div>
       <Modal
@@ -47,7 +57,16 @@ const ConfigModal = ({ open, text, onSubmitEvent, handleClose }) => {
       >
         <Fade in={open}>
           <div className={classes.paper}>
-            <p id="transition-modal-description">{text}をもらいましたか？</p>
+            <List className={classes.inner}>
+              {exchangeItems.map((item, index) => {
+                const { name } = item
+                return (
+                  <ListItem key={index}>
+                    <ListItemText primary={name + 'と交換しましたか？'} />
+                  </ListItem>
+                )
+              })}
+            </List>
             <Button
               className={classes.btn}
               variant="contained"
@@ -57,7 +76,7 @@ const ConfigModal = ({ open, text, onSubmitEvent, handleClose }) => {
                 onSubmitEvent()
               }}
             >
-              もらった！
+              交換した！
             </Button>
           </div>
         </Fade>
@@ -65,4 +84,4 @@ const ConfigModal = ({ open, text, onSubmitEvent, handleClose }) => {
     </div>
   )
 }
-export default ConfigModal
+export default ConfigModalItem

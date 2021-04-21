@@ -32,14 +32,22 @@ const useStyles = makeStyles(() => ({
   },
 }))
 
-const EditFamily = ({ membersInfo, updateFirestoreMember, addFiestoreMember, deleteFirestoreMember }) => {
+const EditFamily = ({
+  membersInfo,
+  updateFirestoreMember,
+  addFiestoreMember,
+  deleteFirestoreMember,
+  getMemberId,
+  items,
+  addFirestoreItems,
+  deleteFirestoreItem,
+  updateFirestoreItem,
+}) => {
   const [isEdit, setIsEdit] = useState(false)
   const [isAdd, setIsAdd] = useState(false)
   const [editMemberIndex, setEditMemberIndex] = useState('')
-  console.log({ membersInfo })
   const classes = useStyles()
   const history = useHistory()
-
   const handleBackHome = () => {
     console.log({ history })
     history.push({ pathname: '/' })
@@ -91,6 +99,11 @@ const EditFamily = ({ membersInfo, updateFirestoreMember, addFiestoreMember, del
         handleEditMember={handleEditMember}
         handleIsEdit={handleIsEdit}
         handleBackEditFamily={handleBackEditFamily}
+        getMemberId={getMemberId}
+        items={items}
+        addFirestoreItems={addFirestoreItems}
+        deleteFirestoreItem={deleteFirestoreItem}
+        updateFirestoreItem={updateFirestoreItem}
       />
     )
   } else if (!isAdd && !isEdit) {

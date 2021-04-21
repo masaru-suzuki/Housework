@@ -64,6 +64,7 @@ const EditHousework = ({
           handleChange={handleChange}
         />
         <InputField
+          type="number"
           className={classes.input_field}
           required={true}
           identificationName="earnedPoint"

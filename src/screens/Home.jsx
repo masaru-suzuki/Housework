@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import DrawerNav from '../components/DrawerNav'
 import { makeStyles } from '@material-ui/core/styles'
 import { Container, Grid } from '@material-ui/core'
@@ -12,7 +12,16 @@ const useStyles = makeStyles(() => ({
   },
 }))
 
-const Home = ({ membersInfo, houseworkListInfo, finishBtnEvent, resetFirestoreHousework, exchangeCash }) => {
+const Home = ({
+  membersInfo,
+  houseworkListInfo,
+  finishBtnEvent,
+  resetFirestoreHousework,
+  exchangeCash,
+  exhangeItems,
+  getMemberId,
+  items,
+}) => {
   const classes = useStyles()
   const [isMemberScreen, setIsMemberScreen] = useState(false)
   const [memberIndex, setMemberIndex] = useState()
@@ -27,6 +36,7 @@ const Home = ({ membersInfo, houseworkListInfo, finishBtnEvent, resetFirestoreHo
   }
 
   const memberInfo = membersInfo[memberIndex]
+
   if (isMemberScreen) {
     return (
       <MemberHome
@@ -36,6 +46,9 @@ const Home = ({ membersInfo, houseworkListInfo, finishBtnEvent, resetFirestoreHo
         finishBtnEvent={finishBtnEvent}
         resetFirestoreHousework={resetFirestoreHousework}
         exchangeCash={exchangeCash}
+        exhangeItems={exhangeItems}
+        getMemberId={getMemberId}
+        items={items}
       />
     )
   } else {

@@ -29,12 +29,17 @@ const App = () => {
   const { userId } = useAuth()
   const [membersInfo, setMembersInfo] = useState([])
   const [houseworkListInfo, setHouseworkListInfo] = useState([])
+  const [items, setItems] = useState([])
   const [isEdit, setIsEdit] = useState(false)
+  const [memberId, setMemberId] = useState()
 
-  //どういうふうに非同期処理にしたらいいのか分からない・・・！
   const getRef = (refName) => {
     return db.collection('family').doc(userId).collection(refName)
   }
+  const getItemRef = (memberId) => {
+    return db.collection('family').doc(userId).collection('member').doc(memberId).collection('items')
+  }
+
   const getFirestoreMock = async (refName, stateSetter) => {
     const Ref = getRef(await refName)
     const data = makeListFromCollection(await Ref.get())
@@ -42,37 +47,60 @@ const App = () => {
     //firebaseが更新された時に、再レンダリングするように、isEditをセット
     setIsEdit(false)
   }
+  //get items from firestore
+  const getMemberId = (memberId) => {
+    setMemberId(memberId)
+  }
+  const getItems = async (id) => {
+    // console.log({ id })
+    const ItemRef = getItemRef(await id)
+    // console.log(itemRef)
+    const data = makeListFromCollection(await ItemRef.orderBy('requiredPoint').get())
+    // console.log(data)
+    setItems(data.filter((v) => typeof v.name === 'string'))
+    setIsEdit(false)
+  }
+  //Ref
+  const memberRef = getRef('member')
+  const houseworkRef = getRef('housework')
 
   //update firestore
-  const updateFirestore = (data, refName) => {
-    const firestoreRef = getRef(refName)
+  const updateFirestore = (data, firestoreRef) => {
     const targetId = data.id
     firestoreRef.doc(targetId).set(data, { merge: true })
     setIsEdit(true) //isEditで再レンダリングを発火させる
   }
   const updateFirestoreMember = (data) => {
-    updateFirestore(data, 'member')
+    updateFirestore(data, memberRef)
   }
   const updateFirestoreHousework = (data) => {
-    updateFirestore(data, 'housework')
+    updateFirestore(data, houseworkRef)
+  }
+  const updateFirestoreItem = (data, memberId) => {
+    console.log('update')
+    const itemRef = getItemRef(memberId)
+    updateFirestore(data, itemRef)
   }
 
   //add data to firestore
-  const addFirestore = (data, refName) => {
-    const firestoreRef = getRef(refName)
+  const addFirestore = (data, firestoreRef) => {
     firestoreRef.add(data)
     setIsEdit(true) //isEditで再レンダリングを発火させる
   }
   const addFiestoreMember = (data) => {
-    addFirestore(data, 'member')
+    addFirestore(data, memberRef)
   }
   const addFiestoreHousework = (data) => {
-    addFirestore(data, 'housework')
+    addFirestore(data, houseworkRef)
+  }
+  const addFirestoreItems = (data, memberId) => {
+    console.log('add items')
+    const itemRef = getItemRef(memberId)
+    addFirestore(data, itemRef)
   }
 
-  //firestoreのメンバーの削除
-  const deleteFirestore = (refName, id) => {
-    const firestoreRef = getRef(refName)
+  //delete data to firestore
+  const deleteFirestore = (id, firestoreRef) => {
     firestoreRef
       .doc(id)
       .delete()
@@ -84,10 +112,14 @@ const App = () => {
       })
   }
   const deleteFirestoreMember = (id) => {
-    deleteFirestore('member', id)
+    deleteFirestore(id, memberRef)
   }
   const deleteFirestoreHousework = (id) => {
-    deleteFirestore('housework', id)
+    deleteFirestore(id, houseworkRef)
+  }
+  const deleteFirestoreItem = (id, memberId) => {
+    const itemRef = getItemRef(memberId)
+    deleteFirestore(id, itemRef)
   }
 
   const finishBtnEvent = (memberInfo, housework) => {
@@ -99,6 +131,7 @@ const App = () => {
       doneMemberId = ''
       //完了日の削除
       doneDate = doneDate.filter((timestamp) => !timestamp.isEqual(finishedDate))
+      // console.log({ doneDate })
       //連続家事日数の計算
       runningDay = getRunningDay(doneDate)
       //経験値の計算
@@ -155,8 +188,56 @@ const App = () => {
     updateFirestoreMember(updateMemberData)
   }
 
-  //TODO 日付が変わった時に家事のデータをresetする
+  //日付が今日と同じか判定
+  const getIsEquortoDay = (date) => {
+    // console.log(date)
+    const today = new Date()
+    const y = date?.getFullYear()
+    const m = date?.getMonth() + 1
+    const d = date?.getDate()
+    const Y = today.getFullYear()
+    const M = today.getMonth() + 1
+    const D = today.getDate()
+    return y === Y && m === M && d === D
+  }
+  // 日付の配列から、最新の日付を取得
+  const getLatestDate = (dateArr) => {
+    let latestDate = ''
+    dateArr.forEach((e) => {
+      if (e > latestDate) latestDate = e
+    })
+    // console.log({ latestDate })
+    return latestDate
+  }
+
+  //日付が変わった時に家事のデータをresetする
+  const getIsNewDate = () => {
+    // console.log({ membersInfo })
+    if (membersInfo === []) return
+    // メンバーごとのdoneDateから最新日付を取得して、配列にする
+    const latestDateMemberDoneHousework = membersInfo?.map((member) => {
+      // console.log(member)
+      let date = ''
+      try {
+        date = member.doneDate[0]?.toDate()
+      } catch {
+        date = member.doneDate[0]
+      }
+      return date
+    })
+    // console.log({ latestDateMemberDoneHousework })
+    //誰も家事をやっていない状態なら終了
+    if (latestDateMemberDoneHousework.length === 0) return
+    const latestDate = getLatestDate(latestDateMemberDoneHousework)
+    // console.log(latestDate)
+    //日付が変わったか判定
+    // console.log(getIsEquortoDay(latestDate))
+    if (!getIsEquortoDay(latestDate)) resetFirestoreHousework()
+  }
+  //最も新しい日付とアプリケーションをレンダリングした時に日付を比較して、レンダリングした時の日付が新しかったら、restFirestoreHoueworkする
+
   const resetFirestoreHousework = () => {
+    // console.log('reset')
     houseworkListInfo.forEach((housework) => {
       const resetHouseworkData = {
         id: housework.id,
@@ -215,6 +296,16 @@ const App = () => {
     }
   }
 
+  //アイテム交換の時にpointを減算する
+  const exhangeItems = (id, point, itemList) => {
+    console.log('exchange item')
+    console.log(itemList)
+    console.log(point)
+    const updateMemberData = { id, point }
+    updateFirestoreMember(updateMemberData)
+    // updateFirestoreItem(item, memberId)
+    itemList.forEach((item) => updateFirestoreItem(item, id))
+  }
   useEffect(() => {
     if (!userId) return
     //submitがclickされるたびにfirestoreのデータを引っ張ってきて更新する
@@ -223,7 +314,18 @@ const App = () => {
     //userIdが変わった時も情報を撮り直す
   }, [isEdit, userId])
 
+  //memberが変わったら、itemListを更新する
+  useEffect(() => {
+    if (!userId) return
+    getItems(memberId)
+  }, [memberId, isEdit])
+  // console.log({ items })
   //今度はrecomposeのlibraryを使ってpropsを渡すのに挑戦してみる
+  //初回のレンダリングのみ
+  useEffect(() => {
+    getIsNewDate()
+    //userIdでもmembersInfoでもうまくいかなかった
+  }, [memberId])
   return (
     <Router>
       <Switch>
@@ -242,6 +344,9 @@ const App = () => {
                   finishBtnEvent={finishBtnEvent}
                   resetFirestoreHousework={resetFirestoreHousework}
                   exchangeCash={exchangeCash}
+                  exhangeItems={exhangeItems}
+                  getMemberId={getMemberId}
+                  items={items}
                 />
               )}
             />
@@ -256,6 +361,11 @@ const App = () => {
                   updateFirestoreMember={updateFirestoreMember}
                   addFiestoreMember={addFiestoreMember}
                   deleteFirestoreMember={deleteFirestoreMember}
+                  getMemberId={getMemberId}
+                  items={items}
+                  addFirestoreItems={addFirestoreItems}
+                  deleteFirestoreItem={deleteFirestoreItem}
+                  updateFirestoreItem={updateFirestoreItem}
                 />
               )}
             />

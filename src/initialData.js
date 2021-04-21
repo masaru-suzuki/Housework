@@ -8,6 +8,7 @@ export const initMember = () => {
     point: 0,
     doneDate: [],
     runningDay: 0,
+    items: [],
   }
 }
 
@@ -20,5 +21,13 @@ export const initHousework = () => {
     isDone: false,
     doneMemberId: '',
     finishedDate: '',
+  }
+}
+
+export const initItem = () => {
+  return {
+    name: '',
+    requiredPoint: '',
+    isSecret: true,
   }
 }

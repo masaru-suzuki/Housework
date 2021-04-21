@@ -76,7 +76,7 @@ const Cash = ({ memberInfo, exchangeCash }) => {
   const levelBonus = level / 100 + 1
   const runningDayBonus = runningDay / 100 + 1
   const money = Math.floor(exchangePoint * levelBonus * runningDayBonus)
-
+  const text = money + '円'
   const handleOnChange = (event) => {
     const value = event.target.value
     const error = value.slice(-1) === ' '
@@ -182,7 +182,7 @@ const Cash = ({ memberInfo, exchangeCash }) => {
       >
         ポイントを交換する
       </Button>
-      <ConfigModal onSubmitEvent={onSubmitEvent} money={money} handleClose={handleClose} open={open} />
+      <ConfigModal onSubmitEvent={onSubmitEvent} text={text} handleClose={handleClose} open={open} />
     </>
   )
 }

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Container from '@material-ui/core/Container'
 import { makeStyles } from '@material-ui/core/styles'
 import { Divider } from '@material-ui/core'
@@ -9,8 +9,8 @@ import MemberHomeMemberInfoAria from '../components/MemberHomeMemberInfoAria'
 import ErrorModal from '../components/ErrorModal'
 
 const navHeight = 55
-const navBar = 44
-const rootPaddingBottom = navHeight
+// const navBar = 44
+// const rootPaddingBottom = navHeight
 const innerHeight = window.innerHeight
 const useStyles = makeStyles({
   container: {
@@ -44,20 +44,24 @@ const useStyles = makeStyles({
     bottom: 0,
   },
 })
+
 const MemberHome = ({
   memberInfo,
   houseworkListInfo,
   handleBackHome,
   finishBtnEvent,
   exchangeCash,
+  exhangeItems,
   resetFirestoreHousework,
+  getMemberId,
+  items,
 }) => {
   const classes = useStyles()
   const [flag, setFlag] = useState({ isExchange: false, isHome: true, isCash: false })
   const [isPage, setIsPage] = useState('isHome')
   const [clickedHousework, setClikedHousework] = useState({}) //housework listでクリックされた家事をセット
   const [open, setOpen] = useState(false)
-  const { point } = memberInfo
+  const { point, id } = memberInfo
 
   //家事取り消し時に所持ポイントよりも家事の獲得ポイントが大きかった時に取り消しをできなくする
   const toggleErrorModal = (point, earnedPoint, isDone) => {
@@ -97,7 +101,7 @@ const MemberHome = ({
 
   //Bottom Nav
   const handleFlag = (text) => {
-    console.log({ text })
+    // console.log({ text })
     for (let key in flag) {
       if (flag[key]) {
         setFlag((prevState) => ({ ...prevState, [key]: false, [text]: true }))
@@ -106,7 +110,9 @@ const MemberHome = ({
     }
   }
 
-  useState(() => {}, [])
+  useEffect(() => {
+    getMemberId(id)
+  }, [])
   return (
     <Container maxWidth="md" className={classes.container}>
       <div className={classes.root}>
@@ -121,8 +127,10 @@ const MemberHome = ({
           toggleBudge={toggleBudge}
           handleFlag={handleFlag}
           exchangeCash={exchangeCash}
+          exhangeItems={exhangeItems}
           isPage={isPage}
           flag={flag}
+          items={items}
         />
       </div>
       <div className={classes.navigation}>
