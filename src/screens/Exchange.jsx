@@ -1,16 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
-import {
-  Button,
-  Card,
-  CardContent,
-  Checkbox,
-  List,
-  ListItem,
-  ListItemText,
-  ListItemIcon,
-  Divider,
-} from '@material-ui/core'
+import { Button, Card, CardContent, Checkbox, List, ListItem, ListItemText, ListItemIcon } from '@material-ui/core'
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline'
 import CheckCircleIcon from '@material-ui/icons/CheckCircle'
 import ConfigModalItem from '../components/ConfigModalItem'
@@ -102,7 +92,7 @@ const Exchange = ({ memberInfo, items, exhangeItems }) => {
 
   //checkされたら項目を保存
   const toggleCheckItem = (item) => {
-    const { id, requiredPoint, name } = item
+    const { id, requiredPoint } = item
     const checkedItemArr = [...checked]
     const checkedItemName = [...exchangeItems]
     const currentIndex = checked.indexOf(id)

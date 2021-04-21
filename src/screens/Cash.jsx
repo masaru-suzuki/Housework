@@ -1,20 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
-import Container from '@material-ui/core/Container'
-import { Button, Grid, Paper, Card, CardContent } from '@material-ui/core'
-import StatusBar from '../uikit/StatusBar'
-import BottomNav from '../components/BottomNav'
-import InputAdornment from '@material-ui/core/InputAdornment'
-import FormControl from '@material-ui/core/FormControl'
+import { InputAdornment, FormControl, Button, OutlinedInput, FormHelperText } from '@material-ui/core'
 import clsx from 'clsx'
-import OutlinedInput from '@material-ui/core/OutlinedInput'
-import FormHelperText from '@material-ui/core/FormHelperText'
 import Arrow from '../img/arrow.jpg'
-import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward'
-import TextField from '@material-ui/core/TextField'
-import SubmitBtn from '../uikit/SubmitBtn'
-import { RedoRounded } from '@material-ui/icons'
 import ConfigModal from '../components/ConfigModal'
+import { Card, CardContent } from '@material-ui/core'
 
 const useStyles = makeStyles((theme) => ({
   root: {

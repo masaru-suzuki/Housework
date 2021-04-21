@@ -1,15 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import { useHistory } from 'react-router-dom'
 import BottomNavigation from '@material-ui/core/BottomNavigation'
 import { withStyles } from '@material-ui/core'
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction'
 import AutorenewIcon from '@material-ui/icons/Autorenew'
-import Container from '@material-ui/core/Container'
-
-import MoneyIcon from '@material-ui/icons/Money'
 import { makeStyles, createMuiTheme } from '@material-ui/core/styles'
 import { ThemeProvider } from '@material-ui/styles'
-import BackBtn from '../uikit/BackBtn'
 import InsertEmoticonIcon from '@material-ui/icons/InsertEmoticon'
 import HomeIcon from '@material-ui/icons/Home'
 

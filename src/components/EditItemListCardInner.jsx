@@ -1,5 +1,4 @@
 import React from 'react'
-import { useMediaQuery } from 'react-responsive'
 import { makeStyles, createMuiTheme } from '@material-ui/core/styles'
 import { Card, CardContent, Typography, IconButton, Divider, CardActionArea } from '@material-ui/core'
 import DeleteIcon from '@material-ui/icons/Delete'
