@@ -33,9 +33,21 @@ const useStyles = makeStyles((theme) => ({
 
 const Exchange = ({ memberInfo, items }) => {
   const classes = useStyles()
-  // console.log({ items })
+  const [checkedItemList, setCheckedItemList] = useState([])
+  // const checkedItemArr = []
+
   //isSecretで名前を表示するかトグルする
   const toggleInvisualName = (item) => (item.isSecret ? '???????' : item.name)
+
+  //checkされたら項目を保存
+  const toggleCheckItem = (item) => {
+    const checkedItemArr = [...checkedItemList]
+    const { id } = item
+    const currentIndex = checkedItemList.indexOf(id)
+    currentIndex === -1 ? checkedItemArr.push(id) : checkedItemArr.splice(currentIndex, 1)
+    setCheckedItemList(checkedItemArr)
+  }
+  console.log(checkedItemList)
   return (
     <>
       <List className={classes.root} subheader={<li />}>
@@ -52,7 +64,7 @@ const Exchange = ({ memberInfo, items }) => {
               dense
               button
               className={isSecret ? classes.list_item_finished : classes.list_item}
-              // onClick={() => toggleBudge(item)}
+              onClick={() => toggleCheckItem(item)}
             >
               <ListItemText id={labelId} primary={toggleInvisualName(item)} />
               <ListItemText id={labelId} primary={`${item.requiredPoint}point`} />
