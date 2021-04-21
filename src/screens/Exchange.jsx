@@ -1,7 +1,18 @@
 import React, { useEffect, useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import Container from '@material-ui/core/Container'
-import { Button, Checkbox, Grid, Paper, List, ListItem, ListItemText, ListItemIcon } from '@material-ui/core'
+import {
+  Button,
+  Card,
+  CardContent,
+  Checkbox,
+  Grid,
+  Paper,
+  List,
+  ListItem,
+  ListItemText,
+  ListItemIcon,
+} from '@material-ui/core'
 import StatusBar from '../uikit/StatusBar'
 import BottomNav from '../components/BottomNav'
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline'
@@ -29,11 +40,33 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: 'inherit',
     padding: 0,
   },
+  card: {
+    width: '25ch',
+    margin: 'auto',
+    // minHeight: 60,
+    padding: 0,
+    height: 'auto',
+    textAlign: 'center',
+    boxShadow: 'unset',
+    backgroundColor: '#eceeef',
+  },
+  card_content: {
+    padding: 8,
+    '&:last-child': {
+      paddingBottom: 8,
+    },
+  },
+  btn: {
+    margin: '16px auto 24px',
+    width: '25ch',
+    height: 60,
+  },
 }))
 
 const Exchange = ({ memberInfo, items }) => {
   const classes = useStyles()
   const [checked, setChecked] = useState([])
+  const [paidPoint, setPaidPoint] = useState(0)
   // const checkedItemArr = []
 
   //isSecretで名前を表示するかトグルする
@@ -41,13 +74,21 @@ const Exchange = ({ memberInfo, items }) => {
 
   //checkされたら項目を保存
   const toggleCheckItem = (item) => {
+    const { id, requiredPoint } = item
     const checkedItemArr = [...checked]
-    const { id } = item
     const currentIndex = checked.indexOf(id)
-    currentIndex === -1 ? checkedItemArr.push(id) : checkedItemArr.splice(currentIndex, 1)
+    if (currentIndex === -1) {
+      checkedItemArr.push(id)
+      setPaidPoint(paidPoint + requiredPoint)
+    } else {
+      checkedItemArr.splice(currentIndex, 1)
+      setPaidPoint(paidPoint - requiredPoint)
+    }
     setChecked(checkedItemArr)
   }
+  const getRequiredPoint = () => {}
   console.log(checked)
+  console.log(paidPoint)
   return (
     <>
       <List className={classes.root} subheader={<li />}>
@@ -84,6 +125,9 @@ const Exchange = ({ memberInfo, items }) => {
           )
         })}
       </List>
+      <Card className={classes.card}>
+        <CardContent className={classes.card_content}>{paidPoint}point</CardContent>
+      </Card>
       <Button
         className={classes.btn}
         variant="contained"

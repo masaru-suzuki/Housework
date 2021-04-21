@@ -10,7 +10,7 @@ const useStyles = makeStyles({
     marginBottom: 16,
   },
 })
-const AddItems = ({memberId, item, addFirestoreItems, handleBackEditItemList }) => {
+const AddItems = ({ memberId, item, addFirestoreItems, handleBackEditItemList }) => {
   const classes = useStyles()
   const [itemData, setItemData] = useState({})
 
@@ -21,12 +21,12 @@ const AddItems = ({memberId, item, addFirestoreItems, handleBackEditItemList }) 
       setItemData((prevState) => ({ ...prevState, name: String(value) }))
     } else if (identificationName === 'requiredPoint') {
       //型指定をすると,先頭に0がついてしまうから、MaterialUiのTextFieldにtype='number
-      setItemData((prevState) => ({ ...prevState, requiredPoint: value }))
+      setItemData((prevState) => ({ ...prevState, requiredPoint: parseInt(value, 10) }))
     }
   }
   //SubmitBtn
   const onSubmitEvent = () => {
-    addFirestoreItems(itemData,memberId)
+    addFirestoreItems(itemData, memberId)
     handleBackEditItemList()
   }
   useEffect(() => {

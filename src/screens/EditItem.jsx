@@ -35,7 +35,7 @@ const EditItem = ({ memberId, items, editItemIndex, updateFirestoreItem, handleB
       setItem((prevState) => ({ ...prevState, name: String(value) }))
     } else if (identificationName === 'requiredPoint') {
       //型指定をすると,先頭に0がついてしまうから、MaterialUiのTextFieldにtype='number
-      setItem((prevState) => ({ ...prevState, requiredPoint: value }))
+      setItem((prevState) => ({ ...prevState, requiredPoint: parseInt(value, 10) }))
     }
   }
   // console.log(item)

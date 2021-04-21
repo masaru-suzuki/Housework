@@ -27,7 +27,7 @@ export const initHousework = () => {
 export const initItem = () => {
   return {
     name: '',
-    requiredPoint: 0,
+    requiredPoint: '',
     isSecret: true,
   }
 }
