@@ -17,7 +17,7 @@ import StatusBar from '../uikit/StatusBar'
 import BottomNav from '../components/BottomNav'
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline'
 import CheckCircleIcon from '@material-ui/icons/CheckCircle'
-import ConfigModal from '../components/ConfigModal'
+import ConfigModalItem from '../components/ConfigModalItem'
 const useStyles = makeStyles((theme) => ({
   root: {
     width: '100%',
@@ -197,9 +197,9 @@ const Exchange = ({ memberInfo, items }) => {
       >
         アイテムを交換する
       </Button>
-      <ConfigModal
+      <ConfigModalItem
         onSubmitEvent={onSubmitEvent}
-        // text={text}
+        exchangeItems={exchangeItems}
         handleClose={handleClose}
         open={open}
       />
