@@ -127,8 +127,6 @@ const App = () => {
     if (memberInfo === undefined) return
     let { id, doneDate, runningDay } = memberInfo
     // console.log(doneDate[0])
-    // console.log({ runningDay })
-    const latestDate = doneDate[0].toDate()
     // console.log(getIsEquorToday(latestDate))
     const diffDate = getDiffDay(doneDate)
     // console.log(diffDate)
