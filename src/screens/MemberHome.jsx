@@ -17,6 +17,7 @@ const useStyles = makeStyles({
     minHeight: innerHeight,
     backgroundColor: 'unset',
     width: '100%',
+    maxWidth: '100vw',
     overflow: 'hidden',
     padding: 0,
     margin: 0,
@@ -55,7 +56,6 @@ const MemberHome = ({
   resetFirestoreHousework,
   getMemberId,
   items,
-  updateRunningDay,
 }) => {
   const classes = useStyles()
   const [flag, setFlag] = useState({ isExchange: false, isHome: true, isCash: false })

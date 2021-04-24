@@ -10,6 +10,7 @@ const useStyles = makeStyles(() => ({
     // flexGrow: 1,
     // backgroundColor: '#efefef',
     width: '100%',
+    maxWidth: '100vw',
     height: '100%',
     display: 'flex',
     justifyContent: 'center',
@@ -97,7 +98,7 @@ const Home = ({
         <Grid container spacing={3}>
           {membersInfo.map((memberInfo, index) => {
             return (
-              <Grid item xs={12} sm={6} key={memberInfo.id}>
+              <Grid item xs={12} sm={6} md={3} key={memberInfo.id}>
                 <MemberCard memberInfo={memberInfo} handleMemberScreen={handleMemberScreen} index={index} />
               </Grid>
             )
