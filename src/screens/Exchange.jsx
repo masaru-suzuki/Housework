@@ -225,6 +225,7 @@ const Exchange = ({ memberInfo, items, exhangeItems }) => {
           exchangeItems={exchangeItems}
           handleClose={handleClose}
           open={open}
+          toggleInvisualName={toggleInvisualName}
         />
       </div>
     )

@@ -39,8 +39,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const ConfigModalItem = ({ open, exchangeItems, onSubmitEvent, handleClose }) => {
+const ConfigModalItem = ({ open, exchangeItems, onSubmitEvent, handleClose, toggleInvisualName }) => {
   const classes = useStyles()
+
   return (
     <div>
       <Modal
@@ -59,10 +60,9 @@ const ConfigModalItem = ({ open, exchangeItems, onSubmitEvent, handleClose }) =>
           <div className={classes.paper}>
             <List className={classes.inner}>
               {exchangeItems.map((item, index) => {
-                const { name } = item
                 return (
                   <ListItem key={index}>
-                    <ListItemText primary={name + 'と交換しましたか？'} />
+                    <ListItemText primary={toggleInvisualName(item) + 'と交換しましたか？'} />
                   </ListItem>
                 )
               })}
