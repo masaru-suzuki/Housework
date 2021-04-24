@@ -4,7 +4,6 @@ import BackBtn from '../uikit/BackBtn'
 import SubmitBtn from '../uikit/SubmitBtn'
 import InputField from '../uikit/InputField'
 import { initItem } from '../initialData'
-console.log({ initItem })
 const useStyles = makeStyles({
   input_field: {
     marginBottom: 16,

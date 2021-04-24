@@ -60,6 +60,7 @@ const App = () => {
     setItems(data.filter((v) => typeof v.name === 'string'))
     setIsEdit(false)
   }
+
   //Ref
   const memberRef = getRef('member')
   const houseworkRef = getRef('housework')
@@ -120,6 +121,25 @@ const App = () => {
   const deleteFirestoreItem = (id, memberId) => {
     const itemRef = getItemRef(memberId)
     deleteFirestore(id, itemRef)
+  }
+  //連続家事日数の更新 //member画面を開いたときに実行
+  const updateRunningDay = (memberInfo) => {
+    if (memberInfo === undefined) return
+    let { id, doneDate, runningDay } = memberInfo
+    // console.log(doneDate[0])
+    // console.log({ runningDay })
+    const latestDate = doneDate[0].toDate()
+    // console.log(getIsEquorToday(latestDate))
+    const diffDate = getDiffDay(doneDate)
+    // console.log(diffDate)
+    //もし、今日の日付と家事をやった日付が2日以上空いていたら、runningDay = 0
+    if (diffDate >= 2) {
+      runningDay = 0
+    }
+    //もし、今日の日付と家事をやった日付が、1日だったら、runningDayはそのまま
+    const updateData = { id, runningDay }
+    // console.log(updateData)
+    updateFirestoreMember(updateData)
   }
 
   const finishBtnEvent = (memberInfo, housework) => {
@@ -189,9 +209,9 @@ const App = () => {
   }
 
   //日付が今日と同じか判定
-  const getIsEquortoDay = (date) => {
-    console.log(date.length)
-    if (!data) return
+  const getIsEquorToday = (date) => {
+    // console.log({ date })
+    if (!date || date === undefined) return false
     const today = new Date()
     const y = date?.getFullYear()
     const m = date?.getMonth() + 1
@@ -215,7 +235,7 @@ const App = () => {
   //初期状態の時にデータがないからエラー対策が必要
   const getIsNewDate = () => {
     // console.log({ membersInfo })
-    if (membersInfo === []) return
+    // console.log(membersInfo.length)
     // メンバーごとのdoneDateから最新日付を取得して、配列にする
     const latestDateMemberDoneHousework = membersInfo?.map((member) => {
       // console.log(member.doneDate.length === 0)
@@ -233,15 +253,25 @@ const App = () => {
     // console.log(latestDateMemberDoneHousework === undefined)
     //誰も家事をやっていない状態なら終了
     // console.log(latestDateMemberDoneHousework[0])
-    if (latestDateMemberDoneHousework[0] === undefined) return
+    // if (latestDateMemberDoneHousework[0] === undefined) return//これいる？
     const latestDate = getLatestDate(latestDateMemberDoneHousework)
     // console.log({ latestDate })
     //日付が変わったか判定
-    // console.log(getIsEquortoDay(latestDate))
-    if (!getIsEquortoDay(latestDate) === '') resetFirestoreHousework()
+    if (latestDate === undefined) return
+    // console.log(getIsEquorToday(latestDate))
+    //今日の日付と最新の日付が異なっていたら、家事でーたをリセットする
+    if (!getIsEquorToday(latestDate)) resetFirestoreHousework()
   }
   //最も新しい日付とアプリケーションをレンダリングした時に日付を比較して、レンダリングした時の日付が新しかったら、restFirestoreHoueworkする
 
+  //今日の日付と家事をやった最終日の日付の差を出す
+  const getDiffDay = (date) => {
+    if (date.length < 1) return
+    const today = new Date()
+    const latestDay = date[0].toDate()
+    const diff = Math.floor((today - latestDay) / 86400000)
+    return diff
+  }
   const resetFirestoreHousework = () => {
     // console.log('reset')
     houseworkListInfo.forEach((housework) => {
@@ -255,55 +285,54 @@ const App = () => {
   }
   //連続家事日数の取得
   const getRunningDay = (date) => {
-    if (date.length < 1) {
-      return 0
-    } else {
-      let runningDay = 0
-      for (let i = 0; i < date.length - 1; i++) {
-        //新しく追加したdoneDateはfirebaseに登録されることでfirebaseのタイムスタンプ型になるけど、この時点ではなっていないので、
-        //toDate()が使えない
-        //新しくdoneDateを追加した場合はdoneDate[0].getDate()でいけるけど、そうじゃない場合doneDate[0].toDate()にする必要がある
-        //新しく追加した場合はこれでおkだけど、同じにひやっていて、doneDateに追加しない場合は、成功しない=>try catchでやってみる
-        let newDate = ''
+    if (date.length < 1) return 0
+    let runningDay = 0
+    //今日の日付と最後にやった日付のさがあった場合、runningDay=0 にする
+    const today = new Date()
+    for (let i = 0; i < date.length - 1; i++) {
+      //新しく追加したdoneDateはfirebaseに登録されることでfirebaseのタイムスタンプ型になるけど、この時点ではなっていないので、
+      //toDate()が使えない
+      //新しくdoneDateを追加した場合はdoneDate[0].getDate()でいけるけど、そうじゃない場合doneDate[0].toDate()にする必要がある
+      //新しく追加した場合はこれでおkだけど、同じにひやっていて、doneDateに追加しない場合は、成功しない=>try catchでやってみる
+      let newDate = ''
 
-        try {
-          newDate = date[i].toDate()
-        } catch (error) {
-          newDate = date[0]
-        }
-        const prevDate = date[i + 1].toDate()
-        const newDay = newDate.getDate()
-        const prevDay = prevDate.getDate()
-
-        // console.log({ newDate })
-        // console.log({ prevDate })
-
-        if (newDay === 1) {
-          const lastMonthLastDay = new Date(newDate.getFullYear(), newDate.getMonth(), 0).getDate()
-          //前月の最終日と同じなら連続していることとする
-          if (lastMonthLastDay === prevDay) {
-            runningDay += 1
-          }
-        }
-        if (newDay - prevDay === 1) {
-          runningDay += 1
-          // console.log('constant done housework!')
-        } else if (newDay === prevDay) {
-          // console.log('in a day')
-        } else {
-          break
-        }
-        // console.log({runningDay})
+      try {
+        newDate = date[i].toDate()
+      } catch (error) {
+        newDate = date[0]
       }
-      return runningDay
+      const prevDate = date[i + 1].toDate()
+      const newDay = newDate.getDate()
+      const prevDay = prevDate.getDate()
+
+      // console.log({ newDate })
+      // console.log({ prevDate })
+
+      if (newDay === 1) {
+        const lastMonthLastDay = new Date(newDate.getFullYear(), newDate.getMonth(), 0).getDate()
+        //前月の最終日と同じなら連続していることとする
+        if (lastMonthLastDay === prevDay) {
+          runningDay += 1
+        }
+      }
+      if (newDay - prevDay === 1) {
+        runningDay += 1
+        // console.log('constant done housework!')
+      } else if (newDay === prevDay) {
+        // console.log('in a day')
+      } else {
+        break
+      }
+      // console.log({runningDay})
     }
+    return runningDay
   }
 
   //アイテム交換の時にpointを減算する
   const exhangeItems = (id, point, itemList) => {
-    console.log('exchange item')
-    console.log(itemList)
-    console.log(point)
+    // console.log('exchange item')
+    // console.log(itemList)
+    // console.log(point)
     const updateMemberData = { id, point }
     updateFirestoreMember(updateMemberData)
     // updateFirestoreItem(item, memberId)
@@ -349,6 +378,7 @@ const App = () => {
                   exhangeItems={exhangeItems}
                   getMemberId={getMemberId}
                   items={items}
+                  updateRunningDay={updateRunningDay}
                 />
               )}
             />
