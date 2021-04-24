@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import DrawerNav from '../components/DrawerNav'
 import { makeStyles } from '@material-ui/core/styles'
 import { Container, Grid, Paper } from '@material-ui/core'
@@ -44,6 +44,7 @@ const Home = ({
   exhangeItems,
   getMemberId,
   items,
+  updateRunningDay,
 }) => {
   const classes = useStyles()
   const [isMemberScreen, setIsMemberScreen] = useState(false)
@@ -59,6 +60,10 @@ const Home = ({
   }
 
   const memberInfo = membersInfo[memberIndex]
+
+  useEffect(() => {
+    updateRunningDay(memberInfo)
+  }, [memberIndex])
   if (isMemberScreen) {
     return (
       <MemberHome
@@ -71,6 +76,7 @@ const Home = ({
         exhangeItems={exhangeItems}
         getMemberId={getMemberId}
         items={items}
+        updateRunningDay={updateRunningDay}
       />
     )
   } else if (!isMemberScreen && membersInfo.length === 0) {

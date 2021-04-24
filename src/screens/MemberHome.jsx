@@ -55,6 +55,7 @@ const MemberHome = ({
   resetFirestoreHousework,
   getMemberId,
   items,
+  updateRunningDay,
 }) => {
   const classes = useStyles()
   const [flag, setFlag] = useState({ isExchange: false, isHome: true, isCash: false })
